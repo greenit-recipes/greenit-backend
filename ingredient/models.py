@@ -20,3 +20,6 @@ class Ingredient(models.Model):
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
     tags = models.ManyToManyField('tag.Tag')
+
+    def __str__(self):
+        return self.name

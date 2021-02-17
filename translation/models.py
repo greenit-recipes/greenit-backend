@@ -16,3 +16,6 @@ class Translation(models.Model):
     )
     author = models.ForeignKey('user.User', on_delete=models.CASCADE, null=True)
     is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.language

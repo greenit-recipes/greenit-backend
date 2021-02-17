@@ -61,4 +61,7 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField('ingredient.Ingredient')
     utensils = models.ManyToManyField('utensil.Utensil')
 
+    def __str__(self):
+        return self.title
+
     # TO DO: comments =
