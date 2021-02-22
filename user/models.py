@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     dob = models.DateField()
     liked_recipes = models.ManyToManyField('recipe.Recipe', related_name='liked')
     done_recipes = models.ManyToManyField('recipe.Recipe', related_name='done')
-    recipe = models.ForeignKey('recipe.Recipe', on_delete=models.CASCADE, null=True)
+    recipes = models.ForeignKey('recipe.Recipe', related_name='authored', on_delete=models.CASCADE, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
