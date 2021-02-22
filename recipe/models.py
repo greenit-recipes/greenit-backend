@@ -30,10 +30,20 @@ class Recipe(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
+    description = models.CharField(max_length=256, default='')
     video_url = models.URLField()
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
+    difficulty = models.CharField(
+        max_length=12,
+        choices=DifficultyChoice.choices,
+        default=DifficultyChoice.BEGINNER,
+    )
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )
+    duration = models.IntegerField()
     license = models.CharField(
         max_length=12,
         choices=LicenseChoice.choices,
@@ -45,21 +55,14 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
-
     image = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
     tags = models.ManyToManyField('tag.Tag')
     ingredients = models.ManyToManyField('ingredient.Ingredient')
-    rating = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
-    )
     utensils = models.ManyToManyField('utensil.Utensil')
-    difficulty = models.CharField(
-        max_length=12,
-        choices=DifficultyChoice.choices,
-        default=DifficultyChoice.BEGINNER,
-    )
-    duration = models.IntegerField()
+
+    def __str__(self):
+        return self.title
 
     # TO DO: comments =
