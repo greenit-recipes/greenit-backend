@@ -7,6 +7,7 @@ from .models import Ingredient
 class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
+        fields = ('id', 'name', 'description', 'image')
 
 
 class Query(graphene.ObjectType):

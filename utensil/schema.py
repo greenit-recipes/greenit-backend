@@ -7,6 +7,7 @@ from .models import Utensil
 class UtensilType(DjangoObjectType):
     class Meta:
         model = Utensil
+        fields = ('id', 'name', 'description', 'image', 'tags')
 
 
 class Query(graphene.ObjectType):

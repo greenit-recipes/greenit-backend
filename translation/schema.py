@@ -7,6 +7,7 @@ from .models import Translation
 class TranslationType(DjangoObjectType):
     class Meta:
         model = Translation
+        fields = ('id', 'language', 'author', 'is_approved')
 
 
 class Query(graphene.ObjectType):

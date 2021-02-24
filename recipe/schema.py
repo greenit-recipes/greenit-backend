@@ -7,6 +7,22 @@ from .models import Recipe
 class RecipeType(DjangoObjectType):
     class Meta:
         model = Recipe
+        fields = (
+            'id',
+            'title',
+            'description',
+            'video_url',
+            'language',
+            'difficulty',
+            'rating',
+            'duration',
+            'license',
+            'author',
+            'image',
+            'tags',
+            'ingredients',
+            'utensils',
+        )
 
 
 class Query(graphene.ObjectType):
