@@ -9,7 +9,7 @@ class RecipeType(DjangoObjectType):
         model = Recipe
         fields = (
             'id',
-            'title',
+            'name',
             'description',
             'video_url',
             'language',
@@ -20,6 +20,7 @@ class RecipeType(DjangoObjectType):
             'author',
             'image',
             'tags',
+            'category',
             'ingredients',
             'utensils',
         )

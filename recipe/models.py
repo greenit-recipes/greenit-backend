@@ -29,7 +29,7 @@ class Recipe(models.Model):
         PLACEHOLDER2 = 'PlaceholderB'
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=256, default='')
     video_url = models.URLField()
     language = models.CharField(
@@ -59,10 +59,16 @@ class Recipe(models.Model):
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
     tags = models.ManyToManyField('tag.Tag')
+    category = models.ForeignKey(
+        'tag.Category',
+        related_name='recipe_category',
+        on_delete=models.CASCADE,
+        null=True,
+    )
     ingredients = models.ManyToManyField('ingredient.Ingredient')
     utensils = models.ManyToManyField('utensil.Utensil')
 
     def __str__(self):
-        return self.title
+        return self.name
 
     # TO DO: comments =

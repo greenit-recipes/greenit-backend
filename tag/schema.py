@@ -8,13 +8,13 @@ from .models import Category
 class TagType(DjangoObjectType):
     class Meta:
         model = Tag
-        fields = ('id', 'title')
+        fields = ('id', 'name')
 
 
 class CategoryType(DjangoObjectType):
     class Meta:
         model = Category
-        fields = ('id', 'title')
+        fields = ('id', 'name')
 
 
 class Query(graphene.ObjectType):
