@@ -11,7 +11,7 @@ class TranslationType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    translations = graphene.List(TranslationType)
+    all_translations = graphene.List(TranslationType)
 
-    def resolve_translations(self, info, **kwargs):
+    def resolve_all_translations(self, info, **kwargs):
         return Translation.objects.all()

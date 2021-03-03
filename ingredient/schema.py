@@ -11,7 +11,7 @@ class IngredientType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    ingredients = graphene.List(IngredientType)
+    all_ingredients = graphene.List(IngredientType)
 
-    def resolve_ingredients(self, info, **kwargs):
+    def resolve_all_ingredients(self, info, **kwargs):
         return Ingredient.objects.all()
