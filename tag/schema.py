@@ -18,8 +18,8 @@ class CategoryType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    tags = graphene.List(TagType)
-    categories = graphene.List(CategoryType)
+    all_tags = graphene.List(TagType)
+    all_categories = graphene.List(CategoryType)
 
-    def resolve_tags(self, info, **kwargs):
+    def resolve_all_tags(self, info, **kwargs):
         return Tag.objects.all()

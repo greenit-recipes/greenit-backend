@@ -25,7 +25,7 @@ class UserType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    users = graphene.List(UserType)
+    all_users = graphene.List(UserType)
 
-    def resolve_users(self, info, **kwargs):
+    def resolve_all_users(self, info, **kwargs):
         return User.objects.all()

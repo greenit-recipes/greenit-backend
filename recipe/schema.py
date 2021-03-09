@@ -27,7 +27,7 @@ class RecipeType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    recipes = graphene.List(RecipeType)
+    all_recipes = graphene.List(RecipeType)
 
-    def resolve_recipes(self, info, **kwargs):
+    def resolve_all_recipes(self, info, **kwargs):
         return Recipe.objects.all()

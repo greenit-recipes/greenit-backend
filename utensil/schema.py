@@ -11,7 +11,7 @@ class UtensilType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    utensils = graphene.List(UtensilType)
+    all_utensils = graphene.List(UtensilType)
 
-    def resolve_utensils(self, info, **kwargs):
+    def resolve_all_utensils(self, info, **kwargs):
         return Utensil.objects.all()
