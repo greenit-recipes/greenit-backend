@@ -66,6 +66,7 @@ class Recipe(models.Model):
         null=True,
     )
     ingredients = models.ManyToManyField('ingredient.Ingredient')
+    instructions = models.TextField(max_length=None, default='')
     utensils = models.ManyToManyField('utensil.Utensil')
 
     def __str__(self):

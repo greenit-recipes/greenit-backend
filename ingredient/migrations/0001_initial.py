@@ -17,10 +17,26 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Ingredient',
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                (
+                    'id',
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
                 ('name', models.CharField(max_length=40)),
                 ('description', models.CharField(max_length=256)),
-                ('image', models.FileField(blank=True, max_length=255, null=True, upload_to=ingredient.models.get_image_path)),
+                (
+                    'image',
+                    models.FileField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        upload_to=ingredient.models.get_image_path,
+                    ),
+                ),
                 ('tags', models.ManyToManyField(to='tag.Tag')),
             ],
         ),
