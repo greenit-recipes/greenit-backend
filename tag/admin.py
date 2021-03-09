@@ -7,5 +7,6 @@ from tag.models import Tag, Category
 class TagAdmin(admin.ModelAdmin):
     pass
 
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Category, TagAdmin)

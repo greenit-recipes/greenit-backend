@@ -11,6 +11,7 @@ class IngredientType(DjangoObjectType):
         model = Ingredient
         fields = ('id', 'name', 'description', 'image', 'tags')
 
+
 class IngredientNode(DjangoObjectType):
     class Meta:
         model = Ingredient
@@ -18,6 +19,7 @@ class IngredientNode(DjangoObjectType):
             'name': ['iexact', 'icontains', 'istartswith'],
         }
         interfaces = (relay.Node,)
+
 
 class Query(graphene.ObjectType):
     all_ingredients = DjangoFilterConnectionField(IngredientNode)

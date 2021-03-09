@@ -8,15 +8,29 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Translation',
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('language', models.CharField(choices=[('FR', 'French'), ('EN', 'English'), ('DE', 'German')], default='FR', max_length=2)),
+                (
+                    'id',
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    'language',
+                    models.CharField(
+                        choices=[('FR', 'French'), ('EN', 'English'), ('DE', 'German')],
+                        default='FR',
+                        max_length=2,
+                    ),
+                ),
                 ('is_approved', models.BooleanField(default=False)),
             ],
         ),

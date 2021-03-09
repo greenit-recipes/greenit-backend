@@ -22,23 +22,95 @@ class Migration(migrations.Migration):
             name='User',
             fields=[
                 ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('email', models.EmailField(max_length=254, unique=True, verbose_name='Email address')),
+                (
+                    'last_login',
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name='last login'
+                    ),
+                ),
+                (
+                    'is_superuser',
+                    models.BooleanField(
+                        default=False,
+                        help_text='Designates that this user has all permissions without explicitly assigning them.',
+                        verbose_name='superuser status',
+                    ),
+                ),
+                (
+                    'id',
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    'email',
+                    models.EmailField(
+                        max_length=254, unique=True, verbose_name='Email address'
+                    ),
+                ),
                 ('name', models.CharField(max_length=50, unique=True)),
-                ('image_profile', models.FileField(blank=True, max_length=255, null=True, upload_to=user.models.get_image_path)),
+                (
+                    'image_profile',
+                    models.FileField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        upload_to=user.models.get_image_path,
+                    ),
+                ),
                 ('location', models.CharField(max_length=150)),
                 ('auto_pay', models.BooleanField(default=False)),
                 ('is_staff', models.BooleanField(default=False)),
                 ('is_active', models.BooleanField(default=True, verbose_name='Active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date joined')),
+                (
+                    'date_joined',
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name='Date joined'
+                    ),
+                ),
                 ('dob', models.DateField()),
-                ('done_recipes', models.ManyToManyField(related_name='done', to='recipe.Recipe')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('liked_recipes', models.ManyToManyField(related_name='liked', to='recipe.Recipe')),
-                ('recipes', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='authored', to='recipe.recipe')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                (
+                    'done_recipes',
+                    models.ManyToManyField(related_name='done', to='recipe.Recipe'),
+                ),
+                (
+                    'groups',
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+                        related_name='user_set',
+                        related_query_name='user',
+                        to='auth.Group',
+                        verbose_name='groups',
+                    ),
+                ),
+                (
+                    'liked_recipes',
+                    models.ManyToManyField(related_name='liked', to='recipe.Recipe'),
+                ),
+                (
+                    'recipes',
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='authored',
+                        to='recipe.recipe',
+                    ),
+                ),
+                (
+                    'user_permissions',
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text='Specific permissions for this user.',
+                        related_name='user_set',
+                        related_query_name='user',
+                        to='auth.Permission',
+                        verbose_name='user permissions',
+                    ),
+                ),
             ],
             options={
                 'abstract': False,
