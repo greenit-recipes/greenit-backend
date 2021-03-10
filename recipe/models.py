@@ -66,7 +66,7 @@ class Recipe(models.Model):
         null=True,
     )
     ingredients = models.ManyToManyField('ingredient.IngredientAmount')
-    utensils = models.ManyToManyField('utensil.Utensil')
+    utensils = models.ManyToManyField('utensil.UtensilAmount')
     expiry = models.CharField(max_length=128, default='')
 
     def __str__(self):

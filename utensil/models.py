@@ -23,3 +23,18 @@ class Utensil(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UtensilAmount(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    amount = models.CharField(max_length=16)
+    utensil = models.ForeignKey(
+            'Utensil',
+            related_name='utensil_amount',
+            on_delete=models.CASCADE,
+            null=True,
+        )
+
+    def __str__(self):
+        return str(self.amount) + str(' ') + str(self.utensil)
