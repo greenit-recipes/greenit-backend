@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'graphene_django',
+    'django_admin_json_editor',
     'ingredient',
     'recipe',
     'tag',

@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+
 from greenit import settings
 
 
@@ -23,3 +24,22 @@ class Utensil(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UtensilAmount(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    amount = models.CharField(max_length=16)
+    utensil = models.ForeignKey(
+        'utensil.Utensil',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    recipe = models.ForeignKey(
+        'recipe.Recipe',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+
+    def __str__(self):
+        return f'{self.amount} {self.utensil}'

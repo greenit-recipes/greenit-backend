@@ -3,6 +3,7 @@ import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from greenit import settings
 
 
@@ -65,8 +66,20 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
-    ingredients = models.ManyToManyField('ingredient.Ingredient')
-    utensils = models.ManyToManyField('utensil.Utensil')
+    ingredients = models.ManyToManyField(
+        'ingredient.Ingredient', through='ingredient.IngredientAmount'
+    )
+    utensils = models.ManyToManyField(
+        'utensil.Utensil', through='utensil.UtensilAmount'
+    )
+    # Instructions is an array of instructions
+    # Fields in an instruction:
+    # index = position in the instruction list
+    # timestamp = timestamp of video where the instructions starts
+    # content = the actual instruction
+    instructions = models.JSONField(default=dict)
+    expiry = models.CharField(max_length=128, default='')
+    notes_from_author = models.CharField(max_length=256, default='')
 
     def __str__(self):
         return self.name

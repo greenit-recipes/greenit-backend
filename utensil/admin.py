@@ -1,7 +1,6 @@
 from django.contrib import admin
-from utensil.models import Utensil
 
-# Register your models here.
+from utensil.models import Utensil, UtensilAmount
 
 
 class UtensilAdmin(admin.ModelAdmin):
@@ -9,3 +8,4 @@ class UtensilAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Utensil, UtensilAdmin)
+admin.site.register(UtensilAmount, UtensilAdmin)
