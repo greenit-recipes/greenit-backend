@@ -20,4 +20,8 @@ class Query(
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(ingredient.schema.Mutation):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)

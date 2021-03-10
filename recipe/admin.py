@@ -1,7 +1,8 @@
+from django import forms
 from django.contrib import admin
 from django_admin_json_editor import JSONEditorWidget
+
 from recipe.models import Recipe
-from django import forms
 
 
 class IngredientAmountInline(admin.StackedInline):
