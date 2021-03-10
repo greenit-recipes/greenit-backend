@@ -67,6 +67,7 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField('ingredient.Ingredient')
     utensils = models.ManyToManyField('utensil.Utensil')
+    expiry = models.CharField(max_length=128, default='')
 
     def __str__(self):
         return self.name
