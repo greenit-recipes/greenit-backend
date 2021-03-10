@@ -37,4 +37,4 @@ class UtensilAmount(models.Model):
         )
 
     def __str__(self):
-        return str(self.amount) + str(' ') + str(self.utensil)
+        return f'{self.amount} {self.utensil}'

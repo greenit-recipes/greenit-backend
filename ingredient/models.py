@@ -36,4 +36,4 @@ class IngredientAmount(models.Model):
         )
 
     def __str__(self):
-        return str(self.amount) + str(' ') + str(self.ingredient)
+        return f'{self.amount} {self.ingredient}'
