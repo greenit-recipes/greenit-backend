@@ -24,7 +24,7 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
-class Amount(models.Model):
+class IngredientAmount(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.CharField(max_length=16)

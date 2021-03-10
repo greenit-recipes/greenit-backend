@@ -65,7 +65,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
-    ingredients = models.ManyToManyField('ingredient.Amount')
+    ingredients = models.ManyToManyField('ingredient.IngredientAmount')
     utensils = models.ManyToManyField('utensil.Utensil')
     expiry = models.CharField(max_length=128, default='')
 
