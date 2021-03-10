@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from translation.models import Translation
 
 # Register your models here.

@@ -3,6 +3,7 @@ import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from greenit import settings
 
 
@@ -65,8 +66,12 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
-    ingredients = models.ManyToManyField('ingredient.IngredientAmount')
-    utensils = models.ManyToManyField('utensil.UtensilAmount')
+    ingredients = models.ManyToManyField(
+        'ingredient.Ingredient', through='ingredient.IngredientAmount'
+    )
+    utensils = models.ManyToManyField(
+        'utensil.Utensil', through='utensil.UtensilAmount'
+    )
     expiry = models.CharField(max_length=128, default='')
     notes_from_author = models.CharField(max_length=256, default='')
 

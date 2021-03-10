@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from utensil.models import Utensil, UtensilAmount
 
 # Register your models here.

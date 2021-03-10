@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from ingredient.models import Ingredient, IngredientAmount
 
 # Register your models here.
