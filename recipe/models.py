@@ -31,7 +31,7 @@ class Recipe(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=256, default='')
+    description = models.TextField(max_length=512, default='')
     video_url = models.URLField()
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
