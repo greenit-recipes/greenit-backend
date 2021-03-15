@@ -56,6 +56,5 @@ class Query(graphene.ObjectType):
     def resolve_recipe(self, info, id):
         try:
             return Recipe.objects.get(pk=id)
-        except Recipe.DoesNotExist:
-            # Write an exception to be returned here
-            return 'an error'
+        except:
+            raise Exception('Invalid UUID. Recipe does not exist!')
