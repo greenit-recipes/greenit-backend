@@ -42,13 +42,14 @@ class Query(graphene.ObjectType):
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
+
         def get_filter(filter):
-            filter = {}
+            filter_params = {}
             if filter.get('language'):
-                filter['language'] = filter['language']
+                filter_params['language'] = filter['language']
             if filter.get('rating'):
-                filter['rating__gte'] = filter['rating']
-            return filter
+                filter_params['rating__gte'] = filter['rating']
+            return filter_params
 
         filter = get_filter(filter) if filter else {}
         return Recipe.objects.filter(**filter)
