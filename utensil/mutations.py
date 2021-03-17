@@ -3,6 +3,7 @@ import graphene
 from .models import Utensil
 from .type import UtensilType
 
+
 class UtensilInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()

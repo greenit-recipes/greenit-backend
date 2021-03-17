@@ -33,5 +33,6 @@ class Query(graphene.ObjectType):
         except:
             raise Exception('User does not exist!')
 
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()

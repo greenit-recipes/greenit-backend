@@ -3,6 +3,7 @@ import graphene
 from .models import Translation
 from .type import TranslationType
 
+
 class TranslationInput(graphene.InputObjectType):
     is_approved = graphene.Boolean()
 

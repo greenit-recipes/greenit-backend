@@ -20,5 +20,6 @@ class Query(graphene.ObjectType):
         except:
             raise Exception('Translation does not exist!')
 
+
 class Mutation(graphene.ObjectType):
     create_translation = CreateTranslation.Field()

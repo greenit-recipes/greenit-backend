@@ -27,7 +27,7 @@ class Mutation(
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,
-    ):
+):
     pass
 
 

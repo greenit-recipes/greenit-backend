@@ -20,5 +20,6 @@ class Query(graphene.ObjectType):
         except:
             raise Exception('Utensil does not exist!')
 
+
 class Mutation(graphene.ObjectType):
     create_utensil = CreateUtensil.Field()

@@ -3,6 +3,7 @@ import graphene
 from .models import Category, Tag
 from .type import CategoryType, TagType
 
+
 class TagInput(graphene.InputObjectType):
     name = graphene.String()
 
@@ -15,6 +16,7 @@ class CreateTag(graphene.Mutation):
 
     def mutate(root, info, data):
         return Tag.objects.create(name=data.name)
+
 
 class CategoryInput(graphene.InputObjectType):
     name = graphene.String()

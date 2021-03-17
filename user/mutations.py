@@ -3,6 +3,7 @@ import graphene
 from .models import User
 from .type import UserType
 
+
 class UserInput(graphene.InputObjectType):
     name = graphene.String()
 

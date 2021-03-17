@@ -3,6 +3,7 @@ import graphene
 from .models import Recipe
 from .type import RecipeType
 
+
 class RecipeInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()

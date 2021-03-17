@@ -2,7 +2,6 @@ import graphene
 from graphene_django import DjangoObjectType
 
 from recipe.mutations import CreateRecipe
-
 from user.models import User
 from user.schema import UserType
 
@@ -10,16 +9,19 @@ from .models import Recipe
 from .type import RecipeType
 
 
-# Instead of adding the enums here, find out how to import them from Recipe
-class LanguageFilter(graphene.Enum):
-    GERMAN = 'de'
-    ENGLISH = 'en'
+language_choices = Recipe.LanguageChoice._member_map_
+LanguageFilter = type(
+    'LanguageFilter',
+    (graphene.Enum,),
+    {str(k): str(v) for k, v in language_choices.items()},
+)
 
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
+    author = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
@@ -36,6 +38,13 @@ class Query(graphene.ObjectType):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
                 filter_params['duration__lte'] = filter['duration']
+            if filter.get('author'):
+                try:
+                    user = User.objects.get(pk=filter.get('author'))
+                    filter_params['author'] = user
+                except User.DoesNotExist:
+                    raise Exception('User does not exist!')
+
             return filter_params
 
         filter = get_filter(filter) if filter else {}

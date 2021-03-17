@@ -31,6 +31,7 @@ class Query(graphene.ObjectType):
     def resolve_all_categories(self, info, **kwargs):
         return Category.objects.all()
 
+
 class Mutation(graphene.ObjectType):
-    create_tag= CreateTag.Field()
-    create_category= CreateCategory.Field()
+    create_tag = CreateTag.Field()
+    create_category = CreateCategory.Field()
