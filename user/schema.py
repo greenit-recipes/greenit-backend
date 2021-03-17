@@ -1,27 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from user.mutations import CreateUser
+
 from .models import User
-
-
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'email',
-            'name',
-            'image_profile',
-            'location',
-            'auto_pay',
-            'is_staff',
-            'is_active',
-            'date_joined',
-            'dob',
-            'liked_recipes',
-            'done_recipes',
-            'recipes',
-        )
+from .type import UserType
 
 
 class UserFilterInput(graphene.InputObjectType):
@@ -49,3 +32,6 @@ class Query(graphene.ObjectType):
             return User.objects.get(pk=id)
         except:
             raise Exception('User does not exist!')
+
+class Mutation(graphene.ObjectType):
+    create_user = CreateUser.Field()

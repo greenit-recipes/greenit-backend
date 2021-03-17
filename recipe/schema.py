@@ -1,32 +1,13 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from recipe.mutations import CreateRecipe
+
 from user.models import User
 from user.schema import UserType
 
 from .models import Recipe
-
-
-class RecipeType(DjangoObjectType):
-    class Meta:
-        model = Recipe
-        fields = (
-            'id',
-            'name',
-            'description',
-            'video_url',
-            'language',
-            'difficulty',
-            'rating',
-            'duration',
-            'license',
-            'author',
-            'image',
-            'tags',
-            'category',
-            'ingredients',
-            'utensils',
-        )
+from .type import RecipeType
 
 
 # Instead of adding the enums here, find out how to import them from Recipe
@@ -66,3 +47,7 @@ class Query(graphene.ObjectType):
             return Recipe.objects.get(pk=id)
         except:
             raise Exception('Recipe does not exist!')
+
+
+class Mutation(graphene.ObjectType):
+    create_recipe = CreateRecipe.Field()
