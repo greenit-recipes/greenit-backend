@@ -8,17 +8,28 @@ from user.schema import UserType
 from .models import Recipe
 from .type import RecipeType
 
-
+#Imports language choices from .models to prevent code duplication
 language_choices = Recipe.LanguageChoice._member_map_
+#Dynamic class
 LanguageFilter = type(
     'LanguageFilter',
     (graphene.Enum,),
     {str(k): str(v) for k, v in language_choices.items()},
 )
 
+difficulty_choices = Recipe.DifficultyChoice._member_map_
+DifficultyFilter = type(
+    'DifficultyFilter',
+    (graphene.Enum,),
+    {str(k): str(v) for k, v in difficulty_choices.items()},
+)
+
+
+
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
+    difficulty = DifficultyFilter(required=False)
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
@@ -34,6 +45,8 @@ class Query(graphene.ObjectType):
             filter_params = {}
             if filter.get('language'):
                 filter_params['language'] = filter['language']
+            if filter.get('difficulty'):
+                filter_params['difficulty'] = filter['difficulty']
             if filter.get('rating'):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
