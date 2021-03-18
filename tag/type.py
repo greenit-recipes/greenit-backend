@@ -1,6 +1,6 @@
 from graphene_django import DjangoObjectType
 
-from .models import Tag, Category
+from .models import Category, Tag
 
 
 class TagType(DjangoObjectType):

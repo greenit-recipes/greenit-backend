@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from tag.mutations import CreateTag, CreateCategory
+from tag.mutations import CreateCategory, CreateTag
 
 from .models import Category, Tag
 from .type import CategoryType, TagType

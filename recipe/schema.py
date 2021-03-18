@@ -2,15 +2,17 @@ import graphene
 from graphene_django import DjangoObjectType
 
 from recipe.mutations import CreateRecipe
+from tag.models import Category, Tag
+from tag.schema import CategoryType, TagType
 from user.models import User
 from user.schema import UserType
 
 from .models import Recipe
 from .type import RecipeType
 
-#Imports language choices from .models to prevent code duplication
+# Imports language choices from .models to prevent code duplication
 language_choices = Recipe.LanguageChoice._member_map_
-#Dynamic class
+# Dynamic class
 LanguageFilter = type(
     'LanguageFilter',
     (graphene.Enum,),
@@ -32,9 +34,6 @@ LicenseFilter = type(
 )
 
 
-
-
-
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     difficulty = DifficultyFilter(required=False)
@@ -42,6 +41,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
+    tags = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
@@ -68,6 +68,12 @@ class Query(graphene.ObjectType):
                     filter_params['author'] = user
                 except User.DoesNotExist:
                     raise Exception('User does not exist!')
+            if filter.get('tag'):
+                try:
+                    tag = Tag.objects.get(pk=filter.get('tags'))
+                    filter_params['tag'] = tag
+                except Tag.DoesNotExist:
+                    raise Exception('Tag does not exist!')
 
             return filter_params
 
