@@ -6,6 +6,8 @@ from tag.models import Category, Tag
 from tag.schema import CategoryType, TagType
 from user.models import User
 from user.schema import UserType
+from ingredient.models import Ingredient
+from ingredient.schema import IngredientType
 
 from .models import Recipe
 from .type import RecipeType
@@ -43,6 +45,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     author = graphene.String(required=False)
     tag = graphene.String(required=False)
     category = graphene.String(required=False)
+    ingredient = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
@@ -81,6 +84,12 @@ class Query(graphene.ObjectType):
                     filter_params['category'] = category
                 except Category.DoesNotExist:
                     raise Exception('Category does not exist!')
+            if filter.get('ingredient'):
+                try:
+                    ingredient = Ingredient.objects.get(pk=filter.get('ingredient'))
+                    filter_params['ingredients'] = ingredient
+                except Ingredient.DoesNotExist:
+                    raise Exception('Ingredient does not exist!')
 
             return filter_params
 
