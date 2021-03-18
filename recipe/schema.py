@@ -41,8 +41,9 @@ class RecipeFilterInput(graphene.InputObjectType):
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
-    tags = graphene.String(required=False)
+    tag = graphene.String(required=False)
     category = graphene.String(required=False)
+
 
 class Query(graphene.ObjectType):
 
@@ -70,8 +71,8 @@ class Query(graphene.ObjectType):
                     raise Exception('User does not exist!')
             if filter.get('tag'):
                 try:
-                    tag = Tag.objects.get(pk=filter.get('tags'))
-                    filter_params['tag'] = tag
+                    tag = Tag.objects.get(pk=filter.get('tag'))
+                    filter_params['tags'] = tag
                 except Tag.DoesNotExist:
                     raise Exception('Tag does not exist!')
             if filter.get('category'):
