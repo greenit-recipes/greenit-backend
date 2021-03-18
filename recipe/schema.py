@@ -24,12 +24,21 @@ DifficultyFilter = type(
     {str(k): str(v) for k, v in difficulty_choices.items()},
 )
 
+license_choices = Recipe.LicenseChoice._member_map_
+LicenseFilter = type(
+    'LicenseFilter',
+    (graphene.Enum,),
+    {str(k): str(v) for k, v in license_choices.items()},
+)
+
+
 
 
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     difficulty = DifficultyFilter(required=False)
+    license = LicenseFilter(required=False)
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
@@ -47,6 +56,8 @@ class Query(graphene.ObjectType):
                 filter_params['language'] = filter['language']
             if filter.get('difficulty'):
                 filter_params['difficulty'] = filter['difficulty']
+            if filter.get('license'):
+                filter_params['license'] = filter['license']
             if filter.get('rating'):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
