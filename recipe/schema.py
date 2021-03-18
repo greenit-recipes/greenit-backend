@@ -42,7 +42,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
     tags = graphene.String(required=False)
-
+    category = graphene.String(required=False)
 
 class Query(graphene.ObjectType):
 
@@ -74,6 +74,12 @@ class Query(graphene.ObjectType):
                     filter_params['tag'] = tag
                 except Tag.DoesNotExist:
                     raise Exception('Tag does not exist!')
+            if filter.get('category'):
+                try:
+                    category = Category.objects.get(pk=filter.get('category'))
+                    filter_params['category'] = category
+                except Category.DoesNotExist:
+                    raise Exception('Category does not exist!')
 
             return filter_params
 
