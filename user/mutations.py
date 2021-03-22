@@ -18,4 +18,6 @@ class CreateUser(graphene.Mutation):
     Output = UserType
 
     def mutate(root, info, data):
-        return User.objects.create(name=data.name)
+        return User.objects.create(
+            name=data.name, email=data.email, location=data.location, dob=data.dob
+        )

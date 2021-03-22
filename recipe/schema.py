@@ -1,13 +1,13 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from ingredient.models import Ingredient
+from ingredient.schema import IngredientType
 from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from tag.schema import CategoryType, TagType
 from user.models import User
 from user.schema import UserType
-from ingredient.models import Ingredient
-from ingredient.schema import IngredientType
 
 from .models import Recipe
 from .type import RecipeType
@@ -16,7 +16,6 @@ from .type import RecipeType
 LanguageFilter = graphene.Enum.from_enum(Recipe.LanguageChoice)
 DifficultyFilter = graphene.Enum.from_enum(Recipe.DifficultyChoice)
 LicenseFilter = graphene.Enum.from_enum(Recipe.LicenseChoice)
-
 
 
 class RecipeFilterInput(graphene.InputObjectType):
