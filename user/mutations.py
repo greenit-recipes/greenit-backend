@@ -6,6 +6,9 @@ from .type import UserType
 
 class UserInput(graphene.InputObjectType):
     name = graphene.String()
+    email = graphene.String()
+    location = graphene.String()
+    dob = graphene.Date()
 
 
 class CreateUser(graphene.Mutation):
@@ -15,4 +18,6 @@ class CreateUser(graphene.Mutation):
     Output = UserType
 
     def mutate(root, info, data):
-        return User.objects.create(name=data.name)
+        return User.objects.create(
+            name=data.name, email=data.email, location=data.location, dob=data.dob
+        )
