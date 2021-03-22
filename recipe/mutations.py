@@ -4,9 +4,14 @@ from .models import Recipe
 from .type import RecipeType
 
 
+
 class RecipeInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
+    video_url = graphene.String()
+    duration = graphene.Int()
+
+
 
 
 class CreateRecipe(graphene.Mutation):

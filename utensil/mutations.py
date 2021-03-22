@@ -9,6 +9,7 @@ class UtensilInput(graphene.InputObjectType):
     description = graphene.String()
 
 
+
 class CreateUtensil(graphene.Mutation):
     class Arguments:
         data = UtensilInput(required=True)

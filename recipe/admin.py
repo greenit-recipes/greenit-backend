@@ -52,7 +52,12 @@ class RecipeAdmin(admin.ModelAdmin):
         IngredientAmountInline,
         UtensilAmountInline,
     )
-    list_display=('name', 'difficulty', 'duration', 'rating',)
+    list_display = (
+        'name',
+        'difficulty',
+        'duration',
+        'rating',
+    )
     form = RecipeAdminForm
 
 

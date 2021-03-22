@@ -6,6 +6,9 @@ from .type import UserType
 
 class UserInput(graphene.InputObjectType):
     name = graphene.String()
+    email = graphene.String()
+    location = graphene.String()
+    dob = graphene.Date()
 
 
 class CreateUser(graphene.Mutation):

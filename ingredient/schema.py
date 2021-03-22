@@ -8,12 +8,15 @@ from tag.schema import TagType
 from .models import Ingredient
 from .type import IngredientType
 
+
 class IngredientFilterInput(graphene.InputObjectType):
     tag = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
-    all_ingredients = graphene.List(IngredientType, filter=IngredientFilterInput(required=False))
+    all_ingredients = graphene.List(
+        IngredientType, filter=IngredientFilterInput(required=False)
+    )
     ingredient = graphene.Field(IngredientType, id=graphene.String(required=True))
 
     def resolve_all_ingredients(self, info, filter=None, **kwargs):
@@ -30,7 +33,6 @@ class Query(graphene.ObjectType):
         filter = get_filter(filter) if filter else {}
 
         return Ingredient.objects.filter(**filter)
-
 
     def resolve_ingredient(self, info, id):
         try:
