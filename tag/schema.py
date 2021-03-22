@@ -1,19 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from tag.mutations import CreateCategory, CreateTag
+
 from .models import Category, Tag
-
-
-class TagType(DjangoObjectType):
-    class Meta:
-        model = Tag
-        fields = ('id', 'name')
-
-
-class CategoryType(DjangoObjectType):
-    class Meta:
-        model = Category
-        fields = ('id', 'name')
+from .type import CategoryType, TagType
 
 
 class Query(graphene.ObjectType):
@@ -39,3 +30,8 @@ class Query(graphene.ObjectType):
 
     def resolve_all_categories(self, info, **kwargs):
         return Category.objects.all()
+
+
+class Mutation(graphene.ObjectType):
+    create_tag = CreateTag.Field()
+    create_category = CreateCategory.Field()

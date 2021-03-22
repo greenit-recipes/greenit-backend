@@ -1,13 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from translation.mutations import CreateTranslation
+
 from .models import Translation
-
-
-class TranslationType(DjangoObjectType):
-    class Meta:
-        model = Translation
-        fields = ('id', 'language', 'author', 'is_approved')
+from .type import TranslationType
 
 
 class Query(graphene.ObjectType):
@@ -22,3 +19,7 @@ class Query(graphene.ObjectType):
             return Translation.objects.get(pk=id)
         except:
             raise Exception('Translation does not exist!')
+
+
+class Mutation(graphene.ObjectType):
+    create_translation = CreateTranslation.Field()

@@ -20,7 +20,14 @@ class Query(
     pass
 
 
-class Mutation(ingredient.schema.Mutation):
+class Mutation(
+    ingredient.schema.Mutation,
+    recipe.schema.Mutation,
+    tag.schema.Mutation,
+    translation.schema.Mutation,
+    user.schema.Mutation,
+    utensil.schema.Mutation,
+):
     pass
 
 

@@ -1,13 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from utensil.mutations import CreateUtensil
+
 from .models import Utensil
-
-
-class UtensilType(DjangoObjectType):
-    class Meta:
-        model = Utensil
-        fields = ('id', 'name', 'description', 'image', 'tags')
+from .type import UtensilType
 
 
 class Query(graphene.ObjectType):
@@ -22,3 +19,7 @@ class Query(graphene.ObjectType):
             return Utensil.objects.get(pk=id)
         except:
             raise Exception('Utensil does not exist!')
+
+
+class Mutation(graphene.ObjectType):
+    create_utensil = CreateUtensil.Field()
