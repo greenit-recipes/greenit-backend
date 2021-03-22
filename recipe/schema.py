@@ -13,27 +13,10 @@ from .models import Recipe
 from .type import RecipeType
 
 # Imports language choices from .models to prevent code duplication
-language_choices = Recipe.LanguageChoice._member_map_
-# Dynamic class
-LanguageFilter = type(
-    'LanguageFilter',
-    (graphene.Enum,),
-    {str(k): str(v) for k, v in language_choices.items()},
-)
+LanguageFilter = graphene.Enum.from_enum(Recipe.LanguageChoice)
+DifficultyFilter = graphene.Enum.from_enum(Recipe.DifficultyChoice)
+LicenseFilter = graphene.Enum.from_enum(Recipe.LicenseChoice)
 
-difficulty_choices = Recipe.DifficultyChoice._member_map_
-DifficultyFilter = type(
-    'DifficultyFilter',
-    (graphene.Enum,),
-    {str(k): str(v) for k, v in difficulty_choices.items()},
-)
-
-license_choices = Recipe.LicenseChoice._member_map_
-LicenseFilter = type(
-    'LicenseFilter',
-    (graphene.Enum,),
-    {str(k): str(v) for k, v in license_choices.items()},
-)
 
 
 class RecipeFilterInput(graphene.InputObjectType):
