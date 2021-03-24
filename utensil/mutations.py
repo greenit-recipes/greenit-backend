@@ -3,15 +3,18 @@ import graphene
 from .models import Utensil
 from .type import UtensilType
 
+class UtensilTagInput(graphene.InputObjectType):
+    name = graphene.String(required=True)
 
-class UtensilInput(graphene.InputObjectType):
+class CreateUtensilInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
-
+    # image =
+    tags = graphene.List(UtensilTagInput, required=True)
 
 class CreateUtensil(graphene.Mutation):
     class Arguments:
-        data = UtensilInput(required=True)
+        data = CreateUtensilInput(required=True)
 
     Output = UtensilType
 
