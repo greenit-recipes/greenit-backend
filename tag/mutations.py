@@ -12,10 +12,12 @@ class CreateTag(graphene.Mutation):
     class Arguments:
         data = TagInput(required=True)
 
-    Output = TagType
+    tag = graphene.Field(TagType)
 
     def mutate(root, info, data):
-        return Tag.objects.create(name=data.name)
+        tag = Tag.objects.create(name=data.name)
+
+        return CreateTag(tag=tag)
 
 
 class CategoryInput(graphene.InputObjectType):
@@ -26,7 +28,9 @@ class CreateCategory(graphene.Mutation):
     class Arguments:
         data = CategoryInput(required=True)
 
-    Output = CategoryType
+    category = graphene.Field(CategoryType)
 
     def mutate(root, info, data):
-        return Category.objects.create(name=data.name)
+        category = Category.objects.create(name=data.name)
+
+        return CreateCategory(category=category)

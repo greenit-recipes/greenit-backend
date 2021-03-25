@@ -1,9 +1,7 @@
 import graphene
-from graphene import ObjectType, relay
 
 from ingredient.mutations import CreateIngredient
 from tag.models import Tag
-from tag.schema import TagType
 
 from .models import Ingredient
 from .type import IngredientType
