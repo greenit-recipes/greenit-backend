@@ -12,7 +12,9 @@ class CreateTranslation(graphene.Mutation):
     class Arguments:
         data = TranslationInput(required=True)
 
-    Output = TranslationType
+    translation = graphene.Field(TranslationType)
 
     def mutate(root, info, data):
-        return Translation.objects.create(is_approved=data.is_approved)
+        translation = Translation.objects.create(is_approved=data.is_approved)
+
+        return CreateTranslation(translation=translation)

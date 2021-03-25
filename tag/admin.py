@@ -6,7 +6,7 @@ from tag.models import Category, Tag
 
 
 class TagAdmin(admin.ModelAdmin):
-    pass
+    list_per_page = 500
 
 
 admin.site.register(Tag, TagAdmin)

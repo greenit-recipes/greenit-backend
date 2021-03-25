@@ -1,5 +1,4 @@
 import graphene
-from graphene_django import DjangoObjectType
 
 from user.mutations import CreateUser
 

@@ -1,6 +1,12 @@
+import graphene
 from graphene_django import DjangoObjectType
 
 from .models import Recipe
+
+# Imports language choices from .models to prevent code duplication
+LanguageFilter = graphene.Enum.from_enum(Recipe.LanguageChoice)
+DifficultyFilter = graphene.Enum.from_enum(Recipe.DifficultyChoice)
+LicenseFilter = graphene.Enum.from_enum(Recipe.LicenseChoice)
 
 
 class RecipeType(DjangoObjectType):

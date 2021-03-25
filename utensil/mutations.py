@@ -4,16 +4,19 @@ from .models import Utensil
 from .type import UtensilType
 
 
-class UtensilInput(graphene.InputObjectType):
+class CreateUtensilInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
+    # image =
 
 
 class CreateUtensil(graphene.Mutation):
     class Arguments:
-        data = UtensilInput(required=True)
+        data = CreateUtensilInput(required=True)
 
-    Output = UtensilType
+    utensil = graphene.Field(UtensilType)
 
     def mutate(root, info, data):
-        return Utensil.objects.create(name=data.name, description=data.description)
+        utensil = Utensil.objects.create(name=data.name, description=data.description)
+
+        return CreateUtensil(utensil=utensil)
