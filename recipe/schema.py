@@ -4,6 +4,7 @@ from ingredient.models import Ingredient
 from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from user.models import User
+from utensil.models import Utensil
 
 from .models import Recipe
 from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
@@ -30,7 +31,7 @@ class Query(graphene.ObjectType):
     def resolve_all_recipes(self, info, filter=None, **kwargs):
         def get_filter(filter):
 
-            # Initialize Dict for standard filters and empty Queryset for chained filters
+            # Initialize Dict for standard filters and empty Queryset for chained filters # noqa E501
             filter_params = {}
             filter_set = Recipe.objects.none()
             if filter.get('language'):
@@ -61,34 +62,40 @@ class Query(graphene.ObjectType):
             # M2M with AND-chained filters
             if filter.get('tags'):
                 try:
+                    ids = filter.get('tags')
                     # Initial Queryset consists of first tag-id
-                    id = filter.get('tags')
-                    filter_set = Recipe.objects.filter(tags=id[0])
-                    # Intersecting results between initial Queryset and any additional Querysets
-                    for id in filter.get('tags'):
-                        filter_set = filter_set.intersection(
-                            filter_set, Recipe.objects.filter(tags=id)
-                        )
+                    filter_set = Recipe.objects.filter(tags=ids[0])
+                    # Filter Queryset with second query if multiple recipies still in question # noqa E501
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(tags=id)
+                            else:
+                                break
                 except Tag.DoesNotExist:
                     raise Exception('Tag does not exist!')
             if filter.get('ingredients'):
                 try:
-                    id = filter.get('ingredients')
-                    filter_set = Recipe.objects.filter(ingredients=id[0])
-                    for id in filter.get('ingredients'):
-                        filter_set = filter_set.intersection(
-                            filter_set, Recipe.objects.filter(ingredients=id)
-                        )
+                    ids = filter.get('ingredients')
+                    filter_set = Recipe.objects.filter(ingredients=ids[0])
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(ingredients=id)
+                            else:
+                                break
                 except Ingredient.DoesNotExist:
                     raise Exception('Ingredient does not exist!')
             if filter.get('utensils'):
                 try:
-                    id = filter.get('utensils')
-                    filter_set = Recipe.objects.filter(utensils=id[0])
-                    for id in filter.get('utensils'):
-                        filter_set = filter_set.intersection(
-                            filter_set, Recipe.objects.filter(utensils=id)
-                        )
+                    ids = filter.get('utensils')
+                    filter_set = Recipe.objects.filter(utensils=ids[0])
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(utensils=id)
+                            else:
+                                break
                 except Utensil.DoesNotExist:
                     raise Exception('Utensil does not exist!')
 
@@ -99,7 +106,7 @@ class Query(graphene.ObjectType):
 
         filter = get_filter(filter) if filter else {}
 
-        # If get_filter returns a dictionary, then apply standard filtering and return results
+        # If get_filter returns a dictionary, then apply standard filtering and return results # noqa E501
         if isinstance(filter, dict):
             return Recipe.objects.filter(**filter)
         # If get_filter returns a Queryset, then filtering is already complete.
