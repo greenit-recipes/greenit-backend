@@ -81,10 +81,14 @@ class Query(graphene.ObjectType):
                         )
                 except Ingredient.DoesNotExist:
                     raise Exception('Ingredient does not exist!')
-            if filter.get('utensil'):
+            if filter.get('utensils'):
                 try:
-                    utensil = Utensil.objects.get(pk=filter.get('utensil'))
-                    filter_params['utensils'] = utensil
+                    id = filter.get('utensils')
+                    filter_set = Recipe.objects.filter(utensils=id[0])
+                    for id in filter.get('utensils'):
+                        filter_set = filter_set.intersection(
+                            filter_set, Recipe.objects.filter(utensils=id)
+                        )
                 except Utensil.DoesNotExist:
                     raise Exception('Utensil does not exist!')
 
