@@ -18,8 +18,8 @@ class RecipeFilterInput(graphene.InputObjectType):
     author = graphene.String(required=False)
     tags = graphene.List(graphene.String, required=False)
     category = graphene.String(required=False)
-    ingredient = graphene.String(required=False)
-    utensil = graphene.String(required=False)
+    ingredients = graphene.List(graphene.String, required=False)
+    utensils = graphene.List(graphene.String, required=False)
 
 
 class Query(graphene.ObjectType):
@@ -71,10 +71,14 @@ class Query(graphene.ObjectType):
                         )
                 except Tag.DoesNotExist:
                     raise Exception('Tag does not exist!')
-            if filter.get('ingredient'):
+            if filter.get('ingredients'):
                 try:
-                    ingredient = Ingredient.objects.get(pk=filter.get('ingredient'))
-                    filter_params['ingredients'] = ingredient
+                    id = filter.get('ingredients')
+                    filter_set = Recipe.objects.filter(ingredients=id[0])
+                    for id in filter.get('ingredients'):
+                        filter_set = filter_set.intersection(
+                            filter_set, Recipe.objects.filter(ingredients=id)
+                        )
                 except Ingredient.DoesNotExist:
                     raise Exception('Ingredient does not exist!')
             if filter.get('utensil'):
