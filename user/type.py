@@ -19,5 +19,4 @@ class UserType(DjangoObjectType):
             'dob',
             'liked_recipes',
             'done_recipes',
-            'recipes',
         )

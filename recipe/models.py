@@ -9,9 +9,9 @@ from greenit import settings
 
 def get_image_path(instance, filename):
     if settings.DEBUG:
-        return "test/recipe/{0}/{1}".format(instance._file_path, filename)
+        return "test/recipe/{0}/{1}".format(instance.id, filename)
     else:
-        return "recipe/{0}/{1}".format(instance._file_path, filename)
+        return "recipe/{0}/{1}".format(instance.id, filename)
 
 
 class Recipe(models.Model):

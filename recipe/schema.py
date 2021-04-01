@@ -4,6 +4,7 @@ from ingredient.models import Ingredient
 from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from user.models import User
+from utensil.models import Utensil
 
 from .models import Recipe
 from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
@@ -16,9 +17,10 @@ class RecipeFilterInput(graphene.InputObjectType):
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
-    tag = graphene.String(required=False)
+    tags = graphene.List(graphene.String, required=False)
     category = graphene.String(required=False)
-    ingredient = graphene.String(required=False)
+    ingredients = graphene.List(graphene.String, required=False)
+    utensils = graphene.List(graphene.String, required=False)
 
 
 class Query(graphene.ObjectType):
@@ -28,7 +30,10 @@ class Query(graphene.ObjectType):
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
         def get_filter(filter):
+
+            # Initialize Dict for standard filters and empty Queryset for chained filters # noqa E501
             filter_params = {}
+            filter_set = Recipe.objects.none()
             if filter.get('language'):
                 filter_params['language'] = filter['language']
             if filter.get('difficulty'):
@@ -39,36 +44,75 @@ class Query(graphene.ObjectType):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
                 filter_params['duration__lte'] = filter['duration']
+
+            # Foreign Key filters
             if filter.get('author'):
                 try:
                     user = User.objects.get(pk=filter.get('author'))
                     filter_params['author'] = user
                 except User.DoesNotExist:
                     raise Exception('User does not exist!')
-            if filter.get('tag'):
-                try:
-                    tag = Tag.objects.get(pk=filter.get('tag'))
-                    filter_params['tags'] = tag
-                except Tag.DoesNotExist:
-                    raise Exception('Tag does not exist!')
             if filter.get('category'):
                 try:
                     category = Category.objects.get(pk=filter.get('category'))
                     filter_params['category'] = category
                 except Category.DoesNotExist:
                     raise Exception('Category does not exist!')
-            if filter.get('ingredient'):
+
+            # M2M with AND-chained filters
+            if filter.get('tags'):
                 try:
-                    ingredient = Ingredient.objects.get(pk=filter.get('ingredient'))
-                    filter_params['ingredients'] = ingredient
+                    ids = filter.get('tags')
+                    # Initial Queryset consists of first tag-id
+                    filter_set = Recipe.objects.filter(tags=ids[0])
+                    # Filter Queryset with second query if multiple recipies still in question # noqa E501
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(tags=id)
+                            else:
+                                break
+                except Tag.DoesNotExist:
+                    raise Exception('Tag does not exist!')
+            if filter.get('ingredients'):
+                try:
+                    ids = filter.get('ingredients')
+                    filter_set = Recipe.objects.filter(ingredients=ids[0])
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(ingredients=id)
+                            else:
+                                break
                 except Ingredient.DoesNotExist:
                     raise Exception('Ingredient does not exist!')
+            if filter.get('utensils'):
+                try:
+                    ids = filter.get('utensils')
+                    filter_set = Recipe.objects.filter(utensils=ids[0])
+                    if len(filter_set) > 1:
+                        for id in ids[1:]:
+                            if len(filter_set) > 1:
+                                filter_set = filter_set.filter(utensils=id)
+                            else:
+                                break
+                except Utensil.DoesNotExist:
+                    raise Exception('Utensil does not exist!')
 
-            return filter_params
+            if filter_params:
+                return filter_params
+            else:
+                return filter_set
 
         filter = get_filter(filter) if filter else {}
 
-        return Recipe.objects.filter(**filter)
+        # If get_filter returns a dictionary, then apply standard filtering and return results # noqa E501
+        if isinstance(filter, dict):
+            return Recipe.objects.filter(**filter)
+        # If get_filter returns a Queryset, then filtering is already complete.
+        # Remove duplicates with .distinct() and return results
+        else:
+            return filter.distinct()
 
     def resolve_recipe(self, info, id):
         try:
