@@ -42,7 +42,7 @@ class Recipe(models.Model):
         default=DifficultyChoice.BEGINNER,
     )
     rating = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(10)], null=True
+        validators=[MinValueValidator(1), MaxValueValidator(5)], null=True
     )
     duration = models.IntegerField()
     license = models.CharField(
