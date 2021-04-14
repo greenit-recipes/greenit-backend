@@ -19,3 +19,4 @@ class TagTestCase(GraphQLTestCase):
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
         self.assertEqual(response['allTags'][0]['name'], 'TestTag12345')
+
