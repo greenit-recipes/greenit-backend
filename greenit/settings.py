@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'graphene_django',
+    'corsheaders',
     'django_admin_json_editor',
     'storages',
     'ingredient',
@@ -55,12 +56,17 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# just for development
+if DEBUG == True:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
