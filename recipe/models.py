@@ -80,6 +80,7 @@ class Recipe(models.Model):
     instructions = models.JSONField(default=dict)
     expiry = models.CharField(max_length=128, default='')
     notes_from_author = models.CharField(max_length=256, default='')
+    is_featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

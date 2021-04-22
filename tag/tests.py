@@ -1,6 +1,8 @@
-from tag.models import Tag
-from graphene_django.utils.testing import GraphQLTestCase
 import json
+
+from graphene_django.utils.testing import GraphQLTestCase
+
+from tag.models import Tag
 
 
 class TagTestCase(GraphQLTestCase):
@@ -19,4 +21,3 @@ class TagTestCase(GraphQLTestCase):
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
         self.assertEqual(response['allTags'][0]['name'], 'TestTag12345')
-
