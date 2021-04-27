@@ -5,7 +5,7 @@ from graphene_django.utils.testing import GraphQLTestCase
 from recipe.models import Recipe
 
 
-class RecipeTestCase(GraphQLTestCase):
+class RecipeQueryTest(GraphQLTestCase):
     def test_all_recipes_query(self):
         Recipe.objects.create(
             name='TestRecipe12345',
