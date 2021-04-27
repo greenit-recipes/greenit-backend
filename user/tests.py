@@ -5,7 +5,7 @@ from graphene_django.utils.testing import GraphQLTestCase
 from user.models import User
 
 
-class UserTestCase(GraphQLTestCase):
+class UserQueryTest(GraphQLTestCase):
     def test_all_users_query(self):
         User.objects.create(
             name='TestUser12345',

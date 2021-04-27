@@ -1,11 +1,10 @@
 import json
 
 from graphene_django.utils.testing import GraphQLTestCase
-
 from tag.models import Tag, Category
 
 
-class TagTestCase(GraphQLTestCase):
+class TagQueryTest(GraphQLTestCase):
     def test_all_tags_query(self):
         Tag.objects.create(name='TestTag12345')
         response = self.query(
@@ -22,7 +21,7 @@ class TagTestCase(GraphQLTestCase):
         self.assertEqual(len(response['allTags']), 1)
         self.assertEqual(response['allTags'][0]['name'], 'TestTag12345')
 
-class CategoryTestCase(GraphQLTestCase):
+class CategoryQueryTest(GraphQLTestCase):
     def test_all_categories_query(self):
         Category.objects.create(name='TestCategory12345')
         response = self.query(
