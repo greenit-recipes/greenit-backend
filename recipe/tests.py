@@ -7,10 +7,7 @@ from recipe.models import Recipe
 
 class RecipeQueryTest(GraphQLTestCase):
     def test_all_recipes_query(self):
-        Recipe.objects.create(
-            name='TestRecipe12345',
-            duration='30'
-            )
+        Recipe.objects.create(name='TestRecipe12345', duration='30')
         response = self.query(
             '''query allRecipes {
         allRecipes {

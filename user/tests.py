@@ -1,5 +1,6 @@
-import json
 import datetime
+import json
+
 from graphene_django.utils.testing import GraphQLTestCase
 
 from user.models import User
@@ -7,10 +8,7 @@ from user.models import User
 
 class UserQueryTest(GraphQLTestCase):
     def test_all_users_query(self):
-        User.objects.create(
-            name='TestUser12345',
-            dob=datetime.date.today()
-            )
+        User.objects.create(name='TestUser12345', dob=datetime.date.today())
         response = self.query(
             '''query allUsers {
         allUsers {
