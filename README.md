@@ -4,9 +4,12 @@ Greenit is a social, economical and ecological solution to replace industrial pr
 
 Greenit places a high value on its reusability by the community and use of ethical tech, and is therefore FOSS whilst also avoiding using as many of Big Tech’s services as possible.
 
+
 ## Technologies
 
-The progressive web app is built using the [Tailwind Framework](https://github.com/tailwindlabs/tailwindcss) on top of [React](https://reactjs.org/). [Apollo](https://github.com/apollographql) is used to handle GraphQL from the frontend.  
+The progressive web app displays user-uploaded recipes sorted by categories and tags and is hosted on [DigitalOcean's](https://try.digitalocean.com/developer-brand-nofto/?utm_campaign=emea_brand-no-fto_kw_en_cpc&utm_adgroup=digitalocean_exact_exact&_keyword=digital%20ocean&_device=c&_adposition=&utm_content=conversion&utm_medium=cpc&utm_source=google&gclid=CjwKCAjwj6SEBhAOEiwAvFRuKPht-tyNGYt1NdkuSOOknBkfAxPBa8xCCiU0hH_GOQVUh6REBXUqRRoCm1cQAvD_BwE) servers. We use [plausible.io](https://plausible.io/) for analytics.
+
+The frontend is built using the [Tailwind Framework](https://github.com/tailwindlabs/tailwindcss) on top of [React](https://reactjs.org/). [Apollo](https://github.com/apollographql) is used to handle [GraphQL](https://github.com/graphql).
 
 The backend is [Django](https://github.com/django/django) and the database [Postgres](https://www.postgresql.org/).
 
