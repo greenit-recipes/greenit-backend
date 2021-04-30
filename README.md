@@ -2,6 +2,8 @@
 
 Greenit is a social, economical and ecological solution to replace industrial production by homemade and local production. Our first mission is to lead a community which supports knowledge sharing for healthy consumptions and productions.
 
+Our V1 is a recipe site, focussed on building a community around discovering, creating and sharing recipes with each other. 
+
 Greenit places a high value on its reusability by the community and use of ethical tech, and is therefore FOSS whilst also avoiding using as many of Big Tech’s services as possible.
 
 
