@@ -36,12 +36,11 @@ cp sample.env .env
 ```
 ```bash
 # edit .env:
-/*
-SECRET_KEY= ...   <--- https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-SECRET_KEY
-POSTGRES_DB_USERNAME= ... <--- The name of your database
-POSTGRES_DB_PASS= ... <--- The password to your database
-POSTGRES_DB_HOST= ... <--- Where your database is hosted, i.e. 127.0.0.1 if localhost
-*/
+
+# SECRET_KEY= ...   <--- https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-SECRET_KEY
+# POSTGRES_DB_USERNAME= ... <--- The name of your database
+# POSTGRES_DB_PASS= ... <--- The password to your database
+# POSTGRES_DB_HOST= ... <--- Where your database is hosted, i.e. 127.0.0.1 if localhost
 ```
 Make sure the .env file is listed in your .gitignore file, so your access information isn't pushed to github.
 
