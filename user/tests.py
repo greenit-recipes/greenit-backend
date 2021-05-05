@@ -83,17 +83,3 @@ class UserQueryTest(GraphQLTestCase):
         response = response.json()['data']
         self.assertEqual(len(response['allUsers']), 1)
         self.assertEqual(response['allUsers'][0]['name'], 'TestUser12345')
-
-
-'''
-    def test_correct(self):
-        self.assertTrue(
-            (self.user is not None)
-            and self.user.name == 'TestUser'
-            and self.user.email == 'test@test.test',
-            and self.user.location == 'testville',
-            and self.user.auto_pay == True,
-
-            msg='User creation failed',
-        )
-'''
