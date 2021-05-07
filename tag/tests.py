@@ -24,7 +24,7 @@ class TagCreateTest(TestCase):
 
 class TagQueryTest(GraphQLTestCase):
     def test_all_tags_query(self):
-        Tag.objects.create(name='TestTag12345')
+        Tag.objects.create(name='TestTag')
         response = self.query(
             '''query allTags {
         allTags {
@@ -37,7 +37,7 @@ class TagQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
-        self.assertEqual(response['allTags'][0]['name'], 'TestTag12345')
+        self.assertEqual(response['allTags'][0]['name'], 'TestTag')
 
 
 class CategoryCreateTest(TestCase):
@@ -60,7 +60,7 @@ class CategoryCreateTest(TestCase):
 
 class CategoryQueryTest(GraphQLTestCase):
     def test_all_categories_query(self):
-        Category.objects.create(name='TestCategory12345')
+        Category.objects.create(name='TestCategory')
         response = self.query(
             '''query allCategories {
         allCategories {
@@ -73,4 +73,4 @@ class CategoryQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allCategories']), 1)
-        self.assertEqual(response['allCategories'][0]['name'], 'TestCategory12345')
+        self.assertEqual(response['allCategories'][0]['name'], 'TestCategory')

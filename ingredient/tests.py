@@ -1,6 +1,7 @@
 import json
 from django.test import TestCase
 from graphene_django.utils.testing import GraphQLTestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from ingredient.models import Ingredient
 
@@ -30,9 +31,10 @@ class IngredientCreateTest(TestCase):
         )
 
 
+
 class IngredientQueryTest(GraphQLTestCase):
     def test_all_ingredients_query(self):
-        Ingredient.objects.create(name='TestIngredient12345')
+        Ingredient.objects.create(name='TestIngredient')
         response = self.query(
             '''query allIngredients {
         allIngredients {
@@ -45,4 +47,19 @@ class IngredientQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allIngredients']), 1)
-        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient12345')
+        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient')
+    def test_missing_ingredient(self):
+        Ingredient.objects.create(name='TestIngredient')
+        response = self.query(
+            '''query allIngredients {
+        allIngredients {
+            id
+            name
+        }
+        }
+        ''',
+            op_name="allIngredients",
+        )
+        response = response.json()['data']
+        self.assertEqual(len(response['allIngredients']), 1)
+        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient')
