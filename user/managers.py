@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        extra_fields.setdefault('dob', "2000-01-01")
+        extra_fields.setdefault('dob', '2000-01-01')
         return self._create_user(email, name, password, **extra_fields)
 
     def create_superuser(self, email, name, password=None, **extra_fields):
@@ -26,5 +26,5 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        extra_fields.setdefault('dob', "2000-01-01")
+        extra_fields.setdefault('dob', '2000-01-01')
         return self._create_user(email, name, password, **extra_fields)

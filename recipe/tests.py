@@ -79,26 +79,11 @@ class RecipeCreateTest(TestCase):
         )
 
 
-'''
-
-    image = models.FileField(
-        max_length=255, upload_to=get_image_path, null=True, blank=True
-    )
-
-    ingredients = models.ManyToManyField(
-        'ingredient.Ingredient', through='ingredient.IngredientAmount'
-    )
-    utensils = models.ManyToManyField(
-        'utensil.Utensil', through='utensil.UtensilAmount'
-    )
-
-    instructions = models.JSONField(default=dict)
-'''
 
 
 class RecipeQueryTest(GraphQLTestCase):
     def test_all_recipes_query(self):
-        Recipe.objects.create(name='TestRecipe12345', duration='30')
+        Recipe.objects.create(name='TestRecipe', duration='30')
         response = self.query(
             '''query allRecipes {
         allRecipes {
@@ -107,8 +92,8 @@ class RecipeQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allRecipes",
+            op_name='allRecipes',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allRecipes']), 1)
-        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe12345')
+        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe')

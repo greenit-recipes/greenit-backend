@@ -7,9 +7,9 @@ from greenit import settings
 
 def get_image_path(instance, filename):
     if settings.DEBUG:
-        return "test/utensil/{0}/{1}".format(instance.id, filename)
+        return 'test/utensil/{0}/{1}'.format(instance.id, filename)
     else:
-        return "utensil/{0}/{1}".format(instance.id, filename)
+        return 'utensil/{0}/{1}'.format(instance.id, filename)
 
 
 class Utensil(models.Model):

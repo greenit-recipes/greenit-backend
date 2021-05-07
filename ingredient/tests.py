@@ -1,6 +1,7 @@
 import json
 from django.test import TestCase
 from graphene_django.utils.testing import GraphQLTestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from ingredient.models import Ingredient
 
@@ -30,9 +31,10 @@ class IngredientCreateTest(TestCase):
         )
 
 
+
 class IngredientQueryTest(GraphQLTestCase):
     def test_all_ingredients_query(self):
-        Ingredient.objects.create(name='TestIngredient12345')
+        Ingredient.objects.create(name='TestIngredient')
         response = self.query(
             '''query allIngredients {
         allIngredients {
@@ -41,8 +43,25 @@ class IngredientQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allIngredients",
+            op_name='allIngredients',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allIngredients']), 1)
-        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient12345')
+        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient')
+
+    def test_single_ingredient(self):
+        Ingredient.objects.create(id='18002b07-41ba-497b-9d42-c1f0714a2b6f')
+        response = self.query(
+            '''query Ingredient {
+        ingredient(id:"18002b07-41ba-497b-9d42-c1f0714a2b6f") {
+            id
+        }
+        }
+        ''',
+            op_name='Ingredient',
+            variables={'id': 1}
+        )
+
+        response = response.json()['data']
+        self.assertEqual(len(response['ingredient']), 1)
+        self.assertEqual(response['ingredient']['id'], '18002b07-41ba-497b-9d42-c1f0714a2b6f')

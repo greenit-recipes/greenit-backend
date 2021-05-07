@@ -32,7 +32,7 @@ class UtensilCreateTest(TestCase):
 
 class UtensilQueryTest(GraphQLTestCase):
     def test_all_utensils_query(self):
-        Utensil.objects.create(name='TestUtensil12345')
+        Utensil.objects.create(name='TestUtensil')
         response = self.query(
             '''query allUtensils {
         allUtensils {
@@ -41,8 +41,8 @@ class UtensilQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allUtensils",
+            op_name='allUtensils',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allUtensils']), 1)
-        self.assertEqual(response['allUtensils'][0]['name'], 'TestUtensil12345')
+        self.assertEqual(response['allUtensils'][0]['name'], 'TestUtensil')
