@@ -43,22 +43,7 @@ class IngredientQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allIngredients",
-        )
-        response = response.json()['data']
-        self.assertEqual(len(response['allIngredients']), 1)
-        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient')
-    def test_missing_ingredient(self):
-        Ingredient.objects.create(name='TestIngredient')
-        response = self.query(
-            '''query allIngredients {
-        allIngredients {
-            id
-            name
-        }
-        }
-        ''',
-            op_name="allIngredients",
+            op_name='allIngredients',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allIngredients']), 1)

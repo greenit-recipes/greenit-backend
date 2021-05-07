@@ -92,7 +92,7 @@ class RecipeQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allRecipes",
+            op_name='allRecipes',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allRecipes']), 1)

@@ -41,7 +41,7 @@ class UtensilQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allUtensils",
+            op_name='allUtensils',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allUtensils']), 1)

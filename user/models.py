@@ -12,9 +12,9 @@ from .managers import UserManager
 
 def get_image_path(instance, filename):
     if settings.DEBUG:
-        return "test/profile/{0}/{1}".format(instance.id, filename)
+        return 'test/profile/{0}/{1}'.format(instance.id, filename)
     else:
-        return "profile/{0}/{1}".format(instance.id, filename)
+        return 'profile/{0}/{1}'.format(instance.id, filename)
 
 
 class User(AbstractBaseUser, PermissionsMixin):

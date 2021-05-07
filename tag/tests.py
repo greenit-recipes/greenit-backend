@@ -33,7 +33,7 @@ class TagQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allTags",
+            op_name='allTags',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
@@ -69,7 +69,7 @@ class CategoryQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allCategories",
+            op_name='allCategories',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allCategories']), 1)

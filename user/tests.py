@@ -78,7 +78,7 @@ class UserQueryTest(GraphQLTestCase):
         }
         }
         ''',
-            op_name="allUsers",
+            op_name='allUsers',
         )
         response = response.json()['data']
         self.assertEqual(len(response['allUsers']), 1)
