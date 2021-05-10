@@ -1,4 +1,5 @@
 import graphene
+from graphene.types.generic import GenericScalar
 from graphene_django import DjangoObjectType
 
 from .models import Recipe
@@ -10,6 +11,8 @@ LicenseFilter = graphene.Enum.from_enum(Recipe.LicenseChoice)
 
 
 class RecipeType(DjangoObjectType):
+    instructions = GenericScalar()
+
     class Meta:
         model = Recipe
         fields = (
@@ -28,4 +31,5 @@ class RecipeType(DjangoObjectType):
             'category',
             'ingredients',
             'utensils',
+            'instructions',
         )
