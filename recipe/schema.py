@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from ingredient.models import Ingredient
 from recipe.mutations import CreateRecipe
@@ -51,13 +52,13 @@ class Query(graphene.ObjectType):
                     user = User.objects.get(pk=filter.get('author'))
                     filter_params['author'] = user
                 except User.DoesNotExist:
-                    raise Exception('User does not exist!')
+                    raise GraphQLError('User matching query does not exist.')
             if filter.get('category'):
                 try:
                     category = Category.objects.get(pk=filter.get('category'))
                     filter_params['category'] = category
                 except Category.DoesNotExist:
-                    raise Exception('Category does not exist!')
+                    raise GraphQLError('Category matching query does not exist.')
 
             # M2M with AND-chained filters
             if filter.get('tags'):
@@ -73,7 +74,7 @@ class Query(graphene.ObjectType):
                             else:
                                 break
                 except Tag.DoesNotExist:
-                    raise Exception('Tag does not exist!')
+                    raise GraphQLError('Tag matching query does not exist.')
             if filter.get('ingredients'):
                 try:
                     ids = filter.get('ingredients')
@@ -85,7 +86,7 @@ class Query(graphene.ObjectType):
                             else:
                                 break
                 except Ingredient.DoesNotExist:
-                    raise Exception('Ingredient does not exist!')
+                    raise GraphQLError('Ingredient matching query does not exist.')
             if filter.get('utensils'):
                 try:
                     ids = filter.get('utensils')
@@ -97,7 +98,7 @@ class Query(graphene.ObjectType):
                             else:
                                 break
                 except Utensil.DoesNotExist:
-                    raise Exception('Utensil does not exist!')
+                    raise GraphQLError('Utensil matching query does not exist.')
 
             if filter_params:
                 return filter_params
@@ -115,10 +116,7 @@ class Query(graphene.ObjectType):
             return filter.distinct()
 
     def resolve_recipe(self, info, id):
-        try:
-            return Recipe.objects.get(pk=id)
-        except:
-            raise Exception('Recipe does not exist!')
+        return Recipe.objects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):

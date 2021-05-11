@@ -1,14 +1,18 @@
 import json
+import uuid
+
 from django.test import TestCase
 from graphene_django.utils.testing import GraphQLTestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
+
 from ingredient.models import Ingredient
+
+# TODO: Image Upload test with SimpleUploadedFile
 
 
 class IngredientCreateTest(TestCase):
     def setUp(self):
         self.ingredient = Ingredient.objects.create(
-            name='TestIngredient', description='A test ingredient.'
+            name='TestIngredient_1', description='A test ingredient.'
         )
         self.ingredient.save()
 
@@ -21,7 +25,7 @@ class IngredientCreateTest(TestCase):
             msg='Ingredient creation failed',
         )
         self.assertEqual(
-            self.ingredient.name, 'TestIngredient', 'Ingredient name creation failed'
+            self.ingredient.name, 'TestIngredient_1', 'Ingredient name creation failed'
         )
         self.assertEqual(
             self.ingredient.description,
@@ -30,9 +34,9 @@ class IngredientCreateTest(TestCase):
         )
 
 
-class AllIngredientQueryTest(GraphQLTestCase):
+class IngredientQueryTest(GraphQLTestCase):
     def test_all_ingredients_query(self):
-        Ingredient.objects.create(name='TestIngredient')
+        Ingredient.objects.create(name='TestIngredient_2')
         response = self.query(
             '''query allIngredients {
         allIngredients {
@@ -45,38 +49,34 @@ class AllIngredientQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allIngredients']), 1)
-        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient')
+        self.assertEqual(response['allIngredients'][0]['name'], 'TestIngredient_2')
 
-
-class IngredientQueryTest(GraphQLTestCase):
     def test_single_ingredient_query(self):
-        Ingredient.objects.create(id='18002b07-41ba-497b-9d42-c1f0714a2b6f')
+        ingredient = Ingredient.objects.create(name='TestIngredient_3')
         response = self.query(
-            '''query Ingredient {
-        ingredient(id:"18002b07-41ba-497b-9d42-c1f0714a2b6f") {
+            '''query ingredient($id: String!){
+        ingredient(id: $id) {
             id
         }
         }
         ''',
-            op_name='Ingredient',
-            variables={'id': 1},
+            op_name='ingredient',
+            variables={'id': str(ingredient.id)},
         )
-
         response = response.json()['data']
         self.assertEqual(len(response['ingredient']), 1)
-        self.assertEqual(
-            response['ingredient']['id'], '18002b07-41ba-497b-9d42-c1f0714a2b6f'
-        )
+        self.assertEqual(response['ingredient']['id'], str(ingredient.id))
 
-class IngredientQueryFailTest(GraphQLTestCase):
     def test_single_ingredient_query_fail_message(self):
         response = self.query(
-            '''query Ingredient {
-        ingredient(id:"123456789") {
+            '''query ingredient($id: String!){
+        ingredient(id: $id) {
             id
         }
         }
-        '''
+        ''',
+            op_name='ingredient',
+            variables={'id': str(uuid.uuid4())},
         )
         response = response.json()['errors'][0]['message']
-        self.assertEqual(response, 'Ingredient does not exist!')
+        self.assertEqual(response, 'Ingredient matching query does not exist.')

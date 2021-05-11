@@ -1,16 +1,21 @@
 import json
+import uuid
+
 from django.test import TestCase
-from graphene_django.utils.testing import GraphQLTestCase
 from django.utils import timezone
+from graphene_django.utils.testing import GraphQLTestCase
+
 from recipe.models import Recipe
-from user.models import User
 from tag.models import Category
+from user.models import User
+
+# TODO: Image Upload test with SimpleUploadedFile
 
 
 class RecipeCreateTest(TestCase):
     def setUp(self):
         self.recipe = Recipe.objects.create(
-            name='TestRecipe',
+            name='TestRecipe_1',
             description='A test recipe.',
             video_url='https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             rating=4,
@@ -33,7 +38,9 @@ class RecipeCreateTest(TestCase):
         )
 
     def test_recipe_name(self):
-        self.assertEqual(self.recipe.name, 'TestRecipe', 'Recipe name creation failed')
+        self.assertEqual(
+            self.recipe.name, 'TestRecipe_1', 'Recipe name creation failed'
+        )
 
     def test_recipe_description(self):
         self.assertEqual(
@@ -101,7 +108,7 @@ class RecipeCreateTest(TestCase):
 
 class AllRecipeQueryTest(GraphQLTestCase):
     def test_all_recipes_query(self):
-        Recipe.objects.create(name='TestRecipe', duration='30')
+        Recipe.objects.create(name='TestRecipe_2', duration='30')
         response = self.query(
             '''query allRecipes {
         allRecipes {
@@ -114,4 +121,34 @@ class AllRecipeQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allRecipes']), 1)
-        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe')
+        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe_2')
+
+    def test_single_recipe_query(self):
+        recipe = Recipe.objects.create(name='TestRecipe_3', duration='40')
+        response = self.query(
+            '''query recipe($id: String!){
+        recipe(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='recipe',
+            variables={'id': str(recipe.id)},
+        )
+        response = response.json()['data']
+        self.assertEqual(len(response['recipe']), 1)
+        self.assertEqual(response['recipe']['id'], str(recipe.id))
+
+    def test_single_recipe_query_fail_message(self):
+        response = self.query(
+            '''query recipe($id: String!){
+        recipe(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='recipe',
+            variables={'id': str(uuid.uuid4())},
+        )
+        response = response.json()['errors'][0]['message']
+        self.assertEqual(response, 'Recipe matching query does not exist.')
