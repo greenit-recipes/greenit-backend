@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from tag.mutations import CreateCategory, CreateTag
 
@@ -13,19 +14,13 @@ class Query(graphene.ObjectType):
     category = graphene.Field(CategoryType, id=graphene.String(required=True))
 
     def resolve_tag(self, info, id):
-        try:
-            return Tag.objects.get(pk=id)
-        except:
-            raise Exception('Tag does not exist!')
+        return Tag.objects.get(pk=id)
 
     def resolve_all_tags(self, info, **kwargs):
         return Tag.objects.all()
 
     def resolve_category(self, info, id):
-        try:
-            return Category.objects.get(pk=id)
-        except:
-            raise Exception('Category does not exist!')
+        return Category.objects.get(pk=id)
 
     def resolve_all_categories(self, info, **kwargs):
         return Category.objects.all()

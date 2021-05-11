@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from ingredient.mutations import CreateIngredient
 from tag.models import Tag
@@ -25,7 +26,7 @@ class Query(graphene.ObjectType):
                     tag = Tag.objects.get(pk=filter.get('tag'))
                     filter_params['tags'] = tag
                 except Tag.DoesNotExist:
-                    raise Exception('Tag does not exist!')
+                    raise GraphQLError('Tag matching query does not exist.')
             return filter_params
 
         filter = get_filter(filter) if filter else {}
@@ -33,10 +34,7 @@ class Query(graphene.ObjectType):
         return Ingredient.objects.filter(**filter)
 
     def resolve_ingredient(self, info, id):
-        try:
-            return Ingredient.objects.get(pk=id)
-        except:
-            raise Exception('Ingredient does not exist!')
+        return Ingredient.objects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):

@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from user.mutations import CreateUser
 
@@ -27,10 +28,7 @@ class Query(graphene.ObjectType):
         return User.objects.filter(**filter)
 
     def resolve_user(self, info, id):
-        try:
-            return User.objects.get(pk=id)
-        except:
-            raise Exception('User does not exist!')
+        return User.objects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):

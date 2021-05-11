@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from utensil.mutations import CreateUtensil
 
@@ -14,10 +15,7 @@ class Query(graphene.ObjectType):
         return Utensil.objects.all()
 
     def resolve_utensil(self, info, id):
-        try:
-            return Utensil.objects.get(pk=id)
-        except:
-            raise Exception('Utensil does not exist!')
+        return Utensil.objects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):

@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 from translation.mutations import CreateTranslation
 
@@ -14,10 +15,7 @@ class Query(graphene.ObjectType):
         return Translation.objects.all()
 
     def resolve_translation(self, info, id):
-        try:
-            return Translation.objects.get(pk=id)
-        except:
-            raise Exception('Translation does not exist!')
+        return Translation.objects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):

@@ -1,7 +1,8 @@
 import datetime
 import json
-from django.utils import timezone
+
 from django.test import TestCase
+from django.utils import timezone
 from graphene_django.utils.testing import GraphQLTestCase
 
 from user.models import User
