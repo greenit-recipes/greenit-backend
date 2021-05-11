@@ -67,3 +67,16 @@ class IngredientQueryTest(GraphQLTestCase):
         self.assertEqual(
             response['ingredient']['id'], '18002b07-41ba-497b-9d42-c1f0714a2b6f'
         )
+
+class IngredientQueryFailTest(GraphQLTestCase):
+    def test_single_ingredient_query_fail_message(self):
+        response = self.query(
+            '''query Ingredient {
+        ingredient(id:"123456789") {
+            id
+        }
+        }
+        '''
+        )
+        response = response.json()['errors'][0]['message']
+        self.assertEqual(response, 'Ingredient does not exist!')
