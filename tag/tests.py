@@ -9,7 +9,7 @@ from tag.models import Category, Tag
 
 class TagCreateTest(TestCase):
     def setUp(self):
-        self.tag = Tag.objects.create(name='TestTag')
+        self.tag = Tag.objects.create(name='TestTag_1')
         self.tag.save()
 
     def tearDown(self):
@@ -20,12 +20,12 @@ class TagCreateTest(TestCase):
             self.tag is not None,
             msg='Tag creation failed',
         )
-        self.assertEqual(self.tag.name, 'TestTag', 'Tag name creation failed')
+        self.assertEqual(self.tag.name, 'TestTag_1', 'Tag name creation failed')
 
 
 class TagQueryTest(GraphQLTestCase):
     def test_all_tags_query(self):
-        Tag.objects.create(name='TestTag')
+        Tag.objects.create(name='TestTag_2')
         response = self.query(
             '''query allTags {
         allTags {
@@ -38,7 +38,37 @@ class TagQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
-        self.assertEqual(response['allTags'][0]['name'], 'TestTag')
+        self.assertEqual(response['allTags'][0]['name'], 'TestTag_2')
+
+    def test_single_tag_query(self):
+        tag = Tag.objects.create(name='TestTag_3')
+        response = self.query(
+            '''query tag($id: String!){
+        tag(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='tag',
+            variables={'id': str(tag.id)},
+        )
+        response = response.json()['data']
+        self.assertEqual(len(response['tag']), 1)
+        self.assertEqual(response['tag']['id'], str(tag.id))
+
+    def test_single_tag_query_fail_message(self):
+        response = self.query(
+            '''query tag($id: String!){
+        tag(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='tag',
+            variables={'id': str(uuid.uuid4())},
+        )
+        response = response.json()['errors'][0]['message']
+        self.assertEqual(response, 'Tag matching query does not exist.')
 
 
 class CategoryCreateTest(TestCase):
