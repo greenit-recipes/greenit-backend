@@ -14,7 +14,7 @@ class Translation(models.Model):
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
-    author = models.ForeignKey('user.User', on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
     is_approved = models.BooleanField(default=False)
 
     def __str__(self):
