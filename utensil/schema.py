@@ -9,7 +9,7 @@ from .type import UtensilType
 
 class Query(graphene.ObjectType):
     all_utensils = graphene.List(UtensilType)
-    utensils = graphene.Field(UtensilType, id=graphene.String(required=True))
+    utensil = graphene.Field(UtensilType, id=graphene.String(required=True))
 
     def resolve_all_utensils(self, info, **kwargs):
         return Utensil.objects.all()
