@@ -5,3 +5,5 @@ db.sqlite3
 htmlcov/
 .coverage
 .coverage/
+.coveragerc
+.coveragerc/

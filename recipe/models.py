@@ -53,7 +53,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
     )
     image = models.FileField(
@@ -63,7 +63,7 @@ class Recipe(models.Model):
     category = models.ForeignKey(
         'tag.Category',
         related_name='recipe_category',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
     )
     ingredients = models.ManyToManyField(

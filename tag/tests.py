@@ -9,7 +9,7 @@ from tag.models import Category, Tag
 
 class TagCreateTest(TestCase):
     def setUp(self):
-        self.tag = Tag.objects.create(name='TestTag')
+        self.tag = Tag.objects.create(name='TestTag_1')
         self.tag.save()
 
     def tearDown(self):
@@ -20,12 +20,12 @@ class TagCreateTest(TestCase):
             self.tag is not None,
             msg='Tag creation failed',
         )
-        self.assertEqual(self.tag.name, 'TestTag', 'Tag name creation failed')
+        self.assertEqual(self.tag.name, 'TestTag_1', 'Tag name creation failed')
 
 
 class TagQueryTest(GraphQLTestCase):
     def test_all_tags_query(self):
-        Tag.objects.create(name='TestTag')
+        Tag.objects.create(name='TestTag_2')
         response = self.query(
             '''query allTags {
         allTags {
@@ -38,12 +38,42 @@ class TagQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allTags']), 1)
-        self.assertEqual(response['allTags'][0]['name'], 'TestTag')
+        self.assertEqual(response['allTags'][0]['name'], 'TestTag_2')
+
+    def test_single_tag_query(self):
+        tag = Tag.objects.create(name='TestTag_3')
+        response = self.query(
+            '''query tag($id: String!){
+        tag(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='tag',
+            variables={'id': str(tag.id)},
+        )
+        response = response.json()['data']
+        self.assertEqual(len(response['tag']), 1)
+        self.assertEqual(response['tag']['id'], str(tag.id))
+
+    def test_single_tag_query_fail_message(self):
+        response = self.query(
+            '''query tag($id: String!){
+        tag(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='tag',
+            variables={'id': str(uuid.uuid4())},
+        )
+        response = response.json()['errors'][0]['message']
+        self.assertEqual(response, 'Tag matching query does not exist.')
 
 
 class CategoryCreateTest(TestCase):
     def setUp(self):
-        self.category = Category.objects.create(name='TestCategory')
+        self.category = Category.objects.create(name='TestCategory_1')
         self.category.save()
 
     def tearDown(self):
@@ -55,13 +85,13 @@ class CategoryCreateTest(TestCase):
             msg='Category creation failed',
         )
         self.assertEqual(
-            self.category.name, 'TestCategory', 'Category name creation failed'
+            self.category.name, 'TestCategory_1', 'Category name creation failed'
         )
 
 
 class CategoryQueryTest(GraphQLTestCase):
     def test_all_categories_query(self):
-        Category.objects.create(name='TestCategory')
+        Category.objects.create(name='TestCategory_2')
         response = self.query(
             '''query allCategories {
         allCategories {
@@ -74,4 +104,34 @@ class CategoryQueryTest(GraphQLTestCase):
         )
         response = response.json()['data']
         self.assertEqual(len(response['allCategories']), 1)
-        self.assertEqual(response['allCategories'][0]['name'], 'TestCategory')
+        self.assertEqual(response['allCategories'][0]['name'], 'TestCategory_2')
+
+    def test_single_category_query(self):
+        category = Category.objects.create(name='TestCategory_3')
+        response = self.query(
+            '''query category($id: String!){
+        category(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='category',
+            variables={'id': str(category.id)},
+        )
+        response = response.json()['data']
+        self.assertEqual(len(response['category']), 1)
+        self.assertEqual(response['category']['id'], str(category.id))
+
+    def test_single_category_query_fail_message(self):
+        response = self.query(
+            '''query category($id: String!){
+        category(id: $id) {
+            id
+        }
+        }
+        ''',
+            op_name='category',
+            variables={'id': str(uuid.uuid4())},
+        )
+        response = response.json()['errors'][0]['message']
+        self.assertEqual(response, 'Category matching query does not exist.')
