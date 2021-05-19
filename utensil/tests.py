@@ -17,14 +17,18 @@ class UtensilCreateTest(TestCase):
     def tearDown(self):
         self.utensil.delete()
 
-    def test_correct(self):
+    def test_utensil_creation(self):
         self.assertTrue(
             self.utensil is not None,
             msg='Utensil creation failed',
         )
+
+    def test_utensil_name(self):
         self.assertEqual(
             self.utensil.name, 'TestUtensil_1', 'Utensil name creation failed'
         )
+
+    def test_utensil_description(self):
         self.assertEqual(
             self.utensil.description,
             'A test utensil.',

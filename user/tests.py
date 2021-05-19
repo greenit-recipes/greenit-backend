@@ -26,42 +26,58 @@ class UserCreateTest(TestCase):
     def tearDown(self):
         self.user.delete()
 
-    def test_correct(self):
+    def test_user_creation(self):
         self.assertTrue(
             self.user is not None,
             msg='User creation failed',
         )
+
+    def test_user_name(self):
         self.assertEqual(self.user.name, 'TestUser_1', 'User name creation failed')
+
+    def test_user_email(self):
         self.assertEqual(
             self.user.email,
             'test@test.test',
             'User email creation failed',
         )
+
+    def test_user_location(self):
         self.assertEqual(
             self.user.location,
             'testville',
             'User location creation failed',
         )
+
+    def test_user_auto_pay(self):
         self.assertEqual(
             self.user.auto_pay,
             True,
             'User auto_pay creation failed',
         )
+
+    def test_user_is_staff(self):
         self.assertEqual(
             self.user.is_staff,
             False,
             'User is_staff creation failed',
         )
+
+    def test_user_is_active(self):
         self.assertEqual(
             self.user.is_active,
             True,
             'User is_active creation failed',
         )
+
+    def test_user_date_joined(self):
         self.assertEqual(
             self.user.date_joined,
             timezone.now().replace(second=0, microsecond=0),
             'User date_joined creation failed',
         )
+
+    def test_user_dob(self):
         self.assertEqual(
             self.user.dob,
             timezone.now().replace(second=0, microsecond=0),
