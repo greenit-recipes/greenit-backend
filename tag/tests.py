@@ -15,11 +15,13 @@ class TagCreateTest(TestCase):
     def tearDown(self):
         self.tag.delete()
 
-    def test_correct(self):
+    def test_tag_creation(self):
         self.assertTrue(
             self.tag is not None,
             msg='Tag creation failed',
         )
+
+    def test_tag_name(self):
         self.assertEqual(self.tag.name, 'TestTag_1', 'Tag name creation failed')
 
 
@@ -79,11 +81,13 @@ class CategoryCreateTest(TestCase):
     def tearDown(self):
         self.category.delete()
 
-    def test_correct(self):
+    def test_category_creation(self):
         self.assertTrue(
             self.category is not None,
             msg='Category creation failed',
         )
+
+    def test_category_name(self):
         self.assertEqual(
             self.category.name, 'TestCategory_1', 'Category name creation failed'
         )

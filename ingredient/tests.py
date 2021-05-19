@@ -19,14 +19,18 @@ class IngredientCreateTest(TestCase):
     def tearDown(self):
         self.ingredient.delete()
 
-    def test_correct(self):
+    def test_ingredient_creation(self):
         self.assertTrue(
             self.ingredient is not None,
             msg='Ingredient creation failed',
         )
+
+    def test_ingredient_name(self):
         self.assertEqual(
             self.ingredient.name, 'TestIngredient_1', 'Ingredient name creation failed'
         )
+
+    def test_ingredient_description(self):
         self.assertEqual(
             self.ingredient.description,
             'A test ingredient.',
