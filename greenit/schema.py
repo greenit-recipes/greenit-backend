@@ -7,6 +7,8 @@ import translation.schema
 import user.schema
 import utensil.schema
 
+from graphene_django.debug import DjangoDebug
+from django.conf import settings
 
 class Query(
     ingredient.schema.Query,
@@ -17,7 +19,8 @@ class Query(
     utensil.schema.Query,
     graphene.ObjectType,
 ):
-    pass
+    if settings.DEBUG:
+        debug = graphene.Field(DjangoDebug, name='_debug')
 
 
 class Mutation(
