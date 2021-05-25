@@ -6,9 +6,14 @@ from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
+from django.db.models import Q
 
 from .models import Recipe
 from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
+
+
+class SearchFilterInput(graphene.InputObjectType):
+    string = graphene.String(required=True)
 
 
 class RecipeFilterInput(graphene.InputObjectType):
@@ -28,6 +33,7 @@ class Query(graphene.ObjectType):
 
     all_recipes = graphene.List(RecipeType, filter=RecipeFilterInput(required=False))
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
+    search_recipes = graphene.List(RecipeType, filter=SearchFilterInput(required=True))
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
         def get_filter(filter):
@@ -117,6 +123,16 @@ class Query(graphene.ObjectType):
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(pk=id)
+
+    def resolve_search_recipes(self, info, filter=SearchFilterInput(required=True)):
+        recipes = Recipe.objects.filter(
+            Q(name__icontains=filter.get('string'))
+            | Q(description__icontains=filter.get('string'))
+            | Q(duration__icontains=filter.get('string'))
+            | Q(tags__name__icontains=filter.get('string'))
+            | Q(category__name__icontains=filter.get('string'))
+        )
+        return recipes.distinct()
 
 
 class Mutation(graphene.ObjectType):
