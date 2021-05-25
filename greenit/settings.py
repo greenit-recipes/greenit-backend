@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'utensil',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -65,12 +66,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 # just for development
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
+    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware']
 }
 
 ROOT_URLCONF = 'greenit.urls'
