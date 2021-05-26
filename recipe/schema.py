@@ -1,4 +1,5 @@
 import graphene
+from django.db.models import Q
 from graphql import GraphQLError
 
 from ingredient.models import Ingredient
@@ -6,7 +7,6 @@ from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
-from django.db.models import Q
 
 from .models import Recipe
 from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
