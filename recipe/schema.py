@@ -125,13 +125,15 @@ class Query(graphene.ObjectType):
         return Recipe.objects.get(pk=id)
 
     def resolve_search_recipes(self, info, filter=SearchFilterInput(required=True)):
-        recipes = Recipe.objects.filter(
-            Q(name__icontains=filter.get('string'))
-            | Q(description__icontains=filter.get('string'))
-            | Q(duration__icontains=filter.get('string'))
-            | Q(tags__name__icontains=filter.get('string'))
-            | Q(category__name__icontains=filter.get('string'))
-        )
+        filter = filter['string'].split()
+        recipes = Recipe.objects.all()
+        for term in filter:
+            recipes = recipes.filter(
+                Q(name__unaccent__icontains=term)
+               | Q(description__unaccent__icontains=term)
+               | Q(tags__name__unaccent__icontains=term)
+               | Q(category__name__unaccent__icontains=term)
+            )
         return recipes.distinct()
 
 
