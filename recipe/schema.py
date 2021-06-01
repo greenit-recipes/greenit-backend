@@ -122,7 +122,7 @@ class Query(graphene.ObjectType):
             return filter.distinct()
 
     def resolve_recipe(self, info, id):
-        return Recipe.objects.get(pk=id)
+        return Recipe.objects.get(url_id=id)
 
     def resolve_search_recipes(self, info, filter=SearchFilterInput(required=True)):
         filter = filter['string'].split()
@@ -130,9 +130,9 @@ class Query(graphene.ObjectType):
         for term in filter:
             recipes = recipes.filter(
                 Q(name__unaccent__icontains=term)
-               | Q(description__unaccent__icontains=term)
-               | Q(tags__name__unaccent__icontains=term)
-               | Q(category__name__unaccent__icontains=term)
+                | Q(description__unaccent__icontains=term)
+                | Q(tags__name__unaccent__icontains=term)
+                | Q(category__name__unaccent__icontains=term)
             )
         return recipes.distinct()
 

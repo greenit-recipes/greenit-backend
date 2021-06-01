@@ -42,6 +42,7 @@ class RecipeAdminForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = '__all__'
+        exclude = ['url_id']
         widgets = {
             'instructions': JSONEditorWidget(INSTRUCTION_SCHEMA, collapsed=False)
         }

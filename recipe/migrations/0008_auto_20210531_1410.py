@@ -17,11 +17,21 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='recipe_author', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name='recipe_author',
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='recipe_category', to='tag.category'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name='recipe_category',
+                to='tag.category',
+            ),
         ),
     ]

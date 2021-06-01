@@ -10,6 +10,7 @@ import utensil.schema
 from graphene_django.debug import DjangoDebug
 from django.conf import settings
 
+
 class Query(
     ingredient.schema.Query,
     recipe.schema.Query,

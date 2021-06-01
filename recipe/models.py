@@ -3,6 +3,7 @@ import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from greenit import settings
 
@@ -30,6 +31,7 @@ class Recipe(models.Model):
         PLACEHOLDER2 = 'PlaceholderB'
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    url_id = models.SlugField(unique=True, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=512, default='')
     video_url = models.URLField()
@@ -84,5 +86,10 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.url_id is None:
+            self.url_id = slugify(self.name)
+            super().save(*args, **kwargs)
 
     # TO DO: comments =
