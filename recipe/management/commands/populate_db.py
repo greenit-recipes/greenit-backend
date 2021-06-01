@@ -3,7 +3,7 @@ from recipe.models import Recipe
 
 
 class Command(BaseCommand):
+    help = 'Runs the save function assigning url_ids'
     def handle(self, *args, **options):
         for r in Recipe.objects.all():
-            url_id = Recipe.objects.name
             r.save()

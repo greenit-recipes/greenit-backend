@@ -26,9 +26,6 @@ class Recipe(models.Model):
         INTERMEDIATE = 'intermediate', _('Intermediate')
         ADVANCED = 'advanced', _('Advanced')
 
-    class LicenseChoice(models.TextChoices):
-        PLACEHOLDER1 = 'PlaceholderA'
-        PLACEHOLDER2 = 'PlaceholderB'
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     url_id = models.SlugField(unique=True, null=True)
@@ -47,11 +44,6 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)], null=True
     )
     duration = models.IntegerField()
-    license = models.CharField(
-        max_length=12,
-        choices=LicenseChoice.choices,
-        default=LicenseChoice.PLACEHOLDER1,
-    )
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',

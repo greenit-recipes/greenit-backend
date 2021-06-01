@@ -5,7 +5,7 @@ from tag.models import Category, Tag
 from utensil.models import Utensil
 
 from .models import Recipe
-from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
+from .type import DifficultyFilter, LanguageFilter, RecipeType
 
 
 class RecipeInput(graphene.InputObjectType):
@@ -20,7 +20,6 @@ class RecipeInput(graphene.InputObjectType):
     notes_from_author = graphene.String()
     category = graphene.List(graphene.String)
     language = LanguageFilter()
-    license = LicenseFilter()
     difficulty = DifficultyFilter()
     # instructions
     # image
@@ -41,7 +40,6 @@ class CreateRecipe(graphene.Mutation):
             expiry=data.expiry,
             notes_from_author=data.notes_from_author,
             language=data.language,
-            license=data.license,
             difficulty=data.difficulty,
         )
         recipe.tags.set([Tag.objects.get(pk=id) for id in data.tags])
