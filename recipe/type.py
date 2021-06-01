@@ -1,6 +1,7 @@
 import graphene
 from graphene.types.generic import GenericScalar
 from graphene_django import DjangoObjectType
+
 from ingredient.type import IngredientAmountType
 
 from .models import Recipe
@@ -22,6 +23,7 @@ class RecipeType(DjangoObjectType):
     )
 
     class Meta:
+        interfaces = (graphene.relay.Node,)
         model = Recipe
         fields = (
             'id',
@@ -40,3 +42,8 @@ class RecipeType(DjangoObjectType):
             'utensils',
             'instructions',
         )
+
+
+class RecipeConnection(graphene.relay.Connection):
+    class Meta:
+        node = RecipeType

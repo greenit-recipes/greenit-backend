@@ -1,16 +1,18 @@
 import graphene
-from django.db.models import Q
-from graphql import GraphQLError
+from django.db.models import Count, Q
 from graphene.types.generic import GenericScalar
+from graphql import GraphQLError
+
 from ingredient.models import Ingredient
 from recipe.mutations import CreateRecipe
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
+
 from .filter import filter
 from .models import Recipe
-from .type import DifficultyFilter, LanguageFilter, LicenseFilter, RecipeType
-from django.db.models import Count
+from .type import (DifficultyFilter, LanguageFilter, LicenseFilter,
+                   RecipeConnection, RecipeType)
 
 
 class SearchFilterInput(graphene.InputObjectType):
@@ -31,7 +33,9 @@ class RecipeFilterInput(graphene.InputObjectType):
 
 
 class Query(graphene.ObjectType):
-    all_recipes = graphene.List(RecipeType, filter=RecipeFilterInput(required=False))
+    all_recipes = graphene.relay.ConnectionField(
+        RecipeConnection, filter=RecipeFilterInput(required=False)
+    )
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     search_recipes = graphene.List(RecipeType, filter=SearchFilterInput(required=True))
     filter = graphene.Field(GenericScalar)
