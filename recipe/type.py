@@ -1,7 +1,6 @@
 import graphene
 from graphene.types.generic import GenericScalar
 from graphene_django import DjangoObjectType
-
 from ingredient.type import IngredientAmountType
 
 from .models import Recipe
@@ -18,7 +17,9 @@ class RecipeType(DjangoObjectType):
     def resolve_ingredients(parent, info):
         return parent.ingredients.through.objects.filter(recipe__id=parent.id)
 
-    ingredients = graphene.List(graphene.NonNull(IngredientAmountType), required=True, default_value=[])
+    ingredients = graphene.List(
+        graphene.NonNull(IngredientAmountType), required=True, default_value=[]
+    )
 
     class Meta:
         model = Recipe
