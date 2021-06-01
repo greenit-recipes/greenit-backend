@@ -41,6 +41,7 @@ class RecipeType(DjangoObjectType):
             'category',
             'utensils',
             'instructions',
+            'url_id',
         )
 
 

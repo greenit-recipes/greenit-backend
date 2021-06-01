@@ -11,8 +11,13 @@ from utensil.models import Utensil
 
 from .filter import filter
 from .models import Recipe
-from .type import (DifficultyFilter, LanguageFilter, LicenseFilter,
-                   RecipeConnection, RecipeType)
+from .type import (
+    DifficultyFilter,
+    LanguageFilter,
+    LicenseFilter,
+    RecipeConnection,
+    RecipeType,
+)
 
 
 class SearchFilterInput(graphene.InputObjectType):
