@@ -81,7 +81,7 @@ class Query(graphene.ObjectType):
         return recipes
 
     def resolve_recipe(self, info, id):
-        return Recipe.objects.get(pk=id)
+        return Recipe.objects.get(url_id=id)
 
     def resolve_filter(self, info):
         return filter

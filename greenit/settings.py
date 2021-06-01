@@ -74,7 +74,7 @@ if DEBUG == True:
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware']
+    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
 }
 
 ROOT_URLCONF = 'greenit.urls'
