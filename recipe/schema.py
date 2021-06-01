@@ -18,11 +18,6 @@ from .type import (
     RecipeType,
 )
 
-
-class SearchFilterInput(graphene.InputObjectType):
-    string = graphene.String(required=True)
-
-
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     difficulty = DifficultyFilter(required=False)
@@ -33,6 +28,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     category = graphene.String(required=False)
     ingredients = graphene.List(graphene.String, required=False)
     utensils = graphene.List(graphene.String, required=False)
+    search = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
@@ -40,7 +36,6 @@ class Query(graphene.ObjectType):
         RecipeConnection, filter=RecipeFilterInput(required=False)
     )
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
-    search_recipes = graphene.List(RecipeType, filter=SearchFilterInput(required=True))
     filter = graphene.Field(GenericScalar)
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
@@ -68,9 +63,11 @@ class Query(graphene.ObjectType):
                     )
                 except Category.DoesNotExist:
                     raise GraphQLError('Category matching query does not exist.')
+
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
+
         if filter and filter.get('tags'):
             recipes = (
                 Recipe.objects.filter(**filter_query)
@@ -79,25 +76,23 @@ class Query(graphene.ObjectType):
             )
         else:
             recipes = Recipe.objects.filter(**filter_query)
-        return recipes
+
+        if filter and filter.get('search'):
+            terms = filter.get('search').split()
+            for term in terms:
+                recipes = recipes.filter(
+                    Q(name__unaccent__icontains=term)
+                    | Q(description__unaccent__icontains=term)
+                    | Q(tags__name__unaccent__icontains=term)
+                    | Q(category__name__unaccent__icontains=term)
+                )
+        return recipes.distinct()
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(url_id=id)
 
     def resolve_filter(self, info):
         return filter
-
-    def resolve_search_recipes(self, info, filter=SearchFilterInput(required=True)):
-        filter = filter['string'].split()
-        recipes = Recipe.objects.all()
-        for term in filter:
-            recipes = recipes.filter(
-                Q(name__unaccent__icontains=term)
-                | Q(description__unaccent__icontains=term)
-                | Q(tags__name__unaccent__icontains=term)
-                | Q(category__name__unaccent__icontains=term)
-            )
-        return recipes.distinct()
 
 
 class Mutation(graphene.ObjectType):
