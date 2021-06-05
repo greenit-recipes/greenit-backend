@@ -81,6 +81,4 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         if self.url_id is None:
             self.url_id = slugify(self.name)
-            super().save(*args, **kwargs)
-
-    # TO DO: comments =
+        super().save(*args, **kwargs)
