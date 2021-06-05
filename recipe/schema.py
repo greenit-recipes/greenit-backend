@@ -9,14 +9,10 @@ from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
 
-from .filter import filter
 from .models import Recipe
-from .type import (
-    DifficultyFilter,
-    LanguageFilter,
-    RecipeConnection,
-    RecipeType,
-)
+from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
+                   RecipeType)
+
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
@@ -50,7 +46,7 @@ class Query(graphene.ObjectType):
             if filter.get('duration'):
                 filter_params['duration__lte'] = filter['duration']
             if filter.get('tags'):
-                filter_params['tags__pk__in'] = filter['tags']
+                filter_params['tags__name__unaccent__in'] = filter['tags']
             if filter.get('author'):
                 try:
                     filter_params['author'] = User.objects.get(pk=filter.get('author'))
@@ -59,7 +55,7 @@ class Query(graphene.ObjectType):
             if filter.get('category'):
                 try:
                     filter_params['category'] = Category.objects.get(
-                        pk=filter.get('category')
+                        name=filter.get('category')
                     )
                 except Category.DoesNotExist:
                     raise GraphQLError('Category matching query does not exist.')
@@ -67,7 +63,7 @@ class Query(graphene.ObjectType):
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
-
+        print(filter, filter_query)
         if filter and filter.get('tags'):
             recipes = (
                 Recipe.objects.filter(**filter_query)
@@ -90,9 +86,6 @@ class Query(graphene.ObjectType):
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(url_id=id)
-
-    def resolve_filter(self, info):
-        return filter
 
 
 class Mutation(graphene.ObjectType):

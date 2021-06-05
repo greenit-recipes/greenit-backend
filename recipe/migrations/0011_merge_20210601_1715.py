@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('recipe', '0010_remove_recipe_license'),
     ]
 
-    operations = [
-    ]
+    operations = []

@@ -2,8 +2,8 @@ import uuid
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 from greenit import settings
 
@@ -25,7 +25,6 @@ class Recipe(models.Model):
         BEGINNER = 'beginner', _('Beginner')
         INTERMEDIATE = 'intermediate', _('Intermediate')
         ADVANCED = 'advanced', _('Advanced')
-
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     url_id = models.SlugField(unique=True, null=True)
