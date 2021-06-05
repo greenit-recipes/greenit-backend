@@ -30,7 +30,7 @@ class Recipe(models.Model):
     url_id = models.SlugField(unique=True, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=512, default='')
-    video_url = models.URLField()
+    video_url = models.CharField(max_length=255)
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
