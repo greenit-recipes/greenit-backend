@@ -40,6 +40,8 @@ class RecipeType(DjangoObjectType):
             'utensils',
             'instructions',
             'url_id',
+            'expiry',
+            'notes_from_author'
         )
 
 
