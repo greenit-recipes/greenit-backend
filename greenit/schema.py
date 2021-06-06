@@ -6,6 +6,7 @@ import tag.schema
 import translation.schema
 import user.schema
 import utensil.schema
+import utils.schema
 
 from graphene_django.debug import DjangoDebug
 from django.conf import settings
@@ -31,6 +32,7 @@ class Mutation(
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,
+    utils.schema.Mutation,
 ):
     pass
 

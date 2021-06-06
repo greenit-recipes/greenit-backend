@@ -157,6 +157,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

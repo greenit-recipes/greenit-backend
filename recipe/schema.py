@@ -10,8 +10,7 @@ from user.models import User
 from utensil.models import Utensil
 
 from .models import Recipe
-from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
-                   RecipeType)
+from .type import DifficultyFilter, LanguageFilter, RecipeConnection, RecipeType
 
 
 class RecipeFilterInput(graphene.InputObjectType):
@@ -63,7 +62,6 @@ class Query(graphene.ObjectType):
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
-        print(filter, filter_query)
         if filter and filter.get('tags'):
             recipes = (
                 Recipe.objects.filter(**filter_query)

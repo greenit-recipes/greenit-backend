@@ -42,7 +42,7 @@ class RecipeType(DjangoObjectType):
             'url_id',
             'video_url',
             'expiry',
-            'notes_from_author'
+            'notes_from_author',
         )
 
 
