@@ -27,9 +27,9 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['134.122.74.71', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['134.122.74.71', 'localhost', '127.0.0.1', 'greenitcommunity.com']
 
 
 # Application definition
