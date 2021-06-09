@@ -10,7 +10,7 @@ chardet==4.0.0
 click==7.1.2
 coverage==5.5
 decorator==5.0.7
-Django==3.2
+Django==3.2.1
 django-admin-json-editor==0.2.3
 django-cors-headers==3.7.0
 django-debug-toolbar==3.2.1
