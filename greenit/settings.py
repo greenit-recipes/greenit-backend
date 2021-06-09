@@ -27,9 +27,9 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if config('DEBUG') == 'False' else True
 
-ALLOWED_HOSTS = ['134.122.74.71', 'localhost', '127.0.0.1', 'api.greenitcommunity.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com']
 
 
 # Application definition
@@ -67,7 +67,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+CORS_ORIGIN_WHITELIST = [
+	'https://greenitcommunity.com'
+]
 # just for development
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
