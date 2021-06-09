@@ -29,10 +29,10 @@ class SendMessage(graphene.Mutation):
         if r.json()['success']:
             try:
                 send_mail(
-                    "New Message from Greenit's Contact Page",
+                    f'New Message from {data["name"]}',
                     data['message'],
                     data['email'],
-                    ['hellogreenit@gmail.com'],
+                    ['hellogreenit@gmail.com', data['email']],
                     fail_silently=False,
                 )
                 return SendMessage(ok=True)
