@@ -1,4 +1,6 @@
 import graphene
+from django.conf import settings
+from graphene_django.debug import DjangoDebug
 
 import ingredient.schema
 import recipe.schema
@@ -7,9 +9,6 @@ import translation.schema
 import user.schema
 import utensil.schema
 import utils.schema
-
-from graphene_django.debug import DjangoDebug
-from django.conf import settings
 
 
 class Query(

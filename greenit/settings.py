@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+import sentry_sdk
 from decouple import config
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,9 +69,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-	'https://greenitcommunity.com'
-]
+CORS_ORIGIN_WHITELIST = ['https://greenitcommunity.com']
 # just for development
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
@@ -152,6 +152,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+sentry_sdk.init(
+    dsn=config("SENTRY_DSN"),
+    integrations=[DjangoIntegration()],
+    attach_stacktrace=True,
+    traces_sample_rate=1.0,
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
