@@ -26,6 +26,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     search = graphene.String(required=False)
     is_featured = graphene.Boolean(required=False)
 
+
 class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
         RecipeConnection, filter=RecipeFilterInput(required=False)
