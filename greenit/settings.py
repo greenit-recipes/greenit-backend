@@ -74,6 +74,9 @@ CORS_ORIGIN_WHITELIST = ['https://greenitcommunity.com']
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
     'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
