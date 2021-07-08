@@ -17,7 +17,7 @@ The backend is [Django](https://github.com/django/django)/[GraphQL](https://gith
 
 ## Contributing
 
-This project is in an early stage. If you are interested in contributing, feel free to reach out to [liam.going@code.berlin](mailto:liam.going@code.berlin) or [aarnav.bos@code.berlin](mailto:aarnav.bos@code.berlin).
+This project is in an early stage. If you are interested in contributing, feel free to reach out to [liam.going@code.berlin](mailto:liam.going@code.berlin).
 
 ## Development
 
