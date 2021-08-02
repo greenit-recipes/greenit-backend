@@ -45,8 +45,8 @@ class Query(graphene.ObjectType):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
                 filter_params['duration__lte'] = filter['duration']
-            if filter.get('is_featured'):
-                filter_params['is_featured'] = filter['is_featured']
+            if filter.get('isFeatured'):
+                filter_params['isFeatured'] = filter['is_featured']
             if filter.get('tags'):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
             if filter.get('author'):
