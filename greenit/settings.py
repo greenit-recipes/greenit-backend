@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django_filters',
     'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'corsheaders',
     'django_admin_json_editor',
+    'graphql_auth',
     'storages',
     'ingredient',
     'recipe',
@@ -79,8 +81,16 @@ SESSION_COOKIE_SECURE = True
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
+    'MIDDLEWARE': [
+        'graphene_django.debug.DjangoDebugMiddleware',
+        'graphene_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_auth.backend.GraphQLAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 ROOT_URLCONF = 'greenit.urls'
 
