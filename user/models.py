@@ -22,6 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name=_('Email address'), unique=True)
     name = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=500)
     image_profile = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
@@ -37,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     done_recipes = models.ManyToManyField('recipe.Recipe', related_name='done')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
+    EMAIL_FIELD = 'email'
 
     objects = UserManager()
 
