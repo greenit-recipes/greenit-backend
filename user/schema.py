@@ -1,7 +1,8 @@
 import graphene
+import graphql_jwt
 from graphql import GraphQLError
 
-from user.mutations import CreateUser
+#from user.mutations import CreateUser
 
 from .models import User
 from .type import UserType
@@ -25,11 +26,11 @@ class Query(graphene.ObjectType):
 
         filter = get_filter(filter) if filter else {}
 
-        return User.objects.filter(**filter)
+        return CustomUserobjects.filter(**filter)
 
     def resolve_user(self, info, id):
-        return User.objects.get(pk=id)
+        return CustomUserobjects.get(pk=id)
 
 
 class Mutation(graphene.ObjectType):
-    create_user = CreateUser.Field()
+    pass

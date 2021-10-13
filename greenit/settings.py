@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django_filters',
     'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'corsheaders',
     'django_admin_json_editor',
+    'graphql_auth',
     'storages',
     'ingredient',
     'recipe',
@@ -77,9 +79,57 @@ if DEBUG == True:
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
+AUTH_USER_MODEL = 'user.User'
+
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
+    'MIDDLEWARE': [
+        'graphene_django.debug.DjangoDebugMiddleware',
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ResendActivationEmail",
+        "graphql_auth.mutations.SendPasswordResetEmail",
+        "graphql_auth.mutations.PasswordReset",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+        "graphql_auth.mutations.VerifyToken",
+        "graphql_auth.mutations.RefreshToken",
+        "graphql_auth.mutations.RevokeToken",
+        "graphql_auth.mutations.VerifySecondaryEmail",
+    ],
+}
+
+GRAPHQL_AUTH = {
+    'LOGIN_ALLOWED_FIELDS': [
+        'email',
+    ],
+    'REGISTER_MUTATION_FIELDS': [
+        'email',
+        'name',
+        'dob',
+    ],
+    'UPDATE_MUTATION_FIELDS': [
+    ],
+    "USER_NODE_FILTER_FIELDS": {
+        "email": ["exact"],
+        "name": ["exact", "icontains", "istartswith"],
+        "is_active": ["exact"],
+        "status__archived": ["exact"],
+        "status__verified": ["exact"],
+        "status__secondary_email": ["exact"],
+    },
 }
 
 ROOT_URLCONF = 'greenit.urls'
@@ -128,7 +178,6 @@ AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_FILE_OVERRIDE = False
 STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}'
-AUTH_USER_MODEL = 'user.User'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_USE_TLS = True
@@ -137,8 +186,6 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
 
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

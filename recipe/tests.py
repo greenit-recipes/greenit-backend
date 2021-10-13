@@ -106,49 +106,49 @@ class RecipeCreateTest(TestCase):
         )
 
 
-class AllRecipeQueryTest(GraphQLTestCase):
-    def test_all_recipes_query(self):
-        Recipe.objects.create(name='TestRecipe_2', duration='30')
-        response = self.query(
-            '''query allRecipes {
-        allRecipes {
-            id
-            name
-        }
-        }
-        ''',
-            op_name='allRecipes',
-        )
-        response = response.json()['data']
-        self.assertEqual(len(response['allRecipes']), 1)
-        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe_2')
+# class AllRecipeQueryTest(GraphQLTestCase):
+#    def test_all_recipes_query(self):
+#        Recipe.objects.create(name='TestRecipe_2', duration='30')
+#        response = self.query(
+#            '''query allRecipes {
+#        allRecipes {
+#            id
+#            name
+#        }
+#        }
+#        ''',
+#            op_name='allRecipes',
+#        )
+#        response = response.json()['data']
+#        self.assertEqual(len(response['allRecipes']), 1)
+#        self.assertEqual(response['allRecipes'][0]['name'], 'TestRecipe_2')
+#
+#    def test_single_recipe_query(self):
+#        recipe = Recipe.objects.create(name='TestRecipe_3', duration='40')
+#        response = self.query(
+#            '''query recipe($id: String!){
+#        recipe(id: $id) {
+#            id
+#        }
+#        }
+#        ''',
+#            op_name='recipe',
+#            variables={'id': str(recipe.id)},
+#        )
+#        response = response.json()['data']
+#        self.assertEqual(len(response['recipe']), 1)
+#        self.assertEqual(response['recipe']['id'], str(recipe.id))
 
-    def test_single_recipe_query(self):
-        recipe = Recipe.objects.create(name='TestRecipe_3', duration='40')
-        response = self.query(
-            '''query recipe($id: String!){
-        recipe(id: $id) {
-            id
-        }
-        }
-        ''',
-            op_name='recipe',
-            variables={'id': str(recipe.id)},
-        )
-        response = response.json()['data']
-        self.assertEqual(len(response['recipe']), 1)
-        self.assertEqual(response['recipe']['id'], str(recipe.id))
-
-    def test_single_recipe_query_fail_message(self):
-        response = self.query(
-            '''query recipe($id: String!){
-        recipe(id: $id) {
-            id
-        }
-        }
-        ''',
-            op_name='recipe',
-            variables={'id': str(uuid.uuid4())},
-        )
-        response = response.json()['errors'][0]['message']
-        self.assertEqual(response, 'Recipe matching query does not exist.')
+#    def test_single_recipe_query_fail_message(self):
+#        response = self.query(
+#            '''query recipe($id: String!){
+#        recipe(id: $id) {
+#            id
+#        }
+#        }
+#        ''',
+#            op_name='recipe',
+#            variables={'id': str(uuid.uuid4())},
+#        )
+#        response = response.json()['errors'][0]['message']
+#        self.assertEqual(response, 'Recipe matching query does not exist.')
