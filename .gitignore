@@ -7,3 +7,6 @@ htmlcov/
 .coverage/
 .coveragerc
 .coveragerc/
+env/
+.gitignore
+.vscode/
