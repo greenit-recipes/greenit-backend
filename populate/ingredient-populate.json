@@ -1,0 +1,29 @@
+[
+    {
+        "pk": 1,
+        "model": "ingredient.Ingredient",
+        "fields": {
+            "name": "Cire émulsifiante végétale",
+            "description": "bla bla bla bla",
+            "image": "null"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "ingredient.Ingredient",
+        "fields": {
+            "name": "Huile végétale d'onagre",
+            "description": "bla bla bla bla",
+            "image": "null"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "ingredient.Ingredient",
+        "fields": {
+            "name": "Eau",
+            "description": "bla bla bla bla",
+            "image": "null"
+        }
+    }
+]

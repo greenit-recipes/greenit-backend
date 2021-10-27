@@ -1,0 +1,29 @@
+[
+    {
+        "pk": 1,
+        "model": "ingredient.IngredientAmount",
+        "fields": {
+            "amount": "Cire émulsifiante végétale",
+            "ingredient": "bla bla bla bla",
+            "recipe": "null"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "ingredient.IngredientAmount",
+        "fields": {
+            "amount": "Cire émulsifiante végétale",
+            "ingredient": "bla bla bla bla",
+            "recipe": "null"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "ingredient.IngredientAmount",
+        "fields": {
+            "amount": "Cire émulsifiante végétale",
+            "ingredient": "bla bla bla bla",
+            "recipe": "null"
+        }
+    }
+]
