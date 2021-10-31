@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'translation',
     'user',
     'utensil',
+    'greenit'
 ]
 
 

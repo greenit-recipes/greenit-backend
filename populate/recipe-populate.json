@@ -1,0 +1,61 @@
+[
+    {
+        "pk": 1,
+        "model": "recipe.Recipe",
+        "fields": {
+            "url_id": null,
+            "name": "Crème de jour anti-rides",
+            "description": "Crème de jour 75 ml. Pourquoi ces ingrédients? L'huile végétale a une teneur élevée en antioxydants et est un anti-âge de choix. L'eau minérale permet de diluer la préparation. La cire émulsifiante permet de lier la phase aqueuse et huileuse et hydrate. L'huile essentielle est un anti-âge et parfume les préparations. La vitamine E est un conservateur et un antioxydant. Comment l'utiliser ? Appliquer une noisette sur la visage et le cou et étaler.",
+            "video_url": "https://youtu.be/CcWS-A4JXZE",
+            "language": "FR",
+            "difficulty": "beginner",
+            "rating": 1,
+            "duration": 5,
+            "image": "https://fra1.digitaloceanspaces.com/greenit/greenit/recipe/f0f95477-4602-49ae-bcfc-3df30f528d9f/cr%C3%A8me_anti_rides.jpeg",
+            "category": 1,
+            "instructions": "Cire émulsifiante végétale",
+            "expiry": "Cire émulsifiante végétale",
+            "notes_from_author": "L'huile essentielle est optionnelle, elle peut être remplacer ou supprimer."
+        }
+    },
+    {
+        "pk": 2,
+        "model": "recipe.Recipe",
+        "fields": {
+            "url_id": null,
+            "name": "Crème de jour anti-rides",
+            "description": "Crème de jour 75 ml. Pourquoi ces ingrédients? L'huile végétale a une teneur élevée en antioxydants et est un anti-âge de choix. L'eau minérale permet de diluer la préparation. La cire émulsifiante permet de lier la phase aqueuse et huileuse et hydrate. L'huile essentielle est un anti-âge et parfume les préparations. La vitamine E est un conservateur et un antioxydant. Comment l'utiliser ? Appliquer une noisette sur la visage et le cou et étaler.",
+            "video_url": "https://youtu.be/CcWS-A4JXZE",
+            "language": "FR",
+            "difficulty": "beginner",
+            "rating": 1,
+            "duration": 5,
+            "image": "https://fra1.digitaloceanspaces.com/greenit/greenit/recipe/f0f95477-4602-49ae-bcfc-3df30f528d9f/cr%C3%A8me_anti_rides.jpeg",
+            "category": 3,
+            "instructions": "Cire émulsifiante végétale",
+            "expiry": "Cire émulsifiante végétale",
+            "notes_from_author": "L'huile essentielle est optionnelle, elle peut être remplacer ou supprimer."
+        }
+    },
+    {
+        "pk": 3,
+        "model": "recipe.Recipe",
+        "fields": {
+            "url_id": null,
+            "name": "Crème de jour anti-rides",
+            "description": "Crème de jour 75 ml. Pourquoi ces ingrédients? L'huile végétale a une teneur élevée en antioxydants et est un anti-âge de choix. L'eau minérale permet de diluer la préparation. La cire émulsifiante permet de lier la phase aqueuse et huileuse et hydrate. L'huile essentielle est un anti-âge et parfume les préparations. La vitamine E est un conservateur et un antioxydant. Comment l'utiliser ? Appliquer une noisette sur la visage et le cou et étaler.",
+            "video_url": "https://youtu.be/CcWS-A4JXZE",
+            "language": "FR",
+            "difficulty": "beginner",
+            "rating": 1,
+            "duration": 5,
+            "image": "https://fra1.digitaloceanspaces.com/greenit/greenit/recipe/f0f95477-4602-49ae-bcfc-3df30f528d9f/cr%C3%A8me_anti_rides.jpeg",
+            "category": 2,
+            "instructions": "Cire émulsifiante végétale",
+            "expiry": "Cire émulsifiante végétale",
+            "notes_from_author": "L'huile essentielle est optionnelle, elle peut être remplacer ou supprimer."
+        }
+    }
+]
+
+// changer le texte 
