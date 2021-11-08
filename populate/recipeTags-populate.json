@@ -1,0 +1,50 @@
+[
+    {
+        "pk": 1,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 1,
+            "tag_id": 1
+        }
+    },
+    {
+        "pk": 2,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 1,
+            "tag_id": 2
+        }
+    },
+    {
+        "pk": 3,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 2,
+            "tag_id": 3
+        }
+    },
+    {
+        "pk": 4,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 2,
+            "tag_id": 2
+        }
+    },
+    {
+        "pk": 5,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 3,
+            "tag_id": 1
+        }
+    },
+    {
+        "pk": 6,
+        "model": "recipe.Recipe_Tags",
+        "fields": {
+            "recipe_id": 3,
+            "tag_id": 3
+        }
+    }
+]

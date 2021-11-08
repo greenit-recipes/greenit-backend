@@ -13,34 +13,41 @@ class Command(BaseCommand):
 
         # Admin
         userCreated = User.objects.create_user(
-            name='admin', password='1234', email='admin@gmail.com', is_superuser=True, is_staff=True)
+            id=1, name='admin', password='1234', email='admin@gmail.com', is_superuser=True, is_staff=True)
         self.stdout.write("Admin created successfully")
 
         # Users
         users = [{
             'name': 'naruto',
+            'id': 2,
         }, {
             'name': 'sasuke',
+            'id': 3,
         }, {
             'name': 'madara',
+            'id': 4,
         }]
         for user in users:
             userName = user.get('name')
+            userId = user.get('id')
             userCreated = User.objects.create_user(
-                name=userName, password='1234', email=userName+'@gmail.com', is_superuser=False, is_staff=False)
+                id=userId, name=userName, password='1234', email=userName+'@gmail.com', is_superuser=False, is_staff=False)
             userCreated.save()
         self.stdout.write("Users created successfully")
+        call_command('loaddata', "db.json") 
+        self.stdout.write("Data loaded successfully")
 
         # If u want to add some data for local after ur created ur feature use --> "manage.py dumpdata > data.json"
         # https://docs.djangoproject.com/en/3.2/howto/initial-data/#providing-data-with-fixtures
 
         # Data
         # Respect the order
-        filesPopulate = ['populate/tag-populate.json',
+"""         filesPopulate = ['populate/tag-populate.json',
                          'populate/tagCategory-populate.json',
                          'populate/ingredient-populate.json',
+                         'populate/utensil-populate.json',
                          'populate/recipe-populate.json',
-                         'populate/ingredientAmount-populate.json']
+                         'populate/ingredientAmount-populate.json',
+                         'populate/recipeTags-populate.json'] """
 
-        for filePopulate in filesPopulate:
-            call_command('loaddata', filePopulate)
+        #for filePopulate in filesPopulate:

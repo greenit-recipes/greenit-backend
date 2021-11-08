@@ -33,8 +33,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_('Date joined'), default=timezone.now
     )
     dob = models.DateField()
-    liked_recipes = models.ManyToManyField('recipe.Recipe', related_name='liked')
-    done_recipes = models.ManyToManyField('recipe.Recipe', related_name='done')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
