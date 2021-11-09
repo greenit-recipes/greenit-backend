@@ -27,6 +27,7 @@ class RecipeType(DjangoObjectType):
             'id',
             'name',
             'description',
+            'text_associate',
             'video_url',
             'language',
             'difficulty',
