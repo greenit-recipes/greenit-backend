@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django_filters',
     'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_auth',
     'corsheaders',
     'django_admin_json_editor',
     'storages',
@@ -80,7 +82,32 @@ SESSION_COOKIE_SECURE = True
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
+    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware',         'graphql_jwt.middleware.JSONWebTokenMiddleware',
+                   ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'graphql_auth.backends.GraphQLAuthBackend',
+]
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ResendActivationEmail",
+        "graphql_auth.mutations.SendPasswordResetEmail",
+        "graphql_auth.mutations.PasswordReset",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+        "graphql_auth.mutations.VerifyToken",
+        "graphql_auth.mutations.RefreshToken",
+        "graphql_auth.mutations.RevokeToken",
+        "graphql_auth.mutations.VerifySecondaryEmail",
+    ],
+    # optional
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
 }
 
 ROOT_URLCONF = 'greenit.urls'
@@ -102,7 +129,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'greenit.wsgi.application'
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

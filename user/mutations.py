@@ -2,25 +2,12 @@ import graphene
 
 from .models import User
 from .type import UserType
+from graphql_auth import mutations
 
 
-class UserInput(graphene.InputObjectType):
-    name = graphene.String()
-    email = graphene.String()
-    location = graphene.String()
-    dob = graphene.Date()
-    # image_profile
-
-
-class CreateUser(graphene.Mutation):
-    class Arguments:
-        data = UserInput(required=True)
-
-    user = graphene.Field(UserType)
-
-    def mutate(root, info, data):
-        user = User.objects.create(
-            name=data.name, email=data.email, location=data.location, dob=data.dob
-        )
-
-        return CreateUser(user=user)
+class AuthMutation(graphene.ObjectType):
+   register = mutations.Register.Field()
+   verify_account = mutations.VerifyAccount.Field()
+       
+class CreateUser(AuthMutation):
+    pass
