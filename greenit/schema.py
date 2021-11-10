@@ -9,6 +9,7 @@ import translation.schema
 import user.schema
 import utensil.schema
 import utils.schema
+from graphql_auth.schema import UserQuery, MeQuery
 
 
 class Query(

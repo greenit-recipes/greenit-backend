@@ -39,6 +39,8 @@ INSTRUCTION_SCHEMA = {
 
 
 class RecipeAdminForm(forms.ModelForm):
+    description = forms.CharField( widget=forms.Textarea )
+    text_associate = forms.CharField( widget=forms.Textarea, required=False )
     class Meta:
         model = Recipe
         fields = '__all__'

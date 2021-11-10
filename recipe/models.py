@@ -30,11 +30,12 @@ class Recipe(models.Model):
     url_id = models.SlugField(unique=True, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=512, default='')
+    text_associate = models.TextField(max_length=512, null=True, blank=True)
     video_url = models.CharField(max_length=255)
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
-    difficulty = models.CharField(
+    difficulty = models.CharField( # Need to be enum
         max_length=12,
         choices=DifficultyChoice.choices,
         default=DifficultyChoice.BEGINNER,

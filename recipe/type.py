@@ -22,12 +22,12 @@ class RecipeType(DjangoObjectType):
     )
 
     class Meta:
-        interfaces = (graphene.relay.Node,)
         model = Recipe
         fields = (
             'id',
             'name',
             'description',
+            'text_associate',
             'video_url',
             'language',
             'difficulty',

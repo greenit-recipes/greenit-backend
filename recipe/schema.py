@@ -86,7 +86,7 @@ class Query(graphene.ObjectType):
         return recipes.distinct()
 
     def resolve_recipe(self, info, id):
-        return Recipe.objects.get(url_id=id)
+        return Recipe.objects.get(id=id)
 
 
 class Mutation(graphene.ObjectType):

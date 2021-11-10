@@ -17,6 +17,4 @@ class UserType(DjangoObjectType):
             'is_active',
             'date_joined',
             'dob',
-            'liked_recipes',
-            'done_recipes',
         )

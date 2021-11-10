@@ -11,6 +11,7 @@ from .type import DifficultyFilter, LanguageFilter, RecipeType
 class RecipeInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
+    text_associate = graphene.String()
     video_url = graphene.String()
     duration = graphene.Int()
     tags = graphene.List(graphene.String)
@@ -35,6 +36,7 @@ class CreateRecipe(graphene.Mutation):
         recipe = Recipe.objects.create(
             name=data.name,
             description=data.description,
+            text_associate=data.text_associate,
             video_url=data.video_url,
             duration=data.duration,
             expiry=data.expiry,
