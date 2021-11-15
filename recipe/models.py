@@ -35,7 +35,7 @@ class Recipe(models.Model):
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
-    difficulty = models.CharField( # Need to be enum
+    difficulty = models.CharField(
         max_length=12,
         choices=DifficultyChoice.choices,
         default=DifficultyChoice.BEGINNER,

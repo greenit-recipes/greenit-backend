@@ -92,6 +92,8 @@ AUTHENTICATION_BACKENDS = [
     'graphql_auth.backends.GraphQLAuthBackend',
 ]
 
+############### Configuration for AUTH ###############
+
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_ALLOW_ANY_CLASSES": [
@@ -108,14 +110,51 @@ GRAPHQL_JWT = {
     ],
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+
 }
 
-ROOT_URLCONF = 'greenit.urls'
+if DEBUG == True:
+    GRAPHQL_AUTH = {
+        'ALLOW_LOGIN_NOT_VERIFIED': False,
+        "EMAIL_TEMPLATE_VARIABLES": {
+            "protocol": "http",
+            "site_name": "Greenit",
+            "domain": "localhost:3000",
+            "path": "activate"
+        },
+        "REGISTER_MUTATION_FIELDS": ["email", "username",
+                                     "user_category_lvl",
+                                     "user_want_from_greenit",
+                                     "user_category_age"]
+
+    }
+
+if DEBUG == False:
+    GRAPHQL_AUTH = {
+        'ALLOW_LOGIN_NOT_VERIFIED': False,
+        "EMAIL_TEMPLATE_VARIABLES": {
+            "protocol": "https",
+            "site_name": "Greenit",
+            "domain": "greenitcommunity.com",
+            "path": "activate"
+        },
+        "REGISTER_MUTATION_FIELDS": ["email", "username", 
+                                     "user_category_lvl",
+                                     "user_want_from_greenit",
+                                     "user_category_age"]
+    }
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    'ALLOW_LOGIN_NOT_VERIFIED': False,
+}
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +166,10 @@ TEMPLATES = [
         },
     },
 ]
+
+############### OTHER ###############
+
+ROOT_URLCONF = 'greenit.urls'
 
 WSGI_APPLICATION = 'greenit.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -183,12 +226,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-sentry_sdk.init(
-    dsn=config("SENTRY_DSN"),
-    integrations=[DjangoIntegration()],
-    attach_stacktrace=True,
-    traces_sample_rate=1.0,
-)
+if DEBUG == False:
+    sentry_sdk.init(
+        dsn=config("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+        attach_stacktrace=True,
+        traces_sample_rate=1.0,
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
