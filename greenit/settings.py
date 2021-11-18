@@ -206,13 +206,14 @@ AUTH_USER_MODEL = 'user.User'
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_USE_TLS = True
 
+# Faire une vairable 
 ANYMAIL = {
     "MAILJET_API_KEY": config('MAILJET_API_KEY'),
     "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
         "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
 }
 
-DEFAULT_FROM_EMAIL="compiegne92@gmail.com"
+DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
