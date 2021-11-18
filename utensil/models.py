@@ -18,7 +18,9 @@ class Utensil(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=256)
     tags = models.ManyToManyField('tag.Tag')
-
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    
     def __str__(self):
         return self.name
 
@@ -27,6 +29,8 @@ class UtensilAmount(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.CharField(max_length=16)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     utensil = models.ForeignKey(
         'utensil.Utensil',
         on_delete=models.CASCADE,

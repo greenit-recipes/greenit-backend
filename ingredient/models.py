@@ -17,6 +17,8 @@ class Ingredient(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=256)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     image = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )

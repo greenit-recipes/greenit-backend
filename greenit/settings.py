@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'ingredient',
     'recipe',
     'tag',
-    "anymail",
+    'anymail',
     'translation',
     'user',
     'utensil',
@@ -97,7 +97,7 @@ AUTHENTICATION_BACKENDS = [
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
-        "JWT_EXPIRATION_DELTA": timedelta(minutes=1),
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=10),
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
@@ -203,12 +203,12 @@ AWS_S3_FILE_OVERRIDE = False
 STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}'
 AUTH_USER_MODEL = 'user.User'
 
-EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_USE_TLS = True
 
 ANYMAIL = {
-    "MAILJET_API_KEY": "a07e41d62f679d06b021de6878c5f11b",
-    "MAILJET_SECRET_KEY": "1c2868a71c8fe3b45423b4da9e545c23",
+    "MAILJET_API_KEY": config('MAILJET_API_KEY'),
+    "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
         "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
 }
 

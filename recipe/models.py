@@ -55,18 +55,31 @@ class Recipe(models.Model):
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
     tags = models.ManyToManyField('tag.Tag')
-    category = models.ForeignKey( # Cheveux/Maison/Bien etre/Corp
+    category = models.ForeignKey(  # Cheveux/Maison/Bien etre/Corp
         'tag.Category',
         related_name='recipe_category',
         on_delete=models.SET_NULL,
         null=True,
     )
+    likes = models.ManyToManyField(
+        'user.User',
+        related_name='recipe_like'
+    )
+    
+    favorites = models.ManyToManyField(
+        'user.User',
+        related_name='recipe_favorite'
+    )
+    
     ingredients = models.ManyToManyField(
         'ingredient.Ingredient', through='ingredient.IngredientAmount'
     )
     utensils = models.ManyToManyField(
         'utensil.Utensil', through='utensil.UtensilAmount'
     )
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
     # Instructions is an array of instructions
     # Fields in an instruction:
     # index = position in the instruction list

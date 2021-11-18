@@ -10,6 +10,7 @@ from smtplib import SMTPException
 from django.template.loader import get_template, render_to_string
 from django.template import Context
 from django.utils.html import strip_tags
+from graphql_jwt.decorators import login_required
 
 
 class RecipeInput(graphene.InputObjectType):
@@ -36,6 +37,7 @@ class CreateRecipe(graphene.Mutation):
 
     recipe = graphene.Field(RecipeType)
 
+    @login_required
     def mutate(root, info, data):
         recipe = Recipe.objects.create(
             name=data.name,
@@ -59,8 +61,53 @@ class CreateRecipe(graphene.Mutation):
 
         return CreateRecipe(recipe=recipe)
 
+class AddOrRemoveLikeRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, recipeId):
+        print('name -->', recipeId)
+        recipe = Recipe.objects.get(id=recipeId)
+        user = info.context.user
+        try:
+            if recipe.likes.filter(id=user.id).exists():
+                print("Passe la")
+                recipe.likes.remove(user)
+            else:
+                recipe.likes.add(user)
+
+            return AddOrRemoveLikeRecipe(success= True)
+        except Exception as e:
+            print(e)
+            return AddOrRemoveLikeRecipe(success= False)
+
+class AddOrRemoveFavoriteRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, recipeId):
+        recipe = Recipe.objects.get(id=recipeId)
+        user = info.context.user
+        try:
+            if recipe.favorites.filter(id=user.id).exists():
+                print("Passe la")
+                recipe.favorites.remove(user)
+            else:
+                recipe.favorites.add(user)
+
+            return AddOrRemoveFavoriteRecipe(success= True)
+        except Exception as e:
+            print(e)
+            return AddOrRemoveFavoriteRecipe(success= False)
 
 class SendEmailRecipe(graphene.Mutation):
+    
     class Arguments:
         name = graphene.String(required=True)
         userEmail = graphene.String(required=True)
@@ -79,6 +126,7 @@ class SendEmailRecipe(graphene.Mutation):
 
     success = graphene.Boolean()
 
+    @login_required
     def mutate(root, info, **kwarg):
         d = {
             'name': kwarg['name'],

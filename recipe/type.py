@@ -1,5 +1,6 @@
 import graphene
 from graphene.types.generic import GenericScalar
+from graphene.types.scalars import String
 from graphene_django import DjangoObjectType
 
 from ingredient.type import IngredientAmountType
@@ -20,7 +21,43 @@ class RecipeType(DjangoObjectType):
     ingredients = graphene.List(
         graphene.NonNull(IngredientAmountType), required=True, default_value=[]
     )
+    
+    ################ likes ################
+    number_of_likes = graphene.Int()
+    is_liked_by_current_user = graphene.Boolean()
+    
+    @staticmethod
+    def resolve_number_of_likes(self, parent):
+        return self.likes.count()
+    
+    @staticmethod
+    def resolve_is_liked_by_current_user(self, info):
+        if info.context.user.is_authenticated:
+            return self.likes.filter(id=info.context.user.id).exists()
+        else:
+            return False
+        
+    ################ favorites ################
+    number_of_favorites = graphene.Int()
+    is_add_to_favorite_by_current_user = graphene.Boolean()
 
+    @staticmethod
+    def resolve_number_of_favorites(self, parent):
+        return self.favorites.count()    
+    
+    @staticmethod
+    def resolve_is_add_to_favorite_by_current_user(self, info):
+        if info.context.user.is_authenticated:
+            return self.favorites.filter(id=info.context.user.id).exists()
+        else:
+            return False
+        
+    ################ ingredients ################
+    number_of_ingredients = graphene.Int()
+    @staticmethod
+    def resolve_number_of_ingredients(parent, info):
+        return parent.ingredients.through.objects.filter(recipe__id=parent.id).count()
+    
     class Meta:
         model = Recipe
         fields = (
@@ -44,7 +81,6 @@ class RecipeType(DjangoObjectType):
             'expiry',
             'notes_from_author',
         )
-
 
 class RecipeConnection(graphene.relay.Connection):
     class Meta:

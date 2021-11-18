@@ -1,17 +1,20 @@
 from typing import List
+
 import graphene
 from django.db.models import Count, Q
 from graphene.types.generic import GenericScalar
 from graphql import GraphQLError
-
 from ingredient.models import Ingredient
-from recipe.mutations import CreateRecipe, SendEmailRecipe
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
 
+from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
+                              CreateRecipe, SendEmailRecipe)
+
 from .models import Recipe
-from .type import DifficultyFilter, LanguageFilter, RecipeConnection, RecipeType
+from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
+                   RecipeType)
 
 
 class RecipeFilterInput(graphene.InputObjectType):
@@ -96,3 +99,5 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     send_email_recipe = SendEmailRecipe.Field()
+    add_or_remove_like_recipe = AddOrRemoveLikeRecipe.Field()
+    add_or_remove_favorite_recipe = AddOrRemoveFavoriteRecipe.Field()
