@@ -62,6 +62,6 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=140, default='SOME STRING', unique=True)
 
-    USERNAME_FIELD = "username"   # e.g: "username", "email"
+    USERNAME_FIELD = "email"   # e.g: "username", "email"
     EMAIL_FIELD = "email"         # e.g: "email", "primary_email"
     REQUIRED_FIELDS = []

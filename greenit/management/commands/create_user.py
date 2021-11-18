@@ -7,35 +7,17 @@ class Command(BaseCommand):
     help = 'Populate database'
 
     def handle(self, *args, **kwargs):
-        call_command('flush', '--no-input')
+        #call_command('flush', '--no-input')
 
         User = django.contrib.auth.get_user_model()
 
         # Admin
-        userCreated = User.objects.create_user(
-            id=1, name='admin', password='1234', email='admin@gmail.com', is_superuser=True, is_staff=True)
+        User.objects.create_user(
+            id=1, username='admin', password='1234', email='admin@gmail.com', is_superuser=True, is_staff=True)
         self.stdout.write("Admin created successfully")
 
         # Users
-        users = [{
-            'name': 'naruto',
-            'id': 2,
-        }, {
-            'name': 'sasuke',
-            'id': 3,
-        }, {
-            'name': 'madara',
-            'id': 4,
-        }]
-        for user in users:
-            userName = user.get('name')
-            userId = user.get('id')
-            userCreated = User.objects.create_user(
-                id=userId, name=userName, password='1234', email=userName+'@gmail.com', is_superuser=False, is_staff=False)
-            userCreated.save()
-        self.stdout.write("Users created successfully")
-        call_command('loaddata', "db.json") 
-        self.stdout.write("Data loaded successfully")
+
 
         # If u want to add some data for local after ur created ur feature use --> "manage.py dumpdata > data.json"
         # https://docs.djangoproject.com/en/3.2/howto/initial-data/#providing-data-with-fixtures

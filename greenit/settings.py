@@ -10,13 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 '''
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
 import sentry_sdk
 from decouple import config
 from sentry_sdk.integrations.django import DjangoIntegration
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'ingredient',
     'recipe',
     'tag',
+    "anymail",
     'translation',
     'user',
     'utensil',
@@ -96,6 +97,7 @@ AUTHENTICATION_BACKENDS = [
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
+        "JWT_EXPIRATION_DELTA": timedelta(minutes=1),
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
@@ -166,7 +168,6 @@ TEMPLATES = [
         },
     },
 ]
-
 ############### OTHER ###############
 
 ROOT_URLCONF = 'greenit.urls'
@@ -180,10 +181,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'greenit',
-        'USER': config('POSTGRES_DB_USERNAME'),
-        'PASSWORD': config('POSTGRES_DB_PASS'),
-        'HOST': config('POSTGRES_DB_HOST'),
+        'NAME': config('POSTGRES_DB_NAME', "greenit"),
+        'USER': config('POSTGRES_DB_USER', "user"),
+        'PASSWORD': config('POSTGRES_DB_PASS', "password"),
+        'HOST': config('POSTGRES_DB_HOST', "localhost"),
+        "PORT": os.environ.get("POSTGRES_DB_PORT", "5432"),
     }
 }
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -201,12 +203,16 @@ AWS_S3_FILE_OVERRIDE = False
 STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}'
 AUTH_USER_MODEL = 'user.User'
 
-EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
 EMAIL_USE_TLS = True
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT')
+
+ANYMAIL = {
+    "MAILJET_API_KEY": "a07e41d62f679d06b021de6878c5f11b",
+    "MAILJET_SECRET_KEY": "1c2868a71c8fe3b45423b4da9e545c23",
+        "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
+}
+
+DEFAULT_FROM_EMAIL="compiegne92@gmail.com"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

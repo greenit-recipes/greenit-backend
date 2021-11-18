@@ -1,4 +1,5 @@
 import uuid
+from django.contrib.auth.models import User
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -54,7 +55,7 @@ class Recipe(models.Model):
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
     tags = models.ManyToManyField('tag.Tag')
-    category = models.ForeignKey(
+    category = models.ForeignKey( # Cheveux/Maison/Bien etre/Corp
         'tag.Category',
         related_name='recipe_category',
         on_delete=models.SET_NULL,

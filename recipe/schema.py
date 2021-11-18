@@ -1,10 +1,11 @@
+from typing import List
 import graphene
 from django.db.models import Count, Q
 from graphene.types.generic import GenericScalar
 from graphql import GraphQLError
 
 from ingredient.models import Ingredient
-from recipe.mutations import CreateRecipe
+from recipe.mutations import CreateRecipe, SendEmailRecipe
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
@@ -26,12 +27,11 @@ class RecipeFilterInput(graphene.InputObjectType):
     search = graphene.String(required=False)
     is_featured = graphene.Boolean(required=False)
 
-
 class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
         RecipeConnection, filter=RecipeFilterInput(required=False)
     )
-    recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
+    recipe = graphene.Field(RecipeType, id = graphene.String(required=False, default_value=None), userId = graphene.String(required=False, default_value=None))
     filter = graphene.Field(GenericScalar)
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
@@ -85,9 +85,14 @@ class Query(graphene.ObjectType):
                 )
         return recipes.distinct()
 
-    def resolve_recipe(self, info, id):
-        return Recipe.objects.get(id=id)
+    def resolve_recipe(self, info, id=None, userId=None):
+        if (id):
+            return Recipe.objects.get(id=id)
+        if (userId):
+            return Recipe.objects.get(author_id=userId)
+        return
 
 
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
+    send_email_recipe = SendEmailRecipe.Field()
