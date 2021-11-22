@@ -10,13 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 '''
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
 import sentry_sdk
 from decouple import config
 from sentry_sdk.integrations.django import DjangoIntegration
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,7 +53,9 @@ INSTALLED_APPS = [
     'storages',
     'ingredient',
     'recipe',
+    'comment',
     'tag',
+    'anymail',
     'translation',
     'user',
     'utensil',
@@ -92,8 +94,11 @@ AUTHENTICATION_BACKENDS = [
     'graphql_auth.backends.GraphQLAuthBackend',
 ]
 
+############### Configuration for AUTH ###############
+
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=10),
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
@@ -108,14 +113,51 @@ GRAPHQL_JWT = {
     ],
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+
 }
 
-ROOT_URLCONF = 'greenit.urls'
+if DEBUG == True:
+    GRAPHQL_AUTH = {
+        'ALLOW_LOGIN_NOT_VERIFIED': False,
+        "EMAIL_TEMPLATE_VARIABLES": {
+            "protocol": "http",
+            "site_name": "Greenit",
+            "domain": "localhost:3000",
+            "path": "activate"
+        },
+        "REGISTER_MUTATION_FIELDS": ["email", "username",
+                                     "user_category_lvl",
+                                     "user_want_from_greenit",
+                                     "user_category_age"]
+
+    }
+
+if DEBUG == False:
+    GRAPHQL_AUTH = {
+        'ALLOW_LOGIN_NOT_VERIFIED': False,
+        "EMAIL_TEMPLATE_VARIABLES": {
+            "protocol": "https",
+            "site_name": "Greenit",
+            "domain": "greenitcommunity.com",
+            "path": "activate"
+        },
+        "REGISTER_MUTATION_FIELDS": ["email", "username", 
+                                     "user_category_lvl",
+                                     "user_want_from_greenit",
+                                     "user_category_age"]
+    }
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    'ALLOW_LOGIN_NOT_VERIFIED': False,
+}
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +169,9 @@ TEMPLATES = [
         },
     },
 ]
+############### OTHER ###############
+
+ROOT_URLCONF = 'greenit.urls'
 
 WSGI_APPLICATION = 'greenit.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -137,10 +182,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'greenit',
-        'USER': config('POSTGRES_DB_USERNAME'),
-        'PASSWORD': config('POSTGRES_DB_PASS'),
-        'HOST': config('POSTGRES_DB_HOST'),
+        'NAME': config('POSTGRES_DB_NAME', "greenit"),
+        'USER': config('POSTGRES_DB_USER', "user"),
+        'PASSWORD': config('POSTGRES_DB_PASS', "password"),
+        'HOST': config('POSTGRES_DB_HOST', "localhost"),
+        "PORT": os.environ.get("POSTGRES_DB_PORT", "5432"),
     }
 }
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -160,10 +206,15 @@ AUTH_USER_MODEL = 'user.User'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_USE_TLS = True
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT')
+
+# Faire une vairable 
+ANYMAIL = {
+    "MAILJET_API_KEY": config('MAILJET_API_KEY'),
+    "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
+        "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
+}
+
+DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -183,12 +234,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-sentry_sdk.init(
-    dsn=config("SENTRY_DSN"),
-    integrations=[DjangoIntegration()],
-    attach_stacktrace=True,
-    traces_sample_rate=1.0,
-)
+if DEBUG == False:
+    sentry_sdk.init(
+        dsn=config("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+        attach_stacktrace=True,
+        traces_sample_rate=1.0,
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

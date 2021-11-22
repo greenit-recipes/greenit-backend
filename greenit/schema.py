@@ -9,6 +9,7 @@ import translation.schema
 import user.schema
 import utensil.schema
 import utils.schema
+import comment.schema
 from graphql_auth.schema import UserQuery, MeQuery
 
 
@@ -19,6 +20,7 @@ class Query(
     translation.schema.Query,
     user.schema.Query,
     utensil.schema.Query,
+    comment.schema.Query,
     graphene.ObjectType,
 ):
     if settings.DEBUG:
@@ -32,6 +34,7 @@ class Mutation(
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,
+    comment.schema.Mutation,
     utils.schema.Mutation,
 ):
     pass
