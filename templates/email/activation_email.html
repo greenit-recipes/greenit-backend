@@ -1,9 +1,693 @@
 <!-- activation_email.html -->
-
-<h3>{{ site_name }}</h3>
-
-<p>Bonjour, {{ user.username }}!</p>
-
-<p>Lien d'activation:</p>
-
-<p>{{ protocol }}://{{ domain }}/{{ path }}/{{ token }}</p>
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <title>Plus qu'une étape pour compléter ton inscription !</title>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style type="text/css">
+      #outlook a {
+        padding: 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      table,
+      td {
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      p {
+        display: block;
+        margin: 13px 0;
+      }
+    </style>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:AllowPNG />
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <!--[if lte mso 11]>
+      <style type="text/css">
+        .mj-outlook-group-fix {
+          width: 100% !important;
+        }
+      </style>
+    <![endif]-->
+    <style type="text/css">
+      @media only screen and (min-width: 480px) {
+        .mj-column-per-100 {
+          width: 100% !important;
+          max-width: 100%;
+        }
+      }
+    </style>
+    <style media="screen and (min-width:480px)">
+      .moz-text-html .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%;
+      }
+    </style>
+    <style type="text/css">
+      [owa] .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%;
+      }
+    </style>
+    <style type="text/css">
+      @media only screen and (max-width: 480px) {
+        table.mj-full-width-mobile {
+          width: 100% !important;
+        }
+        td.mj-full-width-mobile {
+          width: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="word-spacing: normal; background-color: #ffffff">
+    <div style="background-color: #ffffff">
+      <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+      <div style="margin: 0px auto; max-width: 600px">
+        <table
+          align="center"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          role="presentation"
+          style="width: 100%"
+        >
+          <tbody>
+            <tr>
+              <td
+                style="
+                  direction: ltr;
+                  font-size: 0px;
+                  padding: 20px 0px 20px 0px;
+                  text-align: center;
+                "
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                <div
+                  class="mj-column-per-100 mj-outlook-group-fix"
+                  style="
+                    font-size: 0px;
+                    text-align: left;
+                    direction: ltr;
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 100%;
+                  "
+                >
+                  <table
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="vertical-align: top"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 0px 0px 0px 25px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              style="
+                                text-align: left;
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #5e6977;
+                                  font-family: Arial;
+                                "
+                                >Dernière étape pour l'activation de ton compte
+                                !</span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+      <div
+        style="
+          background: #ffffff;
+          background-color: #ffffff;
+          margin: 0px auto;
+          max-width: 600px;
+        "
+      >
+        <table
+          align="center"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          role="presentation"
+          style="background: #ffffff; background-color: #ffffff; width: 100%"
+        >
+          <tbody>
+            <tr>
+              <td
+                style="
+                  direction: ltr;
+                  font-size: 0px;
+                  padding: 20px 0;
+                  text-align: center;
+                "
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                <div
+                  class="mj-column-per-100 mj-outlook-group-fix"
+                  style="
+                    font-size: 0px;
+                    text-align: left;
+                    direction: ltr;
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 100%;
+                  "
+                >
+                  <table
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="vertical-align: top"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            padding-top: 0px;
+                            padding-bottom: 20px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <h1
+                              style="
+                                text-align: left;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                                font-weight: normal;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  font-size: 28px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #000000;
+                                  font-family: Arial;
+                                "
+                                >Bienvenue parmi nous {{ user.username }} !
+                              </span>
+                            </h1>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              style="
+                                text-align: left;
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #000000;
+                                  font-family: Arial;
+                                "
+                                >Plus qu'une petite étape pour compléter ton
+                                inscription. Confirme ton adresse email en
+                                cliquant sur le lien suivant :
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              class="text-build-content"
+                              data-testid="CtVmO0OeluF"
+                              style="
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  color: #1c80ff;
+                                  font-family: Arial;
+                                  font-size: 15px;
+                                  line-height: 18px;
+                                "
+                                ><u
+                                  >{{ protocol }}://{{ domain }}/{{ path }}/{{ token }}
+                                  </u
+                                ></span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              class="text-build-content"
+                              data-testid="bYRajcVz3Lz"
+                              style="
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  color: #000000;
+                                  font-family: Arial;
+                                  font-size: 15px;
+                                  line-height: 23px;
+                                "
+                                >Si tu as besoin d'aide pour compléter ton
+                                inscription, envoie nous un mail à
+                                hello@greenitcommunity.com.</span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            padding-top: 20px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              style="
+                                text-align: left;
+                                margin: 10px 0;
+                                margin-top: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #000000;
+                                  font-family: Arial;
+                                "
+                                >A très vite,</span
+                              >
+                            </p>
+                            <p
+                              style="
+                                text-align: left;
+                                margin: 10px 0;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #000000;
+                                  font-family: Arial;
+                                "
+                                >L'équipe Greenit</span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="center"
+                          style="
+                            font-size: 0px;
+                            padding: 10px 25px;
+                            word-break: break-word;
+                          "
+                        >
+                          <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="
+                              border-collapse: collapse;
+                              border-spacing: 0px;
+                            "
+                          >
+                            <tbody>
+                              <tr>
+                                <td style="width: 159px">
+                                  <img
+                                    alt=""
+                                    height="auto"
+                                    src="https://01hzw.mjt.lu/tplimg/01hzw/b/1s81u/xp57.png"
+                                    style="
+                                      border: none;
+                                      display: block;
+                                      outline: none;
+                                      text-decoration: none;
+                                      height: auto;
+                                      width: 100%;
+                                      font-size: 13px;
+                                    "
+                                    width="159"
+                                  />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+      <div style="margin: 0px auto; max-width: 600px">
+        <table
+          align="center"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          role="presentation"
+          style="width: 100%"
+        >
+          <tbody>
+            <tr>
+              <td
+                style="
+                  direction: ltr;
+                  font-size: 0px;
+                  padding: 20px 0px 20px 0px;
+                  text-align: center;
+                "
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                <div
+                  class="mj-column-per-100 mj-outlook-group-fix"
+                  style="
+                    font-size: 0px;
+                    text-align: left;
+                    direction: ltr;
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 100%;
+                  "
+                >
+                  <table
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="vertical-align: top"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 0px 20px 0px 20px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              style="
+                                text-align: center;
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  text-align: center;
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #5e6977;
+                                  font-family: Arial;
+                                "
+                                >Ce message a été envoyé à [[EMAIL_TO]] dans le
+                                cadre d'une série d'emails de bienvenue. Vous le
+                                recevez suite à votre inscription à l'une de nos
+                                listes d'envoi.<br />
+                                Pour ne plus recevoir les emails de cette série,
+                                <a
+                                  href="[[WORKFLOW_EXIT_LINK_FR]]"
+                                  style="color: inherit; text-decoration: none"
+                                  target="_blank"
+                                  >merci de vous désinscrire ici</a
+                                >.<br />
+                                Si vous ne souhaitez plus recevoir d'emails
+                                envoyés par cette liste,
+                                <a
+                                  href="[[WORKFLOW_EXIT_UNSUB_LINK_FR]]"
+                                  style="color: inherit; text-decoration: none"
+                                  target="_blank"
+                                  >merci de vous désinscrire ici</a
+                                >.</span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          align="left"
+                          style="
+                            font-size: 0px;
+                            padding: 0px 20px 0px 20px;
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                            word-break: break-word;
+                          "
+                        >
+                          <div
+                            style="
+                              font-family: Arial, sans-serif;
+                              font-size: 13px;
+                              letter-spacing: normal;
+                              line-height: 1;
+                              text-align: left;
+                              color: #000000;
+                            "
+                          >
+                            <p
+                              style="
+                                text-align: center;
+                                margin: 10px 0;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                              "
+                            >
+                              <span
+                                style="
+                                  line-height: 22px;
+                                  text-align: center;
+                                  font-size: 15px;
+                                  letter-spacing: normal;
+                                  text-align: left;
+                                  color: #5e6977;
+                                  font-family: Arial;
+                                "
+                              >
+                                FR</span
+                              >
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--[if mso | IE]></td></tr></table><![endif]-->
+    </div>
+  </body>
+</html>

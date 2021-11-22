@@ -104,7 +104,7 @@ class AddOrRemoveFavoriteRecipe(graphene.Mutation):
             return AddOrRemoveFavoriteRecipe(success= True)
         except Exception as e:
             print(e)
-            return AddOrRemoveFavoriteRecipe(success= False)
+            return AddOrRemoveFavoriteRecipe(success= False)      
 
 class SendEmailRecipe(graphene.Mutation):
     

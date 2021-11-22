@@ -2,6 +2,8 @@ import graphene
 from graphene.types.generic import GenericScalar
 from graphene.types.scalars import String
 from graphene_django import DjangoObjectType
+from comment.models import CommentRecipe
+from comment.type import CommentType
 
 from ingredient.type import IngredientAmountType
 
@@ -21,6 +23,20 @@ class RecipeType(DjangoObjectType):
     ingredients = graphene.List(
         graphene.NonNull(IngredientAmountType), required=True, default_value=[]
     )
+    
+    ################ comments ################
+    def resolve_comments(parent, info):
+        return CommentRecipe.objects.filter(recipe_id=parent.id).order_by('-created_at')
+
+    
+    @staticmethod
+    def resolve_number_of_comments(parent, info):
+        return CommentRecipe.objects.filter(recipe_id=parent.id).count()
+    
+    comments = graphene.List(
+        graphene.NonNull(CommentType), default_value=[]
+    )
+    number_of_comments = graphene.Int()
     
     ################ likes ################
     number_of_likes = graphene.Int()

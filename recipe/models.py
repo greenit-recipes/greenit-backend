@@ -48,7 +48,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
     )
     image = models.FileField(

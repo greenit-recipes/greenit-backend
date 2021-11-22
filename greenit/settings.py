@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'storages',
     'ingredient',
     'recipe',
+    'comment',
     'tag',
     'anymail',
     'translation',
