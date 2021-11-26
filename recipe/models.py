@@ -7,14 +7,11 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from greenit import settings
+from utils.file import getFilePathForUpload
+from utils.validator import file_size_image, file_size_video
 
-
-def get_image_path(instance, filename):
-    if settings.DEBUG:
-        return 'test/recipe/{0}/{1}'.format(instance.id, filename)
-    else:
-        return 'recipe/{0}/{1}'.format(instance.id, filename)
-
+def get_media_path(instance, filename):
+    return getFilePathForUpload(instance.author.username, "recipe", filename)
 
 class Recipe(models.Model):
     class LanguageChoice(models.TextChoices):
@@ -32,7 +29,10 @@ class Recipe(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=512, default='')
     text_associate = models.TextField(max_length=512, null=True, blank=True)
-    video_url = models.CharField(max_length=255)
+    video_url = models.CharField(max_length=255, null=True)
+    video = models.FileField(
+        max_length=255, upload_to=get_media_path, null=True, blank=True, validators=[file_size_video]
+    )
     language = models.CharField(
         max_length=2, choices=LanguageChoice.choices, default=LanguageChoice.FRENCH
     )
@@ -52,7 +52,7 @@ class Recipe(models.Model):
         null=True,
     )
     image = models.FileField(
-        max_length=255, upload_to=get_image_path, null=True, blank=True
+        max_length=255, upload_to=get_media_path, null=False, blank=True, validators=[file_size_image], default=''
     )
     tags = models.ManyToManyField('tag.Tag')
     category = models.ForeignKey(  # Cheveux/Maison/Bien etre/Corp

@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         max_length=255,
                         null=True,
-                        upload_to=recipe.models.get_image_path,
+                        upload_to=recipe.models.get_media_path,
                     ),
                 ),
                 ('expiry', models.CharField(default='', max_length=128)),

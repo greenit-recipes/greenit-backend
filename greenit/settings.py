@@ -128,8 +128,8 @@ if DEBUG == True:
         "REGISTER_MUTATION_FIELDS": ["email", "username",
                                      "user_category_lvl",
                                      "user_want_from_greenit",
-                                     "user_category_age"]
-
+                                     "user_category_age"],
+        "UPDATE_MUTATION_FIELDS": ["image_profile"]
     }
 
 if DEBUG == False:
@@ -144,7 +144,8 @@ if DEBUG == False:
         "REGISTER_MUTATION_FIELDS": ["email", "username", 
                                      "user_category_lvl",
                                      "user_want_from_greenit",
-                                     "user_category_age"]
+                                     "user_category_age"],
+        "UPDATE_MUTATION_FIELDS": ["image_profile"],
     }
 
 GRAPHQL_JWT = {
@@ -169,7 +170,7 @@ TEMPLATES = [
         },
     },
 ]
-############### OTHER ###############
+############### DATABASE ###############
 
 ROOT_URLCONF = 'greenit.urls'
 
@@ -189,19 +190,29 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_DB_PORT", "5432"),
     }
 }
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
-AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': config('AWS_S3_OBJECT_CACHE_CONTROL'),
-}
-AWS_DEFAULT_ACL = 'public-read'
-AWS_LOCATION = config('AWS_LOCATION')
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_FILE_OVERRIDE = False
-STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}'
+
+if DEBUG == True:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_S3_FILE_OVERRIDE = False
+
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'greenit.storage_backends.PublicMediaStorage'
+else:
+    PUBLIC_MEDIA_LOCATION = 'media'
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+
 AUTH_USER_MODEL = 'user.User'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
@@ -218,21 +229,6 @@ DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa E501
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa E501
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa E501
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa E501
-    },
-]
 
 if DEBUG == False:
     sentry_sdk.init(

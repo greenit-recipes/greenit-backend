@@ -4,6 +4,8 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
+from user.mutations import UpdateImageAccount
+
 
 class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()
@@ -24,6 +26,10 @@ class AuthMutation(graphene.ObjectType):
     verify_token = mutations.VerifyToken.Field()
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
+    
+    # update image account
+    update_image_account = UpdateImageAccount.Field()
+
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):
     pass

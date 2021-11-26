@@ -3,13 +3,11 @@ import uuid
 from django.db import models
 
 from greenit import settings
+from utils.file import getFilePathForUpload
 
 
 def get_image_path(instance, filename):
-    if settings.DEBUG:
-        return 'test/ingredient/{0}/{1}'.format(instance.id, filename)
-    else:
-        return 'ingredient/{0}/{1}'.format(instance.id, filename)
+    return getFilePathForUpload(instance.author.username, "ingredient", filename)
 
 
 class Ingredient(models.Model):
