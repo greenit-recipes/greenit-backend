@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         max_length=255,
                         null=True,
-                        upload_to=user.models.get_image_path,
+                        upload_to=user.models.get_media_path,
                     ),
                 ),
                 ('location', models.CharField(max_length=150)),

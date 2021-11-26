@@ -4,6 +4,9 @@ from ingredient.models import Ingredient
 from tag.models import Category, Tag
 from utensil.models import Utensil
 from django.core.mail import EmailMultiAlternatives
+
+from utils.validator import file_size_image, file_size_video
+from utils.file import getFilePathForUpload
 from .models import Recipe
 from .type import DifficultyFilter, LanguageFilter, RecipeType
 from smtplib import SMTPException
@@ -11,13 +14,36 @@ from django.template.loader import get_template, render_to_string
 from django.template import Context
 from django.utils.html import strip_tags
 from graphql_jwt.decorators import login_required
+import boto3
+from botocore.exceptions import NoCredentialsError
+import os
+import io
+from graphene_file_upload.scalars import Upload
+from django.conf import settings
 
+def upload_to_aws(local_file, s3_file, username):
+    s3 = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                      aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
+    try:
+        s3.upload_fileobj(local_file.file, os.getenv('AWS_STORAGE_BUCKET_NAME'), settings.PUBLIC_MEDIA_LOCATION + "/" + getFilePathForUpload(username, 'recipe', s3_file), ExtraArgs={'ACL':'public-read'})
+        return True
+    except FileNotFoundError:
+        print("The file was not found")
+        return False
+    except NoCredentialsError:
+        print("Credentials not available")
+        return False
+    except Exception as e:
+        print("e", e)
+        return False
 
 class RecipeInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
     text_associate = graphene.String()
     video_url = graphene.String()
+    video = graphene.String()
+    image = graphene.String()
     duration = graphene.Int()
     tags = graphene.List(graphene.String)
     ingredients = graphene.List(graphene.String)
@@ -69,12 +95,10 @@ class AddOrRemoveLikeRecipe(graphene.Mutation):
     
     @login_required
     def mutate(root, info, recipeId):
-        print('name -->', recipeId)
         recipe = Recipe.objects.get(id=recipeId)
         user = info.context.user
         try:
             if recipe.likes.filter(id=user.id).exists():
-                print("Passe la")
                 recipe.likes.remove(user)
             else:
                 recipe.likes.add(user)
@@ -96,7 +120,6 @@ class AddOrRemoveFavoriteRecipe(graphene.Mutation):
         user = info.context.user
         try:
             if recipe.favorites.filter(id=user.id).exists():
-                print("Passe la")
                 recipe.favorites.remove(user)
             else:
                 recipe.favorites.add(user)
@@ -117,6 +140,8 @@ class SendEmailRecipe(graphene.Mutation):
         userId = graphene.String(required=True)
         description = graphene.String(required=True)
         duration = graphene.Int(required=True)
+        image = Upload(required=True)
+        video = Upload(required=False)
         tags = graphene.List(graphene.String, required=True)
         ingredients = graphene.List(graphene.String, required=True)
         utensils = graphene.List(graphene.String, required=True)
@@ -127,32 +152,44 @@ class SendEmailRecipe(graphene.Mutation):
     success = graphene.Boolean()
 
     @login_required
-    def mutate(root, info, **kwarg):
+    def mutate(root, info, **kwargs):
+        image = ""
+        video = ""
+        if len(kwargs['image']) > 0:
+            file_size_image(kwargs['image'][0])
+            upload_to_aws(kwargs['image'][0], kwargs['image'][0].name, kwargs['userUsername'])
+            image = os.getenv('AWS_URL_NAME') + getFilePathForUpload(kwargs['userUsername'], 'recipe', kwargs['image'][0].name)
+            
+        if len(kwargs['video']) > 0:
+            file_size_video(kwargs['video'][0])
+            upload_to_aws(kwargs['video'][0], kwargs['video'][0].name, kwargs['userUsername'])  
+            video = os.getenv('AWS_URL_NAME') + getFilePathForUpload(kwargs['userUsername'], 'recipe', kwargs['video'][0].name)        
         d = {
-            'name': kwarg['name'],
-            'userEmail': kwarg['userEmail'],
-            'userUsername': kwarg['userUsername'],
-            'userId': kwarg['userId'],
-            'description': kwarg['description'],
-            'instructions': kwarg['instructions'],
-            'expiry': kwarg['expiry'],
-            'duration': kwarg['duration'],
-            'tags': kwarg['tags'],
-            'ingredients': kwarg['ingredients'],
-            'utensils': kwarg['utensils'],
-            'notes_from_author': kwarg['notes_from_author'],
-            'category': kwarg['category'],
-            'difficulty': kwarg['difficulty']
+            'name': kwargs['name'],
+            'userEmail': kwargs['userEmail'],
+            'userUsername': kwargs['userUsername'],
+            'userId': kwargs['userId'],
+            'image': image,
+            'video': video,
+            'description': kwargs['description'],
+            'instructions': kwargs['instructions'],
+            'expiry': kwargs['expiry'],
+            'duration': kwargs['duration'],
+            'tags': kwargs['tags'],
+            'ingredients': kwargs['ingredients'],
+            'utensils': kwargs['utensils'],
+            'notes_from_author': kwargs['notes_from_author'],
+            'category': kwargs['category'],
+            'difficulty': kwargs['difficulty']
         }
         html_content = get_template('email/create_recette.html').render(
             d
         )
         # create the email, and attach the HTML version as well.
         msg = EmailMultiAlternatives(
-            "Création de recette", "", from_email="hello@greenitcommunity.com", to=["compiegne92@gmail.com", "andrea.ribeiroo@hotmail.fr"])
+            "Création de recette", "", from_email="hello@greenitcommunity.com", to=["compiegne92@gmail.com"])
         msg.attach_alternative(html_content, "text/html")
         try:
-            print('good')
             msg.send()
             return SendEmailRecipe(success=True)
         except Exception as e:

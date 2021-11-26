@@ -22,10 +22,8 @@ class AddCommentToRecipe(graphene.Mutation):
                 author_id= user.id
             )
             recipe.save()
-            print("GOOD")
             return AddCommentToRecipe(success=True)
         except Exception as e:
-            print("PAS BON !!!!!!")
             print(e)
             return AddCommentToRecipe(success=False)
 
@@ -42,7 +40,6 @@ class AddOrRemoveLikeComment(graphene.Mutation):
             comment = CommentRecipe.objects.get(id=commentId)
             user = info.context.user
             if comment.likes.filter(id=user.id).exists():
-                print("Passe la")
                 comment.likes.remove(user)
             else:
                 comment.likes.add(user)

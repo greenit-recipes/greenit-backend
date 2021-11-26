@@ -5,6 +5,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from greenit import settings
+from utils.file import getFilePathForUpload
+from utils.validator import file_size_image
 
 
 class UserCategoryLvl(models.TextChoices):
@@ -29,12 +31,9 @@ class UserCategoryAge(models.TextChoices):
     SENIOR = 'senior', _('Senior')
 
 
-def get_image_path(instance, filename):
-    if settings.DEBUG:
-        return 'test/profile/{0}/{1}'.format(instance.id, filename)
-    else:
-        return 'profile/{0}/{1}'.format(instance.id, filename)
 
+def get_media_path(instance, filename):
+    return getFilePathForUpload(instance.username, "profil", filename)
 
 class User(AbstractUser):
 
@@ -59,7 +58,7 @@ class User(AbstractUser):
         choices=UserCategoryAge.choices,
     )
     image_profile = models.FileField(
-        max_length=255, upload_to=get_image_path, null=True, blank=True
+        max_length=255, upload_to=get_media_path, null=True, blank=True, validators=[file_size_image]
     )
     username = models.CharField(
         max_length=140, default='SOME STRING', unique=True)
