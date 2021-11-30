@@ -63,12 +63,14 @@ class Recipe(models.Model):
     )
     likes = models.ManyToManyField(
         'user.User',
-        related_name='recipe_like'
+        related_name='recipe_like',
+        blank=True
     )
     
     favorites = models.ManyToManyField(
         'user.User',
-        related_name='recipe_favorite'
+        related_name='recipe_favorite',
+        blank=True
     )
     
     ingredients = models.ManyToManyField(
