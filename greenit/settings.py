@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'translation',
     'user',
     'utensil',
+    'newsletter',
     'greenit'
 ]
 
@@ -128,7 +129,7 @@ if DEBUG == True:
         "REGISTER_MUTATION_FIELDS": ["email", "username",
                                      "user_category_lvl",
                                      "user_want_from_greenit",
-                                     "user_category_age"],
+                                     "user_category_age", "is_follow_newsletter"],
         "UPDATE_MUTATION_FIELDS": ["image_profile"]
     }
 
@@ -144,7 +145,7 @@ if DEBUG == False:
         "REGISTER_MUTATION_FIELDS": ["email", "username", 
                                      "user_category_lvl",
                                      "user_want_from_greenit",
-                                     "user_category_age"],
+                                     "user_category_age", "is_follow_newsletter"],
         "UPDATE_MUTATION_FIELDS": ["image_profile"],
     }
 
