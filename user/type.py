@@ -14,6 +14,7 @@ class UserType(DjangoObjectType):
             'location',
             'auto_pay',
             'is_staff',
+            'is_follow_newsletter',
             'is_active',
             'date_joined',
             'username',

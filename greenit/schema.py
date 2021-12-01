@@ -9,6 +9,7 @@ import translation.schema
 import user.schema
 import utensil.schema
 import utils.schema
+import newsletter.schema
 import comment.schema
 from graphql_auth.schema import UserQuery, MeQuery
 
@@ -34,6 +35,7 @@ class Mutation(
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,
+    newsletter.schema.Mutation,
     comment.schema.Mutation,
     utils.schema.Mutation,
 ):

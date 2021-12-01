@@ -45,6 +45,7 @@ class User(AbstractUser):
         default=UserCategoryLvl.DEFAULT_CATEGORY_LVL,
         choices=UserCategoryLvl.choices,
     )
+    is_follow_newsletter = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     user_want_from_greenit = models.CharField(
