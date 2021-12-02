@@ -4,7 +4,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
-from user.mutations import UpdateImageAccount
+from user.mutations import EmailWelcomeNewUser, UpdateImageAccount
 
 
 class AuthMutation(graphene.ObjectType):
@@ -29,6 +29,7 @@ class AuthMutation(graphene.ObjectType):
     
     # update image account
     update_image_account = UpdateImageAccount.Field()
+    email_welcome_new_user = EmailWelcomeNewUser.Field()
 
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):
