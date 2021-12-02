@@ -29,7 +29,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=512, default='')
     text_associate = models.TextField(max_length=512, null=True, blank=True)
-    video_url = models.CharField(max_length=255, null=True)
+    video_url = models.CharField(max_length=255, null=True, blank=True)
     video = models.FileField(
         max_length=255, upload_to=get_media_path, null=True, blank=True, validators=[file_size_video]
     )

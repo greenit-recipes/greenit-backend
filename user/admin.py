@@ -9,4 +9,11 @@ from utils.mixin import ExportCsvMixin
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_filter = ("is_follow_newsletter",)
+    list_display = (
+        'id',
+        'username',
+        'email',
+        'is_follow_newsletter',
+    )
     actions = ["export_as_csv"]
+    search_fields = ['id', 'username']

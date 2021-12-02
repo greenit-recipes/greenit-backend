@@ -56,11 +56,13 @@ class RecipeAdmin(admin.ModelAdmin):
         UtensilAmountInline,
     )
     list_display = (
+        'id',
         'name',
         'difficulty',
-        'duration',
+        'author',
         'rating',
     )
+    search_fields = ['id', 'name', 'tags__name', 'author__email', 'ingredients__name', 'category__name']
     form = RecipeAdminForm
 
 
