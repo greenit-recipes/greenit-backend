@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   web:
+    container_name: core_app
     restart: always
     build: ./
     command: python manage.py runserver 0.0.0.0:8000

@@ -208,8 +208,6 @@ if DEBUG == True:
     DEFAULT_FILE_STORAGE = 'greenit.storage_backends.PublicMediaStorage'
 else:
     PUBLIC_MEDIA_LOCATION = 'media'
-    STATIC_URL = '/staticfiles/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_URL = '/mediafiles/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
