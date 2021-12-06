@@ -5,7 +5,7 @@ services:
     restart: on-failure
     image: nginx:stable
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.beta.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/static
     ports:
       - "80:80"
@@ -24,7 +24,7 @@ services:
     ports:
       - 5000:5000
     env_file:
-      - ./.env.dev
+      - ./.env.beta
     depends_on:
       - db
   db:
@@ -35,7 +35,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - ./.env.dev
+      - ./.env.beta
     environment:
       - POSTGRES_USER=greenit_user
       - POSTGRES_PASSWORD=greenit_psw

@@ -140,12 +140,12 @@ class SendEmailRecipe(graphene.Mutation):
         userId = graphene.String(required=True)
         description = graphene.String(required=True)
         duration = graphene.Int(required=True)
-        image = Upload(required=True)
+        image = Upload(required=False)
         video = Upload(required=False)
         tags = graphene.List(graphene.String, required=True)
         ingredients = graphene.List(graphene.String, required=True)
         utensils = graphene.List(graphene.String, required=True)
-        notes_from_author = graphene.String(required=True)
+        notes_from_author = graphene.String(required=False)
         category = graphene.List(graphene.String, required=True)
         difficulty = DifficultyFilter(required=True)
 
@@ -187,7 +187,7 @@ class SendEmailRecipe(graphene.Mutation):
         )
         # create the email, and attach the HTML version as well.
         msg = EmailMultiAlternatives(
-            "Création de recette", "", from_email="hello@greenitcommunity.com", to=["compiegne92@gmail.com"])
+            "Création de recette", "", from_email="hello@greenitcommunity.com", to=["hello@greenitcommunity.com"])
         msg.attach_alternative(html_content, "text/html")
         try:
             msg.send()

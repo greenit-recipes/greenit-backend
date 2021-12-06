@@ -31,7 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if config('DEBUG') == 'False' else True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com', '0.0.0.0']
 
 
 # Application definition
@@ -256,4 +256,4 @@ CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
