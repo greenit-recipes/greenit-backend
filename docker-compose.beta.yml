@@ -33,7 +33,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - ./.env.dev
+      - ./.env.beta
     environment:
       - POSTGRES_USER=greenit_user
       - POSTGRES_PASSWORD=greenit_psw
