@@ -25,6 +25,8 @@ services:
       - 5000:5000
     env_file:
       - ./.env.beta
+    depends_on:
+      - db  
   db:
     container_name: core_db
     image: postgres:13.0-alpine
