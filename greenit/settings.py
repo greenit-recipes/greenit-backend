@@ -31,8 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if config('DEBUG') == 'False' else True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186']
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186', '*']
 
 # Application definition
 
@@ -75,7 +74,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ['https://greenitcommunity.com']
 # just for development
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
@@ -250,5 +248,6 @@ CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static_file_django/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+CORS_ORIGIN_ALLOW_ALL = True   
