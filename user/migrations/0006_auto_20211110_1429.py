@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='username',
-            field=models.CharField(max_length=140, unique=True),
+            field=models.CharField(max_length=140, unique=True, verbose_name='Username'),
         ),
         migrations.AlterField(
             model_name='user',
