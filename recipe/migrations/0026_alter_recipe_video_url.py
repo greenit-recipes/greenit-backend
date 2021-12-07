@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='recipe',
-            name='video_url',
-            field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+      migrations.RunSQL('UPDATE recipe_recipe SET image = regexp_replace( image, "recipe\/.*\/', 'recipe/admin/", "g")')
     ]
