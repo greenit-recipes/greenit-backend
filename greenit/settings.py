@@ -134,7 +134,7 @@ if DEBUG == False:
         "EMAIL_TEMPLATE_VARIABLES": {
             "protocol": "https",
             "site_name": "Greenit",
-            "domain": "greenitcommunity.com",
+            "domain": os.getenv('DOMAIN_NAME'),
             "path": "activate"
         },
         "REGISTER_MUTATION_FIELDS": ["email", "username", 
