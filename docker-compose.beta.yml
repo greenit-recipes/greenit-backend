@@ -26,6 +26,21 @@ services:
       - 5000:5000
     env_file:
       - ./.env.beta
+    depends_on:
+      - db  
+  db:
+    container_name: core_db
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env.beta
+    environment:
+      - POSTGRES_USER=greenit_user
+      - POSTGRES_PASSWORD=greenit_psw
+      - POSTGRES_DB=greenit    
 
 volumes:
   postgres_data:
