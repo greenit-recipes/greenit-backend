@@ -31,7 +31,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if config('DEBUG') == 'False' else True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1',
+                 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186', '*']
 
 # Application definition
 
@@ -112,37 +113,20 @@ GRAPHQL_JWT = {
 
 }
 
-if DEBUG == True:
-    GRAPHQL_AUTH = {
-        'ALLOW_LOGIN_NOT_VERIFIED': False,
-        "EMAIL_TEMPLATE_VARIABLES": {
-            "protocol": "http",
-            "site_name": "Greenit",
-            "domain": "localhost:3000",
-            "path": "activate"
-        },
-        "REGISTER_MUTATION_FIELDS": ["email", "username",
-                                     "user_category_lvl",
-                                     "user_want_from_greenit",
-                                     "user_category_age", "is_follow_newsletter"],
-        "UPDATE_MUTATION_FIELDS": ["image_profile"]
-    }
-
-if DEBUG == False:
-    GRAPHQL_AUTH = {
-        'ALLOW_LOGIN_NOT_VERIFIED': False,
-        "EMAIL_TEMPLATE_VARIABLES": {
-            "protocol": os.getenv('PROTOCOL'),
-            "site_name": "Greenit",
-            "domain": os.getenv('DOMAIN_NAME'),
-            "path": "activate"
-        },
-        "REGISTER_MUTATION_FIELDS": ["email", "username", 
-                                     "user_category_lvl",
-                                     "user_want_from_greenit",
-                                     "user_category_age", "is_follow_newsletter"],
-        "UPDATE_MUTATION_FIELDS": ["image_profile"],
-    }
+GRAPHQL_AUTH = {
+    'ALLOW_LOGIN_NOT_VERIFIED': False,
+    "EMAIL_TEMPLATE_VARIABLES": {
+        "protocol": os.getenv('PROTOCOL'),
+        "site_name": "Greenit",
+        "domain": os.getenv('DOMAIN_NAME'),
+        "path": "activate"
+    },
+    "REGISTER_MUTATION_FIELDS": ["email", "username",
+                                 "user_category_lvl",
+                                 "user_want_from_greenit",
+                                 "user_category_age", "is_follow_newsletter"],
+    "UPDATE_MUTATION_FIELDS": ["image_profile"],
+}
 
 GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
@@ -187,7 +171,7 @@ DATABASES = {
     }
 }
 
-    # aws settings
+# aws settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -196,7 +180,7 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 AWS_S3_FILE_OVERRIDE = False
 
-    # s3 public media settings
+# s3 public media settings
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'greenit.storage_backends.PublicMediaStorage'
@@ -207,14 +191,14 @@ AUTH_USER_MODEL = 'user.User'
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_USE_TLS = True
 
-# Faire une vairable 
+# Faire une vairable
 ANYMAIL = {
     "MAILJET_API_KEY": config('MAILJET_API_KEY'),
     "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
-        "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
+    "MAILGUN_SENDER_DOMAIN": 'localhost',  # your Mailgun domain, if needed
 }
 
-DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -247,4 +231,4 @@ CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 
 STATIC_URL = '/static_file_django/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-CORS_ORIGIN_ALLOW_ALL = True   
+CORS_ORIGIN_ALLOW_ALL = True
