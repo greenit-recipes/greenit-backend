@@ -78,8 +78,6 @@ MIDDLEWARE = [
 if DEBUG == True:
     CORS_ALLOW_ALL_ORIGINS = True
 
-SESSION_COOKIE_SECURE = True
-
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
     'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware',         'graphql_jwt.middleware.JSONWebTokenMiddleware',
