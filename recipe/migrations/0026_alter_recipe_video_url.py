@@ -10,5 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-      migrations.RunSQL('UPDATE recipe_recipe SET image = regexp_replace( image, "recipe\/.*\/', 'recipe/admin/", "g")')
+      migrations.RunSQL("UPDATE recipe_recipe SET image = regexp_replace( image, 'recipe\/.*\/', 'recipe/admin/', 'g')")
     ]
