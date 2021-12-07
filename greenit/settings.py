@@ -132,7 +132,7 @@ if DEBUG == False:
     GRAPHQL_AUTH = {
         'ALLOW_LOGIN_NOT_VERIFIED': False,
         "EMAIL_TEMPLATE_VARIABLES": {
-            "protocol": "https",
+            "protocol": os.getenv('PROTOCOL'),
             "site_name": "Greenit",
             "domain": os.getenv('DOMAIN_NAME'),
             "path": "activate"

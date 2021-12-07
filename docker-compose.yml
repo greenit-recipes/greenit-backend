@@ -17,7 +17,7 @@ services:
     restart: always
     build: ./
     command: >
-      sh -c "python manage.py collectstatic --no-input &&
+      sh -c "python manage.py collectstatic --no-input && python manage.py migrate &&
           gunicorn greenit.wsgi:application --bind 0.0.0.0:5000"
     volumes:
       - .:/app
