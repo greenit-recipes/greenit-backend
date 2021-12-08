@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-
-# cd ~/app || exit à changer avec un repo qui sera au dessus
-
 ACTION='\033[0;31m'
 NOCOLOR='\033[0m'
 
