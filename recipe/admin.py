@@ -55,6 +55,7 @@ class RecipeAdmin(admin.ModelAdmin):
         IngredientAmountInline,
         UtensilAmountInline,
     )
+    date_hierarchy = 'created_at'
     list_display = (
         'id',
         'name',

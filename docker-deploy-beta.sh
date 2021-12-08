@@ -7,33 +7,36 @@ TARGET='test'
 ACTION='\033[1;90m'
 NOCOLOR='\033[0m'
 
-# Checking if we are on the main branch
-
-echo -e ${ACTION}Checking Git repo
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [ "$BRANCH" != ${TARGET} ]
-then
-  exit 0
-fi
-
-# Checking if the repository is up to date.
-
+echo "Start script"
+git checkout test 
 git fetch
-HEADHASH=$(git rev-parse HEAD)
-UPSTREAMHASH=$(git rev-parse ${TARGET}@{upstream})
-
-if [ "$HEADHASH" == "$UPSTREAMHASH" ]
-then
-  echo -e "${FINISHED}"Current branch is up to date with origin/${TARGET}."${NOCOLOR}"
-  exit 0
-fi
-
 # If that's not the case, we pull the latest changes and we build a new image
 
+echo "Start pull"
 git pull origin main;
 
-# Docker
+# We pull front
+FILE=react/build
+if [ -f "$FILE" ]; then
+    rm -rf react/build
+    mkdir react/
+else 
+    mkdir react/
+fi
+echo "Pull Front"
+git clone https://github.com/greenit-recipes/greenit-webapp
+cp .env.beta.front greenit-webapp/.env
+cd greenit-webapp/
+git checkout develop
+yarn install --frozen-lockfile
+npm run build
+mv build ../react/
+cd ..
+rm -rf greenit-webapp/
 
-docker-compose up -d --build
+# Docker
+echo "Run docker"
+
+docker-compose -f docker-compose.beta.yml up -d --build
 
 exit 0;

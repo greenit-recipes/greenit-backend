@@ -121,3 +121,6 @@ GitHub.sublime-settings
 
 /static
 .env.beta
+.env.beta.dev
+.env.front
+react/
