@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-TARGET='test'
 
 # cd ~/app || exit à changer avec un repo qui sera au dessus
 
@@ -8,11 +7,11 @@ ACTION='\033[0;31m'
 NOCOLOR='\033[0m'
 
 git fetch
-git checkout test 
+git checkout develop
 # If that's not the case, we pull the latest changes and we build a new image
 
 echo -e "${ACTION}Start pull"
-git pull origin test;
+git pull origin develop;
 
 # Docker
 echo -e "${ACTION}Run docker"
