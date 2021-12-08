@@ -50,5 +50,4 @@ npm run build
 mv build ../react/
 cd ..
 rm -rf greenit-webapp/
-echo -e "${ACTION}Beta should work now"
 exit 0;
