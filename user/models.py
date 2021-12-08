@@ -62,7 +62,7 @@ class User(AbstractUser):
         max_length=255, upload_to=get_media_path, null=True, blank=True, validators=[file_size_image]
     )
     username = models.CharField(
-        max_length=140, default='SOME STRING', unique=True)
+        max_length=140, unique=True)
 
     USERNAME_FIELD = "email"   # e.g: "username", "email"
     EMAIL_FIELD = "email"         # e.g: "email", "primary_email"

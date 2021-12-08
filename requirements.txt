@@ -10,6 +10,7 @@ boto3==1.20.17
 botocore==1.23.17
 certifi==2021.10.8
 chardet==4.0.0
+charset-normalizer==2.0.8
 click==8.0.3
 coverage==6.2
 decorator==5.1.0
@@ -29,6 +30,7 @@ graphene-django==2.15.0
 graphene-file-upload==1.3.0
 graphql-core==2.3.2
 graphql-relay==2.0.1
+gunicorn==20.1.0
 idna==3.3
 ipdb==0.13.9
 ipython==7.30.0
@@ -36,6 +38,7 @@ ipython-genutils==0.2.0
 isort==5.10.1
 jedi==0.18.1
 jmespath==0.10.0
+matplotlib-inline==0.1.3
 mypy-extensions==0.4.3
 parso==0.8.3
 pathspec==0.9.0
@@ -45,7 +48,6 @@ platformdirs==2.4.0
 promise==2.3
 prompt-toolkit==3.0.23
 psycopg2==2.9.2
-psycopg2-binary==2.9.2
 ptyprocess==0.7.0
 pycodestyle==2.8.0
 Pygments==2.10.0
@@ -66,7 +68,7 @@ text-unidecode==1.3
 toml==0.10.2
 traitlets==5.1.1
 typed-ast==1.5.0
-typing-extensions==4.0.1
+typing_extensions==4.0.1
 urllib3==1.26.7
 virtualenv==20.10.0
 wcwidth==0.2.5

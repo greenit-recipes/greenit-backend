@@ -34,10 +34,6 @@ class Migration(migrations.Migration):
             model_name='user',
             name='location',
         ),
-        migrations.RemoveField(
-            model_name='user',
-            name='name',
-        ),
         migrations.AddField(
             model_name='user',
             name='first_name',
@@ -47,11 +43,16 @@ class Migration(migrations.Migration):
             model_name='user',
             name='last_name',
             field=models.CharField(blank=True, max_length=150, verbose_name='last name'),
-        ),
-        migrations.AddField(
+        ),    
+        migrations.AlterField(
             model_name='user',
-            name='username',
-            field=models.CharField(default='SOME STRING', max_length=140, unique=True),
+            name='name',
+            field=models.CharField(max_length=140,unique=True, verbose_name='Username'),
+        ),
+        migrations.RenameField(
+            model_name='user',
+            old_name='name',
+            new_name='username',
         ),
         migrations.AlterField(
             model_name='user',

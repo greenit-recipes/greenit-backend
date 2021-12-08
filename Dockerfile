@@ -2,7 +2,8 @@
 FROM python:3.9.6-alpine
 
 # set work directory
-WORKDIR /usr/src/
+WORKDIR /app
+RUN mkdir /app/static
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -16,14 +17,5 @@ RUN apk update \
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-
-# copy entrypoint.sh
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/entrypoint.sh
-RUN chmod +x /usr/src/entrypoint.sh
-
 # copy project
 COPY . .
-
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/entrypoint.sh"]
