@@ -4,39 +4,51 @@ TARGET='test'
 
 # cd ~/app || exit à changer avec un repo qui sera au dessus
 
-ACTION='\033[1;90m'
+ACTION='\033[0;31m'
 NOCOLOR='\033[0m'
 
-echo "Start script"
-git checkout test 
+echo -e "${ACTION}Start script"
 git fetch
+git checkout test 
 # If that's not the case, we pull the latest changes and we build a new image
 
-echo "Start pull"
-git pull origin main;
+echo -e "${ACTION}Start pull"
+git pull origin test;
 
+# Docker
+echo -e "${ACTION}Run docker"
+
+docker stop core_web
+docker stop core_app
+docker-compose -f docker-compose.beta.yml up -d --build
+pwd
+until [ "`docker inspect -f {{.State.Running}} core_app`"=="true" ]; do
+    sleep 0.1;
+done;
 # We pull front
-FILE=react/build
+FILE=./react/build
 if [ -f "$FILE" ]; then
-    rm -rf react/build
-    mkdir react/
+    echo -e "${ACTION}Service, it's not running."
+    rm -rf ./react
+    mkdir react
 else 
-    mkdir react/
+    mkdir react
 fi
-echo "Pull Front"
+echo -e "${ACTION}Pull Front"
+FILE_WEB_APP= ./greenit-webapp
+if [ -f "$FILE_WEB_APP" ]; then
+    echo "------ FILE EXIST DELETE ------"
+    rm -rf FILE_WEB_APP
+fi
 git clone https://github.com/greenit-recipes/greenit-webapp
 cp .env.beta.front greenit-webapp/.env
 cd greenit-webapp/
 git checkout develop
 yarn install --frozen-lockfile
+echo -e "${ACTION}Run build front"
 npm run build
 mv build ../react/
 cd ..
 rm -rf greenit-webapp/
-
-# Docker
-echo "Run docker"
-
-docker-compose -f docker-compose.beta.yml up -d --build
-
+echo -e "${ACTION}Beta should work now"
 exit 0;

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   web:
-    container_name: core_web
+    container_name: core_app
     restart: always
     build: ./
     command: >
