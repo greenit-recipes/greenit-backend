@@ -124,5 +124,4 @@ GitHub.sublime-settings
 .env.beta.dev
 .env.beta.front
 .env.front
-react/
-greenit-webapp/
+react/build/
