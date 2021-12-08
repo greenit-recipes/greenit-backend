@@ -7,7 +7,6 @@ TARGET='test'
 ACTION='\033[0;31m'
 NOCOLOR='\033[0m'
 
-echo -e "${ACTION}Start script"
 git fetch
 git checkout test 
 # If that's not the case, we pull the latest changes and we build a new image
