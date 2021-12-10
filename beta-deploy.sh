@@ -4,7 +4,7 @@ cd /Users/florian/Desktop/greenit-webapp
 git checkout develop
 git pull
 yarn install
-npm run build
+npm run build:beta
 scp -ri /Users/florian/.ssh/greenit-aws-beta.pem /Users/florian/Desktop/greenit-webapp/build ubuntu@13.38.18.186:/var/www/greenit-backend/react
 
 echo "transfert .env"
