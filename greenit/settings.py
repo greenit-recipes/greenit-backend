@@ -168,6 +168,7 @@ DATABASES = {
         'PASSWORD': config('POSTGRES_DB_PASS', "password"),
         'HOST': config('POSTGRES_DB_HOST', "localhost"),
         "PORT": os.environ.get("POSTGRES_DB_PORT", "5432"),
+        "ATOMIC_MUTATIONS": True, # need to do this only for important transaction --> bad performance
     }
 }
 
