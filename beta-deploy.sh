@@ -7,6 +7,10 @@ yarn install
 npm run build:beta
 scp -ri /Users/florian/.ssh/greenit-aws-beta.pem /Users/florian/Desktop/greenit-webapp/build ubuntu@13.38.18.186:/var/www/greenit-backend/react
 
+if [ $1 ]
+then
+    exit 0
+fi
 echo "transfert .env"
 scp -i /Users/florian/.ssh/greenit-aws-beta.pem /Users/florian/Desktop/greenit-backend/.env.beta ubuntu@13.38.18.186:/var/www/greenit-backend
 echo "---------- Run docker deploy ----------"
