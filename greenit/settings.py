@@ -31,8 +31,17 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if config('DEBUG') == 'False' else True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186', '*']
+ALLOWED_HOSTS=['localhost', '127.0.0.1',
+                 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186']
+               
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+       '13.38.18.186',
+       'localhost',
+       '127.0.0.1',
+)
 
 # Application definition
 
@@ -232,4 +241,3 @@ CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 
 STATIC_URL = '/static_file_django/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-CORS_ORIGIN_ALLOW_ALL = True
