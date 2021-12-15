@@ -1,5 +1,7 @@
 echo "---------- BETA SCRIPT DEPLOY ----------"
 echo "Build on local machine - BACK NEED TO BE RUN TO WORK"
+set -e
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
 cd /Users/florian/Desktop/greenit-webapp
 git checkout develop
 git pull
