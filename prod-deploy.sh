@@ -27,6 +27,20 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     then
         exit 0
     fi
+
+    cd /Users/florian/Desktop/greenit-backend
+    git pull
+    if [ -z "$(git status -uno --porcelain)" ]; then 
+        echo "Le dossier est clean (back)"
+    else 
+        echo "Il reste des fichiers pas commit (back)"
+        exit 0
+    fi
+    reslog=$(git log HEAD..origin/develop --oneline)
+    if [[ "${reslog}" != "" ]] ; then
+        echo "Il reste des fichiers pas push ou pull (back)"
+        exit 0
+    fi
     echo "transfert .env"
     scp -i /Users/florian/.ssh/aws_prod.pem /Users/florian/Desktop/greenit-backend/.env.prod ubuntu@15.188.47.157:/var/www/greenit-backend
     echo "---------- Run docker deploy ----------"

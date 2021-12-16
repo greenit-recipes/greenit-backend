@@ -6,12 +6,6 @@ git checkout develop
 
 echo -e "Start pull"
 git pull origin develop;
-if [ -z "$(git status --porcelain)" ]; then 
-    echo "Le dossier est clean (back)"
-else 
-    echo "Il reste des fichiers pas commit"
-    exit 0
-fi
 # Docker
 echo -e "Run docker"
 
