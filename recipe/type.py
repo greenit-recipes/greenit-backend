@@ -93,7 +93,7 @@ class RecipeType(DjangoObjectType):
             'utensils',
             'instructions',
             'url_id',
-            'video_url',
+            'video',
             'expiry',
             'notes_from_author',
         )
