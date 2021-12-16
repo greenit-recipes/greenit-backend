@@ -30,7 +30,7 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     echo "transfert .env"
     scp -i /Users/florian/.ssh/aws_prod.pem /Users/florian/Desktop/greenit-backend/.env.prod ubuntu@15.188.47.157:/var/www/greenit-backend
     echo "---------- Run docker deploy ----------"
-    ssh -ti /Users/florian/.ssh/aws_prod.pem ubuntu@15.188.47.157 "pwd && cd /var/www/greenit-backend && ./docker-deploy-prod.sh"
+    ssh -ti /Users/florian/.ssh/aws_prod.pem ubuntu@15.188.47.157 "pwd && cd /var/www/greenit-backend && git pull && ./docker-deploy-prod.sh"
     echo "---------- END SCRIPT PROD DEPLOY ----------"
 else
     echo "Exit"
