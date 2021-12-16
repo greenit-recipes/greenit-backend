@@ -6,6 +6,7 @@ from ingredient.models import Ingredient, IngredientAmount
 
 
 class IngredientAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
     pass
 
 

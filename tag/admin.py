@@ -7,6 +7,7 @@ from tag.models import Category, Tag
 
 class TagAdmin(admin.ModelAdmin):
     list_per_page = 500
+    search_fields = ["name"]
 
 
 admin.site.register(Tag, TagAdmin)

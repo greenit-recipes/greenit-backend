@@ -17,4 +17,4 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
         'is_follow_newsletter',
     )
     actions = ["export_as_csv"]
-    search_fields = ['id', 'username']
+    search_fields = ['id', 'username', 'email']

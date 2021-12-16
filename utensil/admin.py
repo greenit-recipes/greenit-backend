@@ -4,6 +4,7 @@ from utensil.models import Utensil, UtensilAmount
 
 
 class UtensilAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
     pass
 
 

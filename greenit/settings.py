@@ -201,9 +201,6 @@ ANYMAIL = {
 
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
 if DEBUG == False:
     sentry_sdk.init(
         dsn=config("SENTRY_DSN"),

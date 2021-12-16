@@ -1,53 +1,27 @@
 from django import forms
 from django.contrib import admin
 from django_admin_json_editor import JSONEditorWidget
+from django.contrib.admin.widgets import AutocompleteSelect
 
 from recipe.models import Recipe
+from ingredient.models import Ingredient
 
 
 class IngredientAmountInline(admin.StackedInline):
+    autocomplete_fields = ["ingredient"]
     model = Recipe.ingredients.through
 
 
 class UtensilAmountInline(admin.StackedInline):
+    autocomplete_fields = ["utensil"]
     model = Recipe.utensils.through
-
-
-INSTRUCTION_SCHEMA = {
-    'type': 'array',
-    'title': 'Instructions',
-    'items': {
-        'type': 'object',
-        'required': ['content', 'index', 'timestamp'],
-        'properties': {
-            'content': {
-                'title': 'Some text',
-                'type': 'string',
-                'format': 'textarea',
-            },
-            'index': {
-                'title': 'Index',
-                'type': 'integer',
-            },
-            'timestamp': {
-                'title': 'Timestamp',
-                'type': 'string',
-            },
-        },
-    },
-}
 
 
 class RecipeAdminForm(forms.ModelForm):
     description = forms.CharField( widget=forms.Textarea )
     text_associate = forms.CharField( widget=forms.Textarea, required=False )
     class Meta:
-        model = Recipe
-        fields = '__all__'
         exclude = ['url_id', 'rating']
-        widgets = {
-            'instructions': JSONEditorWidget(INSTRUCTION_SCHEMA, collapsed=False)
-        }
 
 
 class RecipeAdmin(admin.ModelAdmin):
@@ -56,6 +30,7 @@ class RecipeAdmin(admin.ModelAdmin):
         UtensilAmountInline,
     )
     date_hierarchy = 'created_at'
+    autocomplete_fields = ["tags", "author"]
     list_display = (
         'id',
         'name',
