@@ -10,7 +10,7 @@ services:
       - ./react/build:/var/www/react
       - nginx_secrets:/etc/letsencrypt
     env_file:
-      - nginx/.env.nginx  
+      - nginx/.env.nginx:.env.nginx
     ports:
       - "80:80"
       - "443:443"
