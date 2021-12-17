@@ -17,5 +17,5 @@ docker-compose -f docker-compose.beta.yml up -d --build
 until [ "`docker inspect -f {{.State.Running}} core_app`"=="true" ]; do
     sleep 0.1;
 done;
-df -ih
+df . -h
 exit 0;
