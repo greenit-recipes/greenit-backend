@@ -2,10 +2,10 @@ version: '3.8'
 services:
   nginx:
     container_name: core_web
-    restart: on-failure
+    restart: unless-stopped
     image: jonasal/nginx-certbot:latest
     volumes:
-      - ./nginx/nginx.conf/conf.d/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.prod.conf:/etc/nginx/user_conf.d
       - static_volume:/app/static
       - ./react/build:/var/www/react
       - nginx_secrets:/etc/letsencrypt
