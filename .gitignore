@@ -120,9 +120,13 @@ GitHub.sublime-settings
 .vscode/
 
 /static
+/server-script/*
+/server-script
 .env.beta
 .env.prod
 .env.beta.dev
 .env.beta.front
 .env.front
+back-up.sh
+pg_backup.config
 react/build/

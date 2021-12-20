@@ -201,7 +201,7 @@ ANYMAIL = {
 
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
-if DEBUG == False:
+if DEBUG == False and config("SENTRY_DSN"):
     sentry_sdk.init(
         dsn=config("SENTRY_DSN"),
         integrations=[DjangoIntegration()],
