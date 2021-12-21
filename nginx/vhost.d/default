@@ -1,4 +1,3 @@
-http {
     upstream webapp {
         server core_app:5000;
     }   
@@ -35,4 +34,3 @@ http {
             alias /var/www/react/static/;
         }
     }
-}
