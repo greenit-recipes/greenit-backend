@@ -5,6 +5,9 @@ http {
 
     server {
 
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
         location / {
             root /var/www/react;
             proxy_redirect off;
