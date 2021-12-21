@@ -230,3 +230,4 @@ CAPTCHA_SECRET_KEY = config('CAPTCHA_SECRET_KEY')
 STATIC_URL = '/static_file_django/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 CORS_ORIGIN_ALLOW_ALL = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

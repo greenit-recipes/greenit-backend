@@ -130,3 +130,4 @@ GitHub.sublime-settings
 back-up.sh
 pg_backup.config
 react/build/
+.env.prod.proxy-companion
