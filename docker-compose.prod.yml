@@ -23,9 +23,8 @@ services:
       - 80:80
     volumes:
       - static_volume:/app/static
-      - ./react/build:/var/www/react
       - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
+      - ./react/build:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
@@ -37,7 +36,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
+      - ./react/build:/usr/share/nginx/html
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
@@ -46,6 +45,5 @@ services:
 volumes:
   static_volume:
   vhost:
-  html:
   acme:
   certs:
