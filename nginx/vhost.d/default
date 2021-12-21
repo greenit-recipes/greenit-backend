@@ -1,40 +1,28 @@
-http {
+location / {
+    root /var/www/react;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+    try_files $uri /index.html;
+}
 
-    upstream webapp {
-        server core_app:5000;
-    }   
+location /admin/ {
+    proxy_pass http://webapp;
+    proxy_redirect off;
+}
 
-    server {
+location /graphql/ {
+proxy_pass http://webapp$request_uri;
+}
 
-        listen 80;
+location /static_file_django/ {
+    autoindex on;
+    add_header Access-Control-Allow-Origin *;
+    alias /app/static/;
+}
 
-        location / {
-            root /var/www/react;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $host;
-            proxy_redirect off;
-            try_files $uri /index.html;
-        }
-
-        location /admin/ {
-            proxy_pass http://webapp;
-            proxy_redirect off;
-        }
-
-        location /graphql/ {
-        proxy_pass http://webapp$request_uri;
-        }
-
-        location /static_file_django/ {
-            autoindex on;
-            add_header Access-Control-Allow-Origin *;
-            alias /app/static/;
-        }
-
-        location /static/ {
-            autoindex on;
-            add_header Access-Control-Allow-Origin *;
-            alias /var/www/react/static/;
-        }
-    }
+location /static/ {
+    autoindex on;
+    add_header Access-Control-Allow-Origin *;
+    alias /var/www/react/static/;
 }
