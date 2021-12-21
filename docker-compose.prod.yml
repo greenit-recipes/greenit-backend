@@ -24,6 +24,7 @@ services:
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      - ./react/build:/var/www/react
       - ./data/nginx:/etc/nginx/conf.d
     depends_on:
       - web
@@ -36,7 +37,6 @@ services:
 
 volumes:
   static_volume:
-  react/build:
   vhost:
   acme:
   certs:
