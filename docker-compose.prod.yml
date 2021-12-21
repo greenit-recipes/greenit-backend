@@ -44,6 +44,7 @@ services:
 
 volumes:
   static_volume:
+  react/build:
   vhost:
   acme:
   certs:
