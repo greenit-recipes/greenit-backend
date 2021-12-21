@@ -24,7 +24,7 @@ services:
     volumes:
       - static_volume:/app/static
       - certs:/etc/nginx/certs
-      - ./react/build:/usr/share/nginx/html
+      - ./react/build:/var/www/react
       - vhost:/etc/nginx/vhost.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
@@ -36,7 +36,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
-      - ./react/build:/usr/share/nginx/html
+      - ./react/build:/var/www/react
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
