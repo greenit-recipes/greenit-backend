@@ -16,7 +16,9 @@ services:
       - ./.env.prod
   nginx:
     image: nginx:1.15-alpine
-    network_mode: "host"
+    ports:
+      - "80:80"
+      - "443:443"
     restart: always
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     volumes:
