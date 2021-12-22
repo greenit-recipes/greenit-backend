@@ -19,6 +19,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    network_mode: "host"
     restart: always
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     volumes:
@@ -26,8 +27,6 @@ services:
       - ./data/certbot/www:/var/www/certbot
       - ./react/build:/var/www/react
       - ./data/nginx:/etc/nginx/conf.d
-    networks:
-      - db
     depends_on:
       - web
   certbot:
@@ -39,7 +38,3 @@ services:
 
 volumes:
   static_volume:
-
-networks:
-  db:
-    external: true
