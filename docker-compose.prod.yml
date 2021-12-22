@@ -26,6 +26,7 @@ services:
       - ./data/certbot/www:/var/www/certbot
       - ./react/build:/var/www/react
       - ./data/nginx:/etc/nginx/conf.d
+      - static_volume:/app/static
     depends_on:
       - web
   certbot:
@@ -37,4 +38,3 @@ services:
 
 volumes:
   static_volume:
-  certs:
