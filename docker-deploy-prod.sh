@@ -11,9 +11,6 @@ echo -e "Run docker"
 
 docker stop core_web
 docker stop core_app
-sudo docker-compose -f docker-compose.prod.yml up -d --build
-until [ "`docker inspect -f {{.State.Running}} core_app`"=="true" ]; do
-    sleep 0.1;
-done;
+echo -e "RUN DOCKER COMPOSE SUR LE SERVEUR POUR QUE CA MARCHE"
 df . -h
 exit 0;
