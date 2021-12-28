@@ -28,7 +28,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     ingredients = graphene.List(graphene.String, required=False)
     utensils = graphene.List(graphene.String, required=False)
     search = graphene.String(required=False)
-    is_featured = graphene.Boolean(required=False)
+    is_display_home = graphene.Boolean(required=False)
 
 class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
@@ -48,8 +48,8 @@ class Query(graphene.ObjectType):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
                 filter_params['duration__lte'] = filter['duration']
-            if filter.get('is_featured'):
-                filter_params['is_featured'] = filter['is_featured']
+            if filter.get('is_display_home'):
+                filter_params['is_display_home'] = filter['is_display_home']
             if filter.get('tags'):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
             if filter.get('author'):
