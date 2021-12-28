@@ -31,6 +31,7 @@ class RecipeAdmin(admin.ModelAdmin):
     )
     date_hierarchy = 'created_at'
     autocomplete_fields = ["tags", "author"]
+    list_filter = ("is_display_home",)
     list_display = (
         'id',
         'name',

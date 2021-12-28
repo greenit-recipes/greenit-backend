@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 def file_size_image(value):
     limit = 10000000 # 10 mo
     if value.size > limit:
-        raise ValidationError('Image too large. Size should not exceed 10000000 mo.')
+        raise ValidationError('Image too large. Size should not exceed 10 mo.')
     
 def file_size_video(value):    
     limit = 800000000  # 800 mo
