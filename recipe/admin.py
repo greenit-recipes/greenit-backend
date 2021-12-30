@@ -39,7 +39,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'author',
         'rating',
     )
-    search_fields = ['id', 'name', 'tags__name', 'author__email', 'ingredients__name', 'category__name']
+    search_fields = ['name']
     form = RecipeAdminForm
 
 

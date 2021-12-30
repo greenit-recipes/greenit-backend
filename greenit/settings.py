@@ -32,7 +32,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False if config('DEBUG') == 'False' else True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'api.greenitcommunity.com', '0.0.0.0', '13.38.18.186', '*']
+                 'api.greenitcommunity.com', '0.0.0.0', '35.180.133.71', '*']
 
 # Application definition
 
