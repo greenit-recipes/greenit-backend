@@ -19,12 +19,12 @@ from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
-    difficulty = DifficultyFilter(required=False)
+    difficulty = graphene.List(DifficultyFilter, required=False)
     rating = graphene.Int(required=False)
     duration = graphene.Int(required=False)
     author = graphene.String(required=False)
     tags = graphene.List(graphene.String, required=False)
-    category = graphene.String(required=False)
+    category = graphene.List(graphene.String, required=False)
     ingredients = graphene.List(graphene.String, required=False)
     utensils = graphene.List(graphene.String, required=False)
     search = graphene.String(required=False)
@@ -43,10 +43,11 @@ class Query(graphene.ObjectType):
             if filter.get('language'):
                 filter_params['language'] = filter['language']
             if filter.get('difficulty'):
-                filter_params['difficulty'] = filter['difficulty']
+                filter_params['difficulty__in'] = filter['difficulty']
             if filter.get('rating'):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
+                print("filter['duration'] -->", filter['duration'])
                 filter_params['duration__lte'] = filter['duration']
             if filter.get('is_display_home'):
                 filter_params['is_display_home'] = filter['is_display_home']
@@ -59,23 +60,14 @@ class Query(graphene.ObjectType):
                     raise GraphQLError('User matching query does not exist.')
             if filter.get('category'):
                 try:
-                    filter_params['category'] = Category.objects.get(
-                        name=filter.get('category')
-                    )
+                    filter_params['category__name__unaccent__in'] = filter['category']
                 except Category.DoesNotExist:
                     raise GraphQLError('Category matching query does not exist.')
 
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
-        if filter and filter.get('tags'):
-            recipes = (
-                Recipe.objects.filter(**filter_query)
-                .annotate(num_tags=Count('tags'))
-                .filter(num_tags=len(filter.get('tags')))
-            )
-        else:
-            recipes = Recipe.objects.filter(**filter_query)
+        recipes = Recipe.objects.filter(**filter_query).order_by('-created_at')
 
         if filter and filter.get('search'):
             terms = filter.get('search').split()
