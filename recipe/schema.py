@@ -21,11 +21,12 @@ class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     difficulty = graphene.List(DifficultyFilter, required=False)
     rating = graphene.Int(required=False)
-    duration = graphene.Int(required=False)
+    duration = graphene.List(graphene.Int, required=False)
     author = graphene.String(required=False)
     tags = graphene.List(graphene.String, required=False)
     category = graphene.List(graphene.String, required=False)
     ingredients = graphene.List(graphene.String, required=False)
+    number_of_ingredients = graphene.List(graphene.Int, required=False)
     utensils = graphene.List(graphene.String, required=False)
     search = graphene.String(required=False)
     is_display_home = graphene.Boolean(required=False)
@@ -48,11 +49,18 @@ class Query(graphene.ObjectType):
                 filter_params['rating__gte'] = filter['rating']
             if filter.get('duration'):
                 print("filter['duration'] -->", filter['duration'])
-                filter_params['duration__lte'] = filter['duration']
+                for duration in filter['duration']:
+                    filter_params['duration__lte'] = duration
             if filter.get('is_display_home'):
                 filter_params['is_display_home'] = filter['is_display_home']
             if filter.get('tags'):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
+            if filter.get('number_of_ingredients'):
+                for nbrOfIngredient in filter['number_of_ingredients']:
+                    if nbrOfIngredient == 5:
+                        filter_params['ingredients'] = nbrOfIngredient
+                    else:    
+                        filter_params['ingredients'] = nbrOfIngredient
             if filter.get('author'):
                 try:
                     filter_params['author'] = User.objects.get(pk=filter.get('author'))
@@ -68,6 +76,7 @@ class Query(graphene.ObjectType):
 
         filter_query = get_filter(filter) if filter else {}
         recipes = Recipe.objects.filter(**filter_query).order_by('-created_at')
+
 
         if filter and filter.get('search'):
             terms = filter.get('search').split()
