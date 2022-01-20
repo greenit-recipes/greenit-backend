@@ -15,6 +15,7 @@ from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
 from .models import Recipe
 from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
                    RecipeType)
+from django.core import serializers
 
 
 class RecipeFilterInput(graphene.InputObjectType):
@@ -43,10 +44,13 @@ class Query(graphene.ObjectType):
             filter_params = {}
             if filter.get('language'):
                 filter_params['language'] = filter['language']
-            if filter.get('difficulty'):
-                filter_params['difficulty__in'] = filter['difficulty']
             if filter.get('rating'):
                 filter_params['rating__gte'] = filter['rating']
+            if filter.get('category'):
+                try:
+                    filter_params['category__name__unaccent__in'] = filter['category']
+                except Category.DoesNotExist:
+                    raise GraphQLError('Category matching query does not exist.')
             if filter.get('duration'):
                 print("filter['duration'] -->", filter['duration'])
                 for duration in filter['duration']:
@@ -55,23 +59,19 @@ class Query(graphene.ObjectType):
                 filter_params['is_display_home'] = filter['is_display_home']
             if filter.get('tags'):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
+            if filter.get('difficulty'):
+                filter_params['difficulty__in'] = filter['difficulty']
+            if filter.get('author'):
+                try:
+                    filter_params['author'] = User.objects.get(pk=filter.get('author'))
+                except User.DoesNotExist:
+                    raise GraphQLError('User matching query does not exist.')
             if filter.get('number_of_ingredients'):
                 for nbrOfIngredient in filter['number_of_ingredients']:
                     if nbrOfIngredient == 5:
                         filter_params['ingredients'] = nbrOfIngredient
                     else:    
                         filter_params['ingredients'] = nbrOfIngredient
-            if filter.get('author'):
-                try:
-                    filter_params['author'] = User.objects.get(pk=filter.get('author'))
-                except User.DoesNotExist:
-                    raise GraphQLError('User matching query does not exist.')
-            if filter.get('category'):
-                try:
-                    filter_params['category__name__unaccent__in'] = filter['category']
-                except Category.DoesNotExist:
-                    raise GraphQLError('Category matching query does not exist.')
-
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
