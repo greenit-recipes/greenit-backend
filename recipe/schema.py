@@ -21,7 +21,7 @@ from django.core import serializers
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
-    difficulty = graphene.List(graphene.String, required=False)
+    difficulty = graphene.List(DifficultyFilter, required=False)
     rating = graphene.Int(required=False)
     duration = graphene.List(graphene.Int, required=False)
     author = graphene.String(required=False)
