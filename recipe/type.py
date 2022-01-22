@@ -84,6 +84,7 @@ class RecipeType(DjangoObjectType):
             'video_url',
             'language',
             'difficulty',
+            'ingredientamount',
             'rating',
             'duration',
             'author',

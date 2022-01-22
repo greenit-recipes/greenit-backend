@@ -8,6 +8,7 @@ from ingredient.models import Ingredient
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
+from ingredient.models import IngredientAmount
 
 from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
                               CreateRecipe, SendEmailRecipe)
@@ -40,6 +41,7 @@ class Query(graphene.ObjectType):
     filter = graphene.Field(GenericScalar)
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
+        print('-->', filter)
         def get_filter(filter):
             filter_params = {}
             if filter.get('language'):
@@ -52,7 +54,6 @@ class Query(graphene.ObjectType):
                 except Category.DoesNotExist:
                     raise GraphQLError('Category matching query does not exist.')
             if filter.get('duration'):
-                print("filter['duration'] -->", filter['duration'])
                 for duration in filter['duration']:
                     filter_params['duration__lte'] = duration
             if filter.get('is_display_home'):
@@ -67,15 +68,11 @@ class Query(graphene.ObjectType):
                 except User.DoesNotExist:
                     raise GraphQLError('User matching query does not exist.')
             if filter.get('number_of_ingredients'):
-                for nbrOfIngredient in filter['number_of_ingredients']:
-                    if nbrOfIngredient == 5:
-                        filter_params['ingredients'] = nbrOfIngredient
-                    else:    
-                        filter_params['ingredients'] = nbrOfIngredient
+                filter_params['num_ingredient__in'] = filter['number_of_ingredients']
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
-        recipes = Recipe.objects.filter(**filter_query).order_by('-created_at')
+        recipes = Recipe.objects.annotate(num_ingredient=Count('ingredientamount')).filter(**filter_query).order_by('-created_at')
 
 
         if filter and filter.get('search'):
