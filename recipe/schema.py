@@ -21,12 +21,12 @@ from django.core import serializers
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
-    difficulty = DifficultyFilter(required=False)
+    difficulty = graphene.List(graphene.String, required=False)
     rating = graphene.Int(required=False)
     duration = graphene.List(graphene.Int, required=False)
     author = graphene.String(required=False)
     tags = graphene.List(graphene.String, required=False)
-    category = graphene.String(required=False)
+    category = graphene.List(graphene.String, required=False)
     ingredients = graphene.List(graphene.String, required=False)
     number_of_ingredients = graphene.List(graphene.Int, required=False)
     utensils = graphene.List(graphene.String, required=False)
