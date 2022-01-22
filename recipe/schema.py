@@ -8,6 +8,7 @@ from ingredient.models import Ingredient
 from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
+from ingredient.models import IngredientAmount
 
 from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
                               CreateRecipe, SendEmailRecipe)
@@ -15,17 +16,19 @@ from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
 from .models import Recipe
 from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
                    RecipeType)
+from django.core import serializers
 
 
 class RecipeFilterInput(graphene.InputObjectType):
     language = LanguageFilter(required=False)
     difficulty = DifficultyFilter(required=False)
     rating = graphene.Int(required=False)
-    duration = graphene.Int(required=False)
+    duration = graphene.List(graphene.Int, required=False)
     author = graphene.String(required=False)
     tags = graphene.List(graphene.String, required=False)
     category = graphene.String(required=False)
     ingredients = graphene.List(graphene.String, required=False)
+    number_of_ingredients = graphene.List(graphene.Int, required=False)
     utensils = graphene.List(graphene.String, required=False)
     search = graphene.String(required=False)
     is_display_home = graphene.Boolean(required=False)
@@ -38,44 +41,39 @@ class Query(graphene.ObjectType):
     filter = graphene.Field(GenericScalar)
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
+        print('-->', filter)
         def get_filter(filter):
             filter_params = {}
             if filter.get('language'):
                 filter_params['language'] = filter['language']
-            if filter.get('difficulty'):
-                filter_params['difficulty'] = filter['difficulty']
             if filter.get('rating'):
                 filter_params['rating__gte'] = filter['rating']
+            if filter.get('category'):
+                try:
+                    filter_params['category__name__unaccent__in'] = filter['category']
+                except Category.DoesNotExist:
+                    raise GraphQLError('Category matching query does not exist.')
             if filter.get('duration'):
-                filter_params['duration__lte'] = filter['duration']
+                for duration in filter['duration']:
+                    filter_params['duration__lte'] = duration
             if filter.get('is_display_home'):
                 filter_params['is_display_home'] = filter['is_display_home']
             if filter.get('tags'):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
+            if filter.get('difficulty'):
+                filter_params['difficulty__in'] = filter['difficulty']
             if filter.get('author'):
                 try:
                     filter_params['author'] = User.objects.get(pk=filter.get('author'))
                 except User.DoesNotExist:
                     raise GraphQLError('User matching query does not exist.')
-            if filter.get('category'):
-                try:
-                    filter_params['category'] = Category.objects.get(
-                        name=filter.get('category')
-                    )
-                except Category.DoesNotExist:
-                    raise GraphQLError('Category matching query does not exist.')
-
+            if filter.get('number_of_ingredients'):
+                filter_params['num_ingredient__in'] = filter['number_of_ingredients']
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
-        if filter and filter.get('tags'):
-            recipes = (
-                Recipe.objects.filter(**filter_query)
-                .annotate(num_tags=Count('tags'))
-                .filter(num_tags=len(filter.get('tags')))
-            )
-        else:
-            recipes = Recipe.objects.filter(**filter_query)
+        recipes = Recipe.objects.annotate(num_ingredient=Count('ingredientamount')).filter(**filter_query).order_by('-created_at')
+
 
         if filter and filter.get('search'):
             terms = filter.get('search').split()
