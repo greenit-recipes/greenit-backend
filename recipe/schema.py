@@ -80,9 +80,6 @@ class Query(graphene.ObjectType):
             for term in terms:
                 recipes = recipes.filter(
                     Q(name__unaccent__icontains=term)
-                    | Q(description__unaccent__icontains=term)
-                    | Q(tags__name__unaccent__icontains=term)
-                    | Q(category__name__unaccent__icontains=term)
                 )
         return recipes.distinct()
 
