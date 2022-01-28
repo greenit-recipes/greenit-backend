@@ -41,7 +41,6 @@ class Query(graphene.ObjectType):
     filter = graphene.Field(GenericScalar)
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
-        print('-->', filter)
         def get_filter(filter):
             filter_params = {}
             if filter.get('language'):
