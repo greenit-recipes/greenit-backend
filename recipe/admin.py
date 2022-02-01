@@ -5,6 +5,7 @@ from django.contrib.admin.widgets import AutocompleteSelect
 
 from recipe.models import Recipe
 from ingredient.models import Ingredient
+from utils.mixin import ExportCsvMixin
 
 
 class IngredientAmountInline(admin.StackedInline):
@@ -24,13 +25,14 @@ class RecipeAdminForm(forms.ModelForm):
         exclude = ['url_id', 'rating']
 
 
-class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(admin.ModelAdmin, ExportCsvMixin):
     inlines = (
         IngredientAmountInline,
         UtensilAmountInline,
     )
     date_hierarchy = 'created_at'
     autocomplete_fields = ["tags", "author"]
+    actions = ["export_as_csv"]
     list_filter = ("is_display_home",)
     list_display = (
         'id',
