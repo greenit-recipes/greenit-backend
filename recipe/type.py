@@ -96,6 +96,8 @@ class RecipeType(DjangoObjectType):
             'url_id',
             'video',
             'expiry',
+            'title_seo',
+            'meta_description_seo',
             'notes_from_author',
         )
 

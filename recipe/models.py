@@ -28,6 +28,8 @@ class Recipe(models.Model):
     url_id = models.SlugField(unique=True, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(default='')
+    title_seo = models.TextField(default='')
+    meta_description_seo = models.TextField(default='')
     text_associate = models.TextField(max_length=512, null=True, blank=True)
     video_url = models.CharField(max_length=255, null=True, blank=True)
     video = models.FileField(
