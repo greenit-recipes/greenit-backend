@@ -37,6 +37,7 @@ class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
         RecipeConnection, filter=RecipeFilterInput(required=False)
     )
+    all_recipes_seo = graphene.List(RecipeType)
     recipe = graphene.Field(RecipeType, id = graphene.String(required=False, default_value=None), urlId = graphene.String(required=True))
     filter = graphene.Field(GenericScalar)
 
@@ -82,6 +83,9 @@ class Query(graphene.ObjectType):
                 )
         return recipes.distinct()
 
+    def resolve_all_recipes_seo(self, info):
+        return Recipe.objects.all()
+    
     def resolve_recipe(self, info, urlId=None, userId=None):
         if (urlId):
             return Recipe.objects.get(url_id=urlId)
