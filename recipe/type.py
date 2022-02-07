@@ -99,6 +99,7 @@ class RecipeType(DjangoObjectType):
             'title_seo',
             'meta_description_seo',
             'notes_from_author',
+            'created_at'
         )
 
 class RecipeConnection(graphene.relay.Connection):
