@@ -148,6 +148,7 @@ class SendEmailRecipe(graphene.Mutation):
         notes_from_author = graphene.String(required=False)
         category = graphene.List(graphene.String, required=True)
         difficulty = DifficultyFilter(required=True)
+        textAssociate = graphene.String(required=False)
 
     success = graphene.Boolean()
 
@@ -180,7 +181,8 @@ class SendEmailRecipe(graphene.Mutation):
             'utensils': kwargs['utensils'],
             'notes_from_author': kwargs['notes_from_author'],
             'category': kwargs['category'],
-            'difficulty': kwargs['difficulty']
+            'difficulty': kwargs['difficulty'],
+            'textAssociate': kwargs['textAssociate']
         }
         html_content = get_template('email/create_recette.html').render(
             d
