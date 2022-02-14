@@ -32,6 +32,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     utensils = graphene.List(graphene.String, required=False)
     search = graphene.String(required=False)
     is_display_home = graphene.Boolean(required=False)
+    is_order_by_number_like = graphene.Boolean(required=False)
 
 class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
@@ -70,9 +71,8 @@ class Query(graphene.ObjectType):
             if filter.get('number_of_ingredients'):
                 filter_params['num_ingredient__in'] = filter['number_of_ingredients']
             return filter_params
-
         filter_query = get_filter(filter) if filter else {}
-        recipes = Recipe.objects.annotate(num_ingredient=Count('ingredientamount')).filter(**filter_query).order_by('-created_at')
+        recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True)).annotate(num_ingredient=Count('ingredientamount', distinct=True)).filter(**filter_query).order_by('-likesNum' if filter.get('is_order_by_number_like') else '-created_at')
 
 
         if filter and filter.get('search'):
