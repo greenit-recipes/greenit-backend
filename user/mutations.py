@@ -6,33 +6,50 @@ from graphql_auth import mutations
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.decorators import login_required
 from django.core.mail import EmailMessage
+from django.core import serializers
+from django.db import connection
 
+class CreateUserFromAuth(graphene.Mutation):
+    
+    class Arguments:
+        email = graphene.String(required=True)
+        username = graphene.String(required=True)
+        password =  graphene.String(required=True)
+        id_facebook = graphene.String()
+        is_follow_newsletter =  graphene.String()
+    
+    isUserAlreadyCreated = graphene.Boolean()
+    errors = graphene.String()
 
-class AuthMutation(graphene.ObjectType):
-    register = mutations.Register.Field()
-    verify_account = mutations.VerifyAccount.Field()
-    resend_activation_email = mutations.ResendActivationEmail.Field()
-    send_password_reset_email = mutations.SendPasswordResetEmail.Field()
-    password_reset = mutations.PasswordReset.Field()
-    password_set = mutations.PasswordSet.Field()  # For passwordless registration
-    password_change = mutations.PasswordChange.Field()
-    update_account = mutations.UpdateAccount.Field()
-    archive_account = mutations.ArchiveAccount.Field()
-    delete_account = mutations.DeleteAccount.Field()
-    send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()
-    verify_secondary_email = mutations.VerifySecondaryEmail.Field()
-    swap_emails = mutations.SwapEmails.Field()
-    remove_secondary_email = mutations.RemoveSecondaryEmail.Field()
+    def mutate(root, info, email, username, password, id_facebook, is_follow_newsletter):
+      try:
+          # SI email existe déjà dans les users --> dire que l'email existe déjà
+          if User.objects.filter(id_facebook=id_facebook).exists():
+              print("user exist fdp")
+              return CreateUserFromAuth(isUserAlreadyCreated=True)
+          else:
+              print("User not exist")
+              print("email --->", email)
+              print("username --->", username)
+              print("password --->", password)
+              print("id_facebook --->", id_facebook)
+              print("is_follow_newsletter --->", is_follow_newsletter)
+            
+              currentUserCreateByAuth = User(email = email, username = username, password = password, id_facebook = id_facebook, photo_url = "https://graph.facebook.com/{0}/picture".format(id_facebook))
+              print("pASSE ICI 1")
+              currentUserCreateByAuth.set_password(password)
+              currentUserCreateByAuth.save()
+              cursor = connection.cursor()
+              print("pASSE ICI 2")
 
-    # django-graphql-jwt inheritances
-    token_auth = mutations.ObtainJSONWebToken.Field()
-    verify_token = mutations.VerifyToken.Field()
-    refresh_token = mutations.RefreshToken.Field()
-    revoke_token = mutations.RevokeToken.Field()
+              cursor.execute("UPDATE graphql_auth_userstatus SET verified = True WHERE user_id = '{0}'".format(currentUserCreateByAuth.id))
+              print("pASSE ICI 3")
 
-
-class CreateUser(AuthMutation):
-    pass
+              return CreateUserFromAuth(isUserAlreadyCreated=False)
+              
+      except Exception as e:
+          raise Exception(e)
+          print(e)
 
 
 class UpdateImageAccount(graphene.Mutation):
