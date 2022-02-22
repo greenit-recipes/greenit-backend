@@ -33,6 +33,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     search = graphene.String(required=False)
     is_display_home = graphene.Boolean(required=False)
     is_order_by_number_like = graphene.Boolean(required=False)
+    id = graphene.List(graphene.String, required=False)
 
 class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
@@ -63,6 +64,8 @@ class Query(graphene.ObjectType):
                 filter_params['tags__name__unaccent__in'] = filter['tags']
             if filter.get('difficulty'):
                 filter_params['difficulty__in'] = filter['difficulty']
+            if filter.get('id'):
+                filter_params['id__in'] = filter['id']
             if filter.get('author'):
                 try:
                     filter_params['author'] = User.objects.get(pk=filter.get('author'))

@@ -78,3 +78,23 @@ class EmailWelcomeNewUser(graphene.Mutation):
       except Exception as e:
           print(e)
           return EmailWelcomeNewUser(success=False)
+      
+class EmailSharedWithFriend(graphene.Mutation):
+    class Arguments:
+        email = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(root, info, email):
+      try:
+          message = EmailMessage(
+              to=[email]
+          )
+          message.template_id = "3625816"  # Mailjet numeric template id
+          message.send()
+
+          return EmailSharedWithFriend(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailSharedWithFriend(success=False)      
