@@ -113,15 +113,16 @@ class EmailAskQuestionStarterPage(graphene.Mutation):
           print(question)
           message = EmailMessage(
           from_email="hello@greenitcommunity.com",
-          to=["compiegne92@gmail.com"],
-          subject="Your order has shipped",  # subject doesn't support on-the-fly merge fields
+          to=["hello@greenitcommunity.com"],
+          subject="Une personne à posé une question sur la page starter page",  # subject doesn't support on-the-fly merge fields
             # Use [[var:FIELD]] to for on-the-fly merge into plaintext or html body:
-          body="Dear [[var:name]]: Your order [[var:order_no]] shipped on [[var:ship_date]]."
+          body="Email: [[var:email]]: \nQuestion: [[var:question]]"
 
           )
 
           message.merge_global_data = {
-                'ship_date': "May 15",
+                'email': email,
+                'question': question,
           }
           message.send()
 
