@@ -98,3 +98,35 @@ class EmailSharedWithFriend(graphene.Mutation):
       except Exception as e:
           print(e)
           return EmailSharedWithFriend(success=False)      
+
+
+class EmailAskQuestionStarterPage(graphene.Mutation):
+    class Arguments:
+        email = graphene.String(required=True)
+        question = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(root, info, email, question):
+      try:
+          print(email)
+          print(question)
+          message = EmailMessage(
+          from_email="hello@greenitcommunity.com",
+          to=["compiegne92@gmail.com"],
+          subject="Your order has shipped",  # subject doesn't support on-the-fly merge fields
+            # Use [[var:FIELD]] to for on-the-fly merge into plaintext or html body:
+          body="Dear [[var:name]]: Your order [[var:order_no]] shipped on [[var:ship_date]]."
+
+          )
+
+          message.merge_global_data = {
+                'ship_date': "May 15",
+          }
+          message.send()
+
+          return EmailAskQuestionStarterPage(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailAskQuestionStarterPage(success=False)      
