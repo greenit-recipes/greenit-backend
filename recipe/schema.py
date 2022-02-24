@@ -9,6 +9,7 @@ from tag.models import Category, Tag
 from user.models import User
 from utensil.models import Utensil
 from ingredient.models import IngredientAmount
+import random
 
 from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
                               CreateRecipe, SendEmailRecipe)
@@ -33,6 +34,8 @@ class RecipeFilterInput(graphene.InputObjectType):
     search = graphene.String(required=False)
     is_display_home = graphene.Boolean(required=False)
     is_order_by_number_like = graphene.Boolean(required=False)
+    is_random_list = graphene.Boolean(required=False)
+    exclude_id = graphene.String(required=False)
     id = graphene.List(graphene.String, required=False)
 
 class Query(graphene.ObjectType):
@@ -76,7 +79,8 @@ class Query(graphene.ObjectType):
             return filter_params
         filter_query = get_filter(filter) if filter else {}
         recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True)).annotate(num_ingredient=Count('ingredientamount', distinct=True)).filter(**filter_query).order_by('-likesNum' if filter.get('is_order_by_number_like') else '-created_at')
-
+        if filter and filter.get('exclude_id'):
+            recipes = recipes.exclude(id=filter.get('exclude_id'))
 
         if filter and filter.get('search'):
             terms = filter.get('search').split()
@@ -84,7 +88,10 @@ class Query(graphene.ObjectType):
                 recipes = recipes.filter(
                     Q(name__unaccent__icontains=term)
                 )
-        return recipes.distinct()
+        if filter and filter.get('is_random_list'):
+            return random.sample(list(recipes.distinct()), len(recipes)) 
+        else:     
+            return recipes.distinct()
 
     def resolve_all_recipes_seo(self, info):
         return Recipe.objects.all()
