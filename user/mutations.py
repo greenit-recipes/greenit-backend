@@ -27,6 +27,12 @@ class CreateUserFromAuth(graphene.Mutation):
           if User.objects.filter(id_facebook=id_facebook).exists():
               print("user exist fdp")
               return CreateUserFromAuth(isUserAlreadyCreated=True)
+          if User.objects.filter(email=email).exists():
+             return CreateUserFromAuth(errors="L’e-mail est déjà attribué à un compte.")
+          
+          if User.objects.filter(username=username).exists():
+             return CreateUserFromAuth(errors="Le nom d'utilisateur est déjà attribué à un compte.")
+              
           else:
               print("User not exist")
               print("email --->", email)
