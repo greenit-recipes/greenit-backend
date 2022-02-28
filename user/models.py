@@ -63,8 +63,8 @@ class User(AbstractUser):
     )
     username = models.CharField(
         max_length=140, unique=True)
-    id_facebook = models.BigIntegerField(db_index=True, null=True)
-    id_google = models.BigIntegerField(db_index=True, null=True)
+    id_facebook = models.CharField(max_length=255, null=True, blank=True)
+    id_google = models.CharField(max_length=255, null=True, blank=True)
     photo_url = models.CharField(max_length=255, null=True, blank=True)
 
     USERNAME_FIELD = "email"   # e.g: "username", "email"
