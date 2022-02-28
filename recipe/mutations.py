@@ -20,6 +20,7 @@ import os
 import io
 from graphene_file_upload.scalars import Upload
 from django.conf import settings
+from django.core.mail import EmailMessage
 
 def upload_to_aws(local_file, s3_file, username):
     s3 = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
@@ -197,3 +198,33 @@ class SendEmailRecipe(graphene.Mutation):
         except Exception as e:
             print('There was an error sending an email: ', e)
             return SendEmailRecipe(success=False)
+
+class EmailLinkSharedRecipe(graphene.Mutation):
+    class Arguments:
+        link = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(root, info, link):
+      user = info.context.user
+      try:
+          print(user)
+          emailUser = user.email
+          message = EmailMessage(
+          from_email = "hello@greenitcommunity.com",
+          to=["hello@greenitcommunity.com"],
+          subject="Lien d'une recette à récupérer de: " + emailUser,
+          body="Email: [[var:email]]: \nLien: [[var:link]]")
+
+          message.merge_global_data = {
+                'email': emailUser,
+                'link': link,
+          }
+          message.send()
+
+          return EmailLinkSharedRecipe(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailLinkSharedRecipe(success=False)      
