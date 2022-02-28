@@ -25,7 +25,6 @@ class CreateUserFromAuth(graphene.Mutation):
       try:
           # SI email existe déjà dans les users --> dire que l'email existe déjà
           if User.objects.filter(id_facebook=id_facebook).exists():
-              print("user exist fdp")
               return CreateUserFromAuth(isUserAlreadyCreated=True)
           if User.objects.filter(email=email).exists():
              return CreateUserFromAuth(errors="L’e-mail est déjà attribué à un compte.")
@@ -34,23 +33,11 @@ class CreateUserFromAuth(graphene.Mutation):
              return CreateUserFromAuth(errors="Le nom d'utilisateur est déjà attribué à un compte.")
               
           else:
-              print("User not exist")
-              print("email --->", email)
-              print("username --->", username)
-              print("password --->", password)
-              print("id_facebook --->", id_facebook)
-              print("is_follow_newsletter --->", is_follow_newsletter)
-            
               currentUserCreateByAuth = User(email = email, username = username, password = password, id_facebook = id_facebook, photo_url = "https://graph.facebook.com/{0}/picture".format(id_facebook))
-              print("pASSE ICI 1")
               currentUserCreateByAuth.set_password(password)
               currentUserCreateByAuth.save()
               cursor = connection.cursor()
-              print("pASSE ICI 2")
-
               cursor.execute("UPDATE graphql_auth_userstatus SET verified = True WHERE user_id = '{0}'".format(currentUserCreateByAuth.id))
-              print("pASSE ICI 3")
-
               return CreateUserFromAuth(isUserAlreadyCreated=False)
               
       except Exception as e:
