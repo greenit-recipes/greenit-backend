@@ -34,6 +34,7 @@ class RecipeAdmin(admin.ModelAdmin, ExportCsvMixin):
     autocomplete_fields = ["tags", "author"]
     actions = ["export_as_csv"]
     list_filter = ("is_display_home",)
+    ordering = ('-created_at',)
     list_display = (
         'id',
         'name',
