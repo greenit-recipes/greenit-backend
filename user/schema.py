@@ -3,7 +3,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
-from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, CreateUserFromAuth
+from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage
 
 
 class AuthMutation(graphene.ObjectType):
