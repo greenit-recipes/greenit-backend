@@ -78,7 +78,7 @@ class Query(graphene.ObjectType):
                 filter_params['num_ingredient__in'] = filter['number_of_ingredients']
             return filter_params
         filter_query = get_filter(filter) if filter else {}
-        recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True)).annotate(num_ingredient=Count('ingredientamount', distinct=True)).filter(**filter_query).order_by('-likesNum' if filter.get('is_order_by_number_like') else '-created_at')
+        recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True)).annotate(num_ingredient=Count('ingredientamount', distinct=True)).filter(**filter_query).order_by('-likesNum' if filter and filter.get('is_order_by_number_like') else '-created_at')
         if filter and filter.get('exclude_id'):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
