@@ -118,7 +118,6 @@ class AddViewRecipe(graphene.Mutation):
     def mutate(root, info, recipeId):
         recipe = Recipe.objects.get(id=recipeId)
         try:
-            print(recipe.nbr_view)
             recipe.nbr_view += 1
             recipe.save()
             return AddViewRecipe(success=True)
