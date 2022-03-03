@@ -47,6 +47,7 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)], null=True
     )
     duration = models.IntegerField()
+    nbr_view = models.IntegerField(default=0)
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',

@@ -109,6 +109,22 @@ class AddOrRemoveLikeRecipe(graphene.Mutation):
             print(e)
             return AddOrRemoveLikeRecipe(success= False)
 
+class AddViewRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    def mutate(root, info, recipeId):
+        recipe = Recipe.objects.get(id=recipeId)
+        try:
+            recipe.nbr_view += 1
+            recipe.save()
+            return AddViewRecipe(success=True)
+        except Exception as e:
+            print(e)
+            return AddViewRecipe(success=False)        
+
 class AddOrRemoveFavoriteRecipe(graphene.Mutation):
     class Arguments:
         recipeId = graphene.String(required=True)

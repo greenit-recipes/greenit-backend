@@ -38,9 +38,8 @@ class RecipeAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = (
         'id',
         'name',
-        'difficulty',
         'author',
-        'rating',
+        'nbr_view',
     )
     search_fields = ['name']
     form = RecipeAdminForm
