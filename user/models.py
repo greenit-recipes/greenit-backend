@@ -15,14 +15,6 @@ class UserCategoryLvl(models.TextChoices):
     INTERMEDIATE = 'intermediate', _('Intermediate')
     ADVANCED = 'advanced', _('Advanced')
 
-
-class UserWantFromGreenit(models.TextChoices):
-    DEFAULT_USER_WANT_FROM_GREENIT = 'null', _('null')
-    SHARED_TALK = 'shared_talk', _('Shared talk')
-    MEET = 'meet', _('Meet')
-    FIND_INSPIRATION = 'find_inspiration', _('Find inspiration')
-
-
 class UserCategoryAge(models.TextChoices):
     DEFAULT_CATEGORY_AGE = 'null', _('null')
     YOUNG = 'young', _('Young')
@@ -48,11 +40,6 @@ class User(AbstractUser):
     is_follow_newsletter = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-    user_want_from_greenit = models.CharField(
-        max_length=16,
-        default=UserWantFromGreenit.DEFAULT_USER_WANT_FROM_GREENIT,
-        choices=UserWantFromGreenit.choices,
-    )
     user_category_age = models.CharField(
         max_length=15,
         default=UserCategoryAge.DEFAULT_CATEGORY_AGE,
