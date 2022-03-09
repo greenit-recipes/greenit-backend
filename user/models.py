@@ -63,9 +63,9 @@ class User(AbstractUser):
     )
     username = models.CharField(
         max_length=140, unique=True)
-    urls_social_media = models.JSONField(default=dict, null=True)
+    urls_social_media = models.JSONField(default=dict, null=True, blank=True)
     is_creator_profil = models.BooleanField(default=False, null=True)
-    biographie = models.TextField(default='', null=True)
+    biographie = models.TextField(default='', null=True, blank=True)
     id_facebook = models.CharField(max_length=255, null=True, blank=True)
     id_google = models.CharField(max_length=255, null=True, blank=True)
     photo_url = models.CharField(max_length=255, null=True, blank=True)

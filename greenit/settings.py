@@ -127,7 +127,8 @@ GRAPHQL_AUTH = {
                                  "user_want_from_greenit": "String",
                                  "user_category_age": "String", 
                                  "is_follow_newsletter": "String", 
-                                 "urls_social_media": "JSONString", "is_creator_profil": "String", "biographie": "String"},
+                                },
+    "REGISTER_MUTATION_FIELDS_OPTIONAL": { "urls_social_media": "JSONString", "is_creator_profil": "String", "biographie": "String"},
     "UPDATE_MUTATION_FIELDS": { "urls_social_media": "JSONString", "biographie": "String"},
 }
 
