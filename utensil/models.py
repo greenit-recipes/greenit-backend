@@ -3,13 +3,11 @@ import uuid
 from django.db import models
 
 from greenit import settings
+from utils.file import getFilePathForUpload
 
 
 def get_image_path(instance, filename):
-    if settings.DEBUG:
-        return 'test/utensil/{0}/{1}'.format(instance.id, filename)
-    else:
-        return 'utensil/{0}/{1}'.format(instance.id, filename)
+    return getFilePathForUpload("", "utensil", filename)
 
 
 class Utensil(models.Model):
@@ -18,6 +16,9 @@ class Utensil(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=256)
     tags = models.ManyToManyField('tag.Tag')
+    image = models.FileField(
+        max_length=255, upload_to=get_image_path, null=True, blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     

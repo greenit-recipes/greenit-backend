@@ -7,14 +7,15 @@ from utils.file import getFilePathForUpload
 
 
 def get_image_path(instance, filename):
-    return getFilePathForUpload(instance.author.username, "ingredient", filename)
+    return getFilePathForUpload("", "ingredient", filename)
 
 
 class Ingredient(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=40)
-    description = models.CharField(max_length=256)
+    name = models.CharField(max_length=45)
+    description = models.TextField()
+    alternative = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     image = models.FileField(

@@ -92,7 +92,7 @@ class Recipe(models.Model):
     # content = the actual instruction
     instructions = models.JSONField(default=dict)
     expiry = models.CharField(max_length=128, default='')
-    notes_from_author = models.CharField(max_length=256, default='')
+    notes_from_author = models.TextField(default='')
     is_display_home = models.BooleanField(default=False)
 
     def __str__(self):

@@ -3,12 +3,15 @@ from django.conf import settings
 
 
 def getFilePathForUpload(nameUser, type, nameFile = ""):
+    nameFileClean = nameFile.lower().replace(" ", "_")
     if type =="recipe":
-        return nameUser + "/recipe/" + nameFile
+        return nameUser + "/recipe/" + nameFileClean
     if type == "profil":
-        return nameUser + "/profil/" + nameFile
+        return nameUser + "/profil/" + nameFileClean
     if type == "ingredient":
-        return "ingredient/" + nameFile
+        return "ingredient/" + nameFileClean
+    if type == "utensil":
+        return "utensil/" + nameFileClean
 
     
 def getAwsPathMedia(nameUser, nameFile, type):
