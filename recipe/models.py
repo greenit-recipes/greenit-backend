@@ -48,6 +48,10 @@ class Recipe(models.Model):
     )
     duration = models.IntegerField()
     nbr_view = models.IntegerField(default=0)
+    price_min = models.IntegerField(default=0)
+    price_max = models.IntegerField(default=0)
+    money_saved = models.IntegerField(default=0)
+    plastic_saved = models.IntegerField(default=0)
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',

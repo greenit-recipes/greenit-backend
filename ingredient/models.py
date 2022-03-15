@@ -31,6 +31,9 @@ class IngredientAmount(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.CharField(max_length=16)
+    is_supermarket = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False)
+    is_productor = models.BooleanField(default=False)
     ingredient = models.ForeignKey(
         'ingredient.Ingredient',
         on_delete=models.CASCADE,
