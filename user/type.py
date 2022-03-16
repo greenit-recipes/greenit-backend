@@ -17,6 +17,7 @@ class UserType(DjangoObjectType):
             'is_follow_newsletter',
             'is_active',
             'date_joined',
+            'urls_social_media',
             'photo_url',
             'username',
             'dob',

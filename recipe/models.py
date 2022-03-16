@@ -47,11 +47,11 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)], null=True
     )
     duration = models.IntegerField()
-    nbr_view = models.IntegerField(default=0)
-    price_min = models.IntegerField(default=0)
-    price_max = models.IntegerField(default=0)
-    money_saved = models.IntegerField(default=0)
-    plastic_saved = models.IntegerField(default=0)
+    nbr_view = models.IntegerField(default=0, null=True, blank=True,)
+    price_min = models.IntegerField(default=0, null=True, blank=True,)
+    price_max = models.IntegerField(default=0, null=True, blank=True,)
+    money_saved = models.IntegerField(default=0, null=True, blank=True,)
+    plastic_saved = models.IntegerField(default=0, null=True, blank=True,)
     author = models.ForeignKey(
         'user.User',
         related_name='recipe_author',
@@ -62,6 +62,7 @@ class Recipe(models.Model):
         max_length=255, upload_to=get_media_path, null=False, blank=True, validators=[file_size_image], default=''
     )
     tags = models.ManyToManyField('tag.Tag')
+    substances = models.ManyToManyField('substance.Substance')
     category = models.ForeignKey(  # Cheveux/Maison/Bien etre/Corp
         'tag.Category',
         related_name='recipe_category',

@@ -9,6 +9,7 @@ import translation.schema
 import user.schema
 import utensil.schema
 import utils.schema
+import substance.schema
 import newsletter.schema
 import comment.schema
 from graphql_auth.schema import UserQuery, MeQuery
@@ -17,6 +18,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 class Query(
     ingredient.schema.Query,
     recipe.schema.Query,
+    substance.schema.Query,
     tag.schema.Query,
     translation.schema.Query,
     user.schema.Query,
@@ -32,6 +34,7 @@ class Mutation(
     ingredient.schema.Mutation,
     recipe.schema.Mutation,
     tag.schema.Mutation,
+    substance.schema.Mutation,
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,

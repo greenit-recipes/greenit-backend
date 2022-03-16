@@ -18,6 +18,9 @@ class Ingredient(models.Model):
     alternative = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    is_supermarket = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False)
+    is_productor = models.BooleanField(default=False)
     image = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
@@ -31,9 +34,6 @@ class IngredientAmount(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.CharField(max_length=16)
-    is_supermarket = models.BooleanField(default=False)
-    is_online = models.BooleanField(default=False)
-    is_productor = models.BooleanField(default=False)
     ingredient = models.ForeignKey(
         'ingredient.Ingredient',
         on_delete=models.CASCADE,

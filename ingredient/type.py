@@ -9,7 +9,7 @@ from .models import Ingredient, IngredientAmount
 class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'description', 'image', 'tags')
+        fields = ('id', 'name', 'description', 'image', 'tags', 'alternative' ,'is_supermarket' ,'is_online' ,'is_productor')
 
 
 class IngredientAmountType(DjangoObjectType):
@@ -24,7 +24,6 @@ class IngredientAmountType(DjangoObjectType):
 
     def resolve_image(parent, info):
         return parent.ingredient.image
-
     def resolve_description(parent, info):
         return parent.ingredient.description
 
@@ -36,4 +35,4 @@ class IngredientAmountType(DjangoObjectType):
 
     class Meta:
         model = IngredientAmount
-        fields = ('id', 'name', 'description', 'image', 'tags', 'amount')
+        fields = ('id', 'name', 'description', 'image', 'tags', 'amount', 'alternative' ,'is_supermarket' ,'is_online' ,'is_productor')
