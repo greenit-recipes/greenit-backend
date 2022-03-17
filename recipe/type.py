@@ -114,6 +114,7 @@ class RecipeType(DjangoObjectType):
             'title_seo',
             'meta_description_seo',
             'notes_from_author',
+            'nbr_view',
             'created_at'
         )
 

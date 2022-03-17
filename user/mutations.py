@@ -139,3 +139,35 @@ class EmailAskQuestionStarterPage(graphene.Mutation):
       except Exception as e:
           print(e)
           return EmailAskQuestionStarterPage(success=False)      
+      
+class EmailProfilPage(graphene.Mutation):
+    class Arguments:
+        question = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, question):
+      try:
+          userEmail = info.context.user.email
+          print(userEmail)
+          print(question)
+          message = EmailMessage(
+          from_email="hello@greenitcommunity.com",
+          to=["hello@greenitcommunity.com"],
+          subject="CREATEUR profil page --> Une personne à posé une question",  # subject doesn't support on-the-fly merge fields
+            # Use [[var:FIELD]] to for on-the-fly merge into plaintext or html body:
+          body="Email: [[var:email]]: \nQuestion: [[var:question]]"
+          )
+
+          message.merge_global_data = {
+                'email': userEmail,
+                'question': question,
+          }
+          message.send()
+
+          return EmailProfilPage(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailProfilPage(success=False)            

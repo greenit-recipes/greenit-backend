@@ -16,9 +16,11 @@ class UserType(DjangoObjectType):
             'is_staff',
             'is_follow_newsletter',
             'is_active',
+            'urls_social_media',
+            'biographie',
+            'is_creator_profil',
             'date_joined',
             'urls_social_media',
             'photo_url',
             'username',
-            'dob',
         )
