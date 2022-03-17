@@ -6,6 +6,7 @@ from comment.models import CommentRecipe
 from comment.type import CommentType
 
 from ingredient.type import IngredientAmountType
+from utensil.type import UtensilAmountType
 
 from .models import Recipe
 
@@ -21,7 +22,15 @@ class RecipeType(DjangoObjectType):
         return parent.ingredients.through.objects.filter(recipe__id=parent.id)
 
     ingredients = graphene.List(
-        graphene.NonNull(IngredientAmountType), required=True, default_value=[]
+        graphene.NonNull(IngredientAmountType), default_value=[]
+    )
+    
+    
+    def resolve_utensils(parent, info):
+        return parent.utensils.through.objects.filter(recipe__id=parent.id)
+
+    utensils = graphene.List(
+        graphene.NonNull(UtensilAmountType), default_value=[]
     )
     
     ################ comments ################
@@ -84,12 +93,18 @@ class RecipeType(DjangoObjectType):
             'video_url',
             'language',
             'difficulty',
-            'ingredientamount',
+            'ingredients',
             'rating',
             'duration',
             'author',
             'image',
             'tags',
+            'substances',
+            'nbr_view',
+            'price_min',
+            'price_max',
+            'money_saved',
+            'plastic_saved',
             'category',
             'utensils',
             'instructions',

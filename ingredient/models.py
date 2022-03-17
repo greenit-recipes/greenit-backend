@@ -18,6 +18,9 @@ class Ingredient(models.Model):
     alternative = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    is_supermarket = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False)
+    is_productor = models.BooleanField(default=False)
     image = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )

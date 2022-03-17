@@ -5,9 +5,9 @@ from django.conf import settings
 def getFilePathForUpload(nameUser, type, nameFile = ""):
     nameFileClean = nameFile.lower().replace(" ", "_")
     if type =="recipe":
-        return nameUser + "/recipe/" + nameFileClean
+        return "user/" + nameUser + "/recipe/" + nameFileClean
     if type == "profil":
-        return nameUser + "/profil/" + nameFileClean
+        return "user/" + nameUser + "/profil/" + nameFileClean
     if type == "ingredient":
         return "/ingredient/" + nameFileClean
     if type == "utensil":

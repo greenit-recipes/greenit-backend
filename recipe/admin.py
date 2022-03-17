@@ -31,7 +31,7 @@ class RecipeAdmin(admin.ModelAdmin, ExportCsvMixin):
         UtensilAmountInline,
     )
     date_hierarchy = 'created_at'
-    autocomplete_fields = ["tags", "author"]
+    autocomplete_fields = ["tags", "author", 'substances']
     actions = ["export_as_csv"]
     list_filter = ("is_display_home",)
     ordering = ('-created_at',)

@@ -119,8 +119,6 @@ class EmailAskQuestionStarterPage(graphene.Mutation):
 
     def mutate(root, info, email, question):
       try:
-          print(email)
-          print(question)
           message = EmailMessage(
           from_email="hello@greenitcommunity.com",
           to=["hello@greenitcommunity.com"],
