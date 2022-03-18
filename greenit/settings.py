@@ -124,7 +124,6 @@ GRAPHQL_AUTH = {
     },
     "REGISTER_MUTATION_FIELDS": {"email": "String", "username": "String",
                                  "user_category_lvl": "String",
-                                 "user_want_from_greenit": "String",
                                  "user_category_age": "String", 
                                  "is_follow_newsletter": "String", 
                                 },
