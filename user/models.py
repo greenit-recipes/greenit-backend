@@ -33,6 +33,8 @@ class User(AbstractUser):
     email = models.EmailField(
         blank=False, max_length=254, verbose_name="email address", unique=True)
     user_category_lvl = models.CharField(
+        null=True, 
+        blank=True,
         max_length=12,
         default=UserCategoryLvl.DEFAULT_CATEGORY_LVL,
         choices=UserCategoryLvl.choices,
@@ -41,6 +43,8 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     user_category_age = models.CharField(
+        null=True, 
+        blank=True,
         max_length=15,
         default=UserCategoryAge.DEFAULT_CATEGORY_AGE,
         choices=UserCategoryAge.choices,
