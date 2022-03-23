@@ -9,7 +9,7 @@ from utils.mixin import ExportCsvMixin
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
     date_hierarchy = 'created_at'
-    list_filter = ("is_follow_newsletter",)
+    list_filter = ("is_follow_newsletter", "is_creator_profil")
     list_display = (
         'id',
         'username',
