@@ -68,6 +68,7 @@ class Recipe(models.Model):
         related_name='recipe_category',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True
     )
     likes = models.ManyToManyField(
         'user.User',
