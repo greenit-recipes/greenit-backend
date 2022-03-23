@@ -21,12 +21,13 @@ import io
 from graphene_file_upload.scalars import Upload
 from django.conf import settings
 from django.core.mail import EmailMessage
+import asyncio
 
-def upload_to_aws(local_file, s3_file, username):
+async def upload_to_aws(local_file, s3_file, username):
     s3 = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
                       aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
     try:
-        s3.upload_fileobj(local_file.file, os.getenv('AWS_STORAGE_BUCKET_NAME'), settings.PUBLIC_MEDIA_LOCATION + "/" + getFilePathForUpload(username, 'recipe', s3_file), ExtraArgs={'ACL':'public-read'})
+        await s3.upload_fileobj(local_file.file, os.getenv('AWS_STORAGE_BUCKET_NAME'), settings.PUBLIC_MEDIA_LOCATION + "/" + getFilePathForUpload(username, 'recipe', s3_file), ExtraArgs={'ACL':'public-read'})
         return True
     except FileNotFoundError:
         print("The file was not found")
