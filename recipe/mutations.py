@@ -159,7 +159,7 @@ class SendEmailRecipe(graphene.Mutation):
         description = graphene.String(required=True)
         duration = graphene.Int(required=True)
         image = Upload(required=False)
-        video = Upload(required=False)
+        #video = Upload(required=False)
         tags = graphene.List(graphene.String, required=True)
         ingredients = graphene.List(graphene.String, required=True)
         utensils = graphene.List(graphene.String, required=True)
@@ -167,31 +167,33 @@ class SendEmailRecipe(graphene.Mutation):
         category = graphene.List(graphene.String, required=True)
         difficulty = DifficultyFilter(required=True)
         textAssociate = graphene.String(required=False)
+        videoUrl = graphene.String(required=False)
 
     success = graphene.Boolean()
 
     @login_required
     def mutate(root, info, **kwargs):
         image = ""
-        video = ""
+        #video = ""
         if len(kwargs['image']) > 0:
             file_size_image(kwargs['image'][0])
             upload_to_aws(kwargs['image'][0], kwargs['image'][0].name, kwargs['userUsername'])
             image = os.getenv('AWS_URL_NAME') + getFilePathForUpload(kwargs['userUsername'], 'recipe', kwargs['image'][0].name)
             
-        if len(kwargs['video']) > 0:
-            file_size_video(kwargs['video'][0])
-            upload_to_aws(kwargs['video'][0], kwargs['video'][0].name, kwargs['userUsername'])  
-            video = os.getenv('AWS_URL_NAME') + getFilePathForUpload(kwargs['userUsername'], 'recipe', kwargs['video'][0].name)        
+        #if len(kwargs['video']) > 0:
+        #    file_size_video(kwargs['video'][0])
+        #    upload_to_aws(kwargs['video'][0], kwargs['video'][0].name, kwargs['userUsername'])  
+        #    video = os.getenv('AWS_URL_NAME') + getFilePathForUpload(kwargs['userUsername'], 'recipe', kwargs['video'][0].name)        
         d = {
             'name': kwargs['name'],
             'userEmail': kwargs['userEmail'],
             'userUsername': kwargs['userUsername'],
             'userId': kwargs['userId'],
             'image': image,
-            'video': video,
+            #'video': video,
             'description': kwargs['description'],
             'instructions': kwargs['instructions'],
+            'videoUrl': kwargs['videoUrl'],
             'expiry': kwargs['expiry'],
             'duration': kwargs['duration'],
             'tags': kwargs['tags'],
