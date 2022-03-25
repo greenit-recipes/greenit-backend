@@ -61,8 +61,8 @@ class Recipe(models.Model):
     image = models.FileField(
         max_length=255, upload_to=get_media_path, null=False, blank=True, validators=[file_size_image], default=''
     )
-    tags = models.ManyToManyField('tag.Tag')
-    substances = models.ManyToManyField('substance.Substance')
+    tags = models.ManyToManyField('tag.Tag', blank=True)
+    substances = models.ManyToManyField('substance.Substance', blank=True)
     category = models.ForeignKey(  # Cheveux/Maison/Bien etre/Corp
         'tag.Category',
         related_name='recipe_category',

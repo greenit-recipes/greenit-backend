@@ -9,9 +9,9 @@ def getFilePathForUpload(nameUser, type, nameFile = ""):
     if type == "profil":
         return "user/" + nameUser + "/profil/" + nameFileClean
     if type == "ingredient":
-        return "/ingredient/" + nameFileClean
+        return "ingredient/" + nameFileClean
     if type == "utensil":
-        return "/utensil/" + nameFileClean
+        return "utensil/" + nameFileClean
 
     
 def getAwsPathMedia(nameUser, nameFile, type):
