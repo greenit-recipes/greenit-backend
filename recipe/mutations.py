@@ -223,13 +223,11 @@ class EmailLinkSharedRecipe(graphene.Mutation):
         link = graphene.String(required=True)
 
     success = graphene.Boolean()
-
-    @login_required
+    
     def mutate(root, info, link):
-      user = info.context.user
+      user = getattr(info.context, 'user', '-')
       try:
-          print(user)
-          emailUser = user.email
+          emailUser = getattr(user, 'email', '-')  or "-"
           message = EmailMessage(
           from_email = "hello@greenitcommunity.com",
           to=["hello@greenitcommunity.com"],
