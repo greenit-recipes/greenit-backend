@@ -12,7 +12,7 @@ from ingredient.models import IngredientAmount
 import random
 
 from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe, AddOrRemoveMadeRecipe,
-                              CreateRecipe, SendEmailRecipe, EmailLinkSharedRecipe, AddViewRecipe)
+                              CreateRecipe, SendEmailRecipe, EmailLinkSharedRecipe, AddViewRecipe, PlusOrLessMadeRecipe)
 
 from .models import Recipe
 from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
@@ -111,4 +111,5 @@ class Mutation(graphene.ObjectType):
     add_or_remove_like_recipe = AddOrRemoveLikeRecipe.Field()
     add_or_remove_made_recipe = AddOrRemoveMadeRecipe.Field()
     add_view_recipe = AddViewRecipe.Field()
+    plus_or_less_made_recipe = PlusOrLessMadeRecipe.Field()
     add_or_remove_favorite_recipe = AddOrRemoveFavoriteRecipe.Field()

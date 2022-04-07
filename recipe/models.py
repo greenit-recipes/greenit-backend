@@ -111,7 +111,7 @@ class Recipe(models.Model):
      
 class Made(models.Model):
     recipe = models.ForeignKey('recipe.Recipe', on_delete=models.CASCADE, related_name='recipe_made')
-    amount = models.CharField(max_length=16)
+    amount = models.IntegerField()
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='recipe_made_user')    
     created_at = models.DateTimeField(auto_now_add=True, null=True)    
     updated_at = models.DateTimeField(auto_now=True, null=True)

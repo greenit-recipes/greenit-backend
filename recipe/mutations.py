@@ -111,7 +111,8 @@ class AddOrRemoveLikeRecipe(graphene.Mutation):
         except Exception as e:
             print(e)
             return AddOrRemoveLikeRecipe(success= False)
-        
+
+########### MADE ###########        
 class AddOrRemoveMadeRecipe(graphene.Mutation):
     class Arguments:
         recipeId = graphene.String(required=True)
@@ -136,6 +137,33 @@ class AddOrRemoveMadeRecipe(graphene.Mutation):
         except Exception as e:
             print(e)
             return AddOrRemoveMadeRecipe(success= False)        
+
+class PlusOrLessMadeRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+        isLess = graphene.Boolean(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, recipeId, isLess):
+        user = info.context.user
+        made = Made.objects.get(user_id=user.id, recipe_id=recipeId)
+        print(made.amount)
+        try:
+            if made.amount == 1 and isLess:
+               Made.objects.get(user_id=user.id, recipe_id=recipeId).delete()
+            elif isLess:
+                made.amount -= 1     
+                made.save()
+            else:
+                made.amount += 1     
+                made.save() 
+            
+            return AddOrRemoveMadeRecipe(success= True)
+        except Exception as e:
+            print(e)
+            return AddOrRemoveMadeRecipe(success= False)            
 
 class AddViewRecipe(graphene.Mutation):
     class Arguments:

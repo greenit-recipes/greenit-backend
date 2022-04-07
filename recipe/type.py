@@ -99,7 +99,7 @@ class RecipeType(DjangoObjectType):
     @staticmethod
     def resolve_is_made_by_current_user(self, info):
         if info.context.user.is_authenticated:
-            return self.made.filter(user_id=info.context.user.id).exists()
+            return Made.objects.filter(user_id=info.context.user.id, recipe_id=self.id).exists()
         else:
             return False
         
