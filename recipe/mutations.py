@@ -7,7 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 
 from utils.validator import file_size_image, file_size_video
 from utils.file import getFilePathForUpload
-from .models import Recipe
+from .models import Made, Recipe
 from .type import DifficultyFilter, LanguageFilter, RecipeType
 from smtplib import SMTPException
 from django.template.loader import get_template, render_to_string
@@ -19,6 +19,8 @@ from botocore.exceptions import NoCredentialsError
 import os
 import io
 from graphene_file_upload.scalars import Upload
+from django.core import serializers
+
 from django.conf import settings
 from django.core.mail import EmailMessage
 import asyncio
@@ -109,6 +111,59 @@ class AddOrRemoveLikeRecipe(graphene.Mutation):
         except Exception as e:
             print(e)
             return AddOrRemoveLikeRecipe(success= False)
+
+########### MADE ###########        
+class AddOrRemoveMadeRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, recipeId):
+        user = info.context.user
+        made = Made.objects.filter(user_id=user.id, recipe_id=recipeId)
+        try:
+            if made.exists():
+               Made.objects.get(user_id=user.id, recipe_id=recipeId).delete()
+            else:
+               Made.objects.create(
+                   amount=1,
+                   recipe_id= recipeId,
+                   user_id= user.id
+               )
+
+            return AddOrRemoveMadeRecipe(success= True)
+        except Exception as e:
+            print(e)
+            return AddOrRemoveMadeRecipe(success= False)        
+
+class PlusOrLessMadeRecipe(graphene.Mutation):
+    class Arguments:
+        recipeId = graphene.String(required=True)
+        isLess = graphene.Boolean(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, recipeId, isLess):
+        user = info.context.user
+        made = Made.objects.get(user_id=user.id, recipe_id=recipeId)
+        print(made.amount)
+        try:
+            if made.amount == 1 and isLess:
+               Made.objects.get(user_id=user.id, recipe_id=recipeId).delete()
+            elif isLess:
+                made.amount -= 1     
+                made.save()
+            else:
+                made.amount += 1     
+                made.save() 
+            
+            return AddOrRemoveMadeRecipe(success= True)
+        except Exception as e:
+            print(e)
+            return AddOrRemoveMadeRecipe(success= False)            
 
 class AddViewRecipe(graphene.Mutation):
     class Arguments:

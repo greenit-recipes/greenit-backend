@@ -8,11 +8,20 @@ from comment.type import CommentType
 from ingredient.type import IngredientAmountType
 from utensil.type import UtensilAmountType
 
-from .models import Recipe
+from .models import Made, Recipe
 
 # Imports language choices from .models to prevent code duplication
 LanguageFilter = graphene.Enum.from_enum(Recipe.LanguageChoice)
 DifficultyFilter = graphene.Enum.from_enum(Recipe.DifficultyChoice)
+
+class MadeType(DjangoObjectType):
+    class Meta:
+        model = Made
+        fields = (
+            'recipe',
+            'amount',
+            'user'
+        )
 
 
 class RecipeType(DjangoObjectType):
@@ -47,6 +56,13 @@ class RecipeType(DjangoObjectType):
     )
     number_of_comments = graphene.Int()
     
+    ################ substance ################
+    number_of_substances = graphene.Int()
+    
+    @staticmethod
+    def resolve_number_of_substances(self, parent):
+        return self.substances.count()
+    
     ################ likes ################
     number_of_likes = graphene.Int()
     is_liked_by_current_user = graphene.Boolean()
@@ -74,6 +90,16 @@ class RecipeType(DjangoObjectType):
     def resolve_is_add_to_favorite_by_current_user(self, info):
         if info.context.user.is_authenticated:
             return self.favorites.filter(id=info.context.user.id).exists()
+        else:
+            return False
+        
+     ################ mades ################
+    is_made_by_current_user = graphene.Boolean()
+
+    @staticmethod
+    def resolve_is_made_by_current_user(self, info):
+        if info.context.user.is_authenticated:
+            return Made.objects.filter(user_id=info.context.user.id, recipe_id=self.id).exists()
         else:
             return False
         
