@@ -135,7 +135,6 @@ class AddOrRemoveMadeRecipe(graphene.Mutation):
 
             return AddOrRemoveMadeRecipe(success= True)
         except Exception as e:
-            print(e)
             return AddOrRemoveMadeRecipe(success= False)        
 
 class PlusOrLessMadeRecipe(graphene.Mutation):
@@ -149,7 +148,6 @@ class PlusOrLessMadeRecipe(graphene.Mutation):
     def mutate(root, info, recipeId, isLess):
         user = info.context.user
         made = Made.objects.get(user_id=user.id, recipe_id=recipeId)
-        print(made.amount)
         try:
             if made.amount == 1 and isLess:
                Made.objects.get(user_id=user.id, recipe_id=recipeId).delete()
