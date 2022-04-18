@@ -5,7 +5,7 @@ from graphene_django import DjangoObjectType
 from comment.models import CommentRecipe
 from comment.type import CommentType
 
-from ingredient.type import IngredientAmountType
+from ingredient.type import IngredientAmountType, IngredientType
 from utensil.type import UtensilAmountType
 
 from .models import Made, Recipe
@@ -22,7 +22,6 @@ class MadeType(DjangoObjectType):
             'amount',
             'user'
         )
-
 
 class RecipeType(DjangoObjectType):
     instructions = GenericScalar()
@@ -147,3 +146,21 @@ class RecipeType(DjangoObjectType):
 class RecipeConnection(graphene.relay.Connection):
     class Meta:
         node = RecipeType
+
+
+class RecipeTypeAutoComplete(DjangoObjectType):
+    recipes = graphene.List(
+        RecipeType, default_value=[]
+    )
+    ingredients = graphene.List(
+        IngredientType, default_value=[]
+    )
+    otherSearch = graphene.Int()
+    
+    class Meta:
+        model = Recipe
+        fields = (
+            'recipes',
+            'ingredients',
+            'otherSearch'
+        )
