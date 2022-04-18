@@ -3,7 +3,7 @@ import unicodedata
 from typing import List
 
 import graphene
-from django.contrib.postgres.search import (SearchQuery, SearchRank,
+from django.contrib.postgres.search import (SearchQuery,
                                             SearchVector)
 from django.core import serializers
 from django.db.models import Count, Q
@@ -93,11 +93,18 @@ class Query(graphene.ObjectType):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
         if filter and filter.get('search'):
-            terms = filter.get('search').split()
-            for term in terms:
-                recipes = recipes.filter(
-                    Q(name__unaccent__icontains=term)
-                )
+            terms = strip_accents(filter.get('search')).lower().split()
+            # 'ingredients__name__unaccentxéxÉ
+            phrase = ""
+            totalLen = len(terms)
+            for index, term in enumerate(terms):
+                if len(terms) != 1 and index + 1 != totalLen:
+                    phrase += str(term) + ":* & "
+                else:
+                    phrase += str(term) + ":*"
+            search_vectors_recipes = SearchVector('name__unaccent')       
+            search_query_reccipes = SearchQuery(phrase, search_type='raw')
+            recipes = recipes.annotate(search=search_vectors_recipes).filter(search=search_query_reccipes)
         if filter and filter.get('is_random_list'):
             return random.sample(list(recipes.distinct()), len(recipes)) 
         else:     
@@ -116,7 +123,7 @@ class Query(graphene.ObjectType):
     def resolve_search_auto_complete_recipes(self, info, search=None):
         if not (search):
             return
-        terms = strip_accents(search).split()
+        terms = strip_accents(search).lower().split()
         # 'ingredients__name__unaccentxéxÉ
         phrase = ""
         totalLen = len(terms)
@@ -126,17 +133,16 @@ class Query(graphene.ObjectType):
             else:
                 phrase += str(term) + ":*"
         search_vectors_recipes = SearchVector('name__unaccent')       
-        print(phrase)
         search_query_reccipes = SearchQuery(phrase, search_type='raw')
-        recipes = Recipe.objects.annotate(search=search_vectors_recipes, rank=SearchRank(search_vectors_recipes, search_query_reccipes)).filter(search=search_query_reccipes).order_by("-rank").distinct('id', 'rank')[:3]
+        recipes = Recipe.objects.annotate(search=search_vectors_recipes).filter(search=search_query_reccipes)[:3]
         
         search_vectors_ingredients = SearchVector('name__unaccent')       
         search_query_ingredients = SearchQuery(phrase, search_type='raw')
-        ingredients = Ingredient.objects.annotate(search=search_vectors_ingredients, rank=SearchRank(search_vectors_ingredients, search_query_ingredients)).filter(search=search_query_ingredients).order_by("-rank").distinct('id', 'rank')[:3]
+        ingredients = Ingredient.objects.annotate(search=search_vectors_ingredients).filter(search=search_query_ingredients)[:3]
         
         search_vectors_count = SearchVector('name__unaccent', 'ingredients__name__unaccent')       
         search_query_count = SearchQuery(phrase, search_type='raw')
-        otherSearch = Recipe.objects.annotate(search=search_vectors_count, rank=SearchRank(search_vectors_count, search_query_count)).filter(search=search_query_count).distinct('id', 'name').count()
+        otherSearch = Recipe.objects.annotate(search=search_vectors_count).filter(search=search_query_count).distinct('id', 'name').count()
         return RecipeTypeAutoComplete(recipes =recipes, ingredients= ingredients, otherSearch=otherSearch)
 
 
