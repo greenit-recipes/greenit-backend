@@ -17,6 +17,7 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
         'is_follow_newsletter',
         'id_facebook',
         'is_creator_profil',
+        'created_at',
     )
     ordering = ('-created_at',)
     actions = ["export_as_csv"]
