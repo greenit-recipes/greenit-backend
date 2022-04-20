@@ -3,9 +3,11 @@ import unicodedata
 from typing import List
 
 import graphene
-from django.contrib.postgres.search import (SearchQuery,
+from django.contrib.postgres.search import (SearchQuery, SearchRank,
                                             SearchVector)
+from django.contrib.postgres.aggregates import StringAgg
 from django.core import serializers
+from django.db.models.functions import Lower
 from django.db.models import Count, Q
 from graphene.types.generic import GenericScalar
 from graphql import GraphQLError
@@ -88,7 +90,11 @@ class Query(graphene.ObjectType):
         filter_query = get_filter(filter) if filter else {}
         recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True))
         recipes = recipes.annotate(num_ingredient=Count('ingredientamount', distinct=True))
-        recipes = recipes.filter(**filter_query).order_by('-likesNum' if filter and filter.get('is_order_by_number_like') else '-created_at')
+        recipes = recipes.filter(**filter_query)# recipes.filter(**filter_query).order_by('-likesNum' if filter and filter.get('is_order_by_number_like') else '-created_at')
+        
+        if filter and filter.get('is_order_by_number_like'):
+            recipes = recipes.order_by('-likesNum')
+            
         if filter and filter.get('exclude_id'):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
@@ -102,13 +108,13 @@ class Query(graphene.ObjectType):
                     phrase += str(term) + ":* & "
                 else:
                     phrase += str(term) + ":*"
-            search_vectors_recipes = SearchVector('name__unaccent')       
+            search_vectors_recipes = SearchVector(StringAgg(Lower('name__unaccent'), delimiter=' '), StringAgg(Lower('ingredients__name__unaccent'), delimiter=' '))       
             search_query_reccipes = SearchQuery(phrase, search_type='raw')
-            recipes = recipes.annotate(search=search_vectors_recipes).filter(search=search_query_reccipes)
+            recipes = recipes.annotate(search=search_vectors_recipes, rank=SearchRank(search_vectors_recipes, search_query_reccipes)).filter(search=search_query_reccipes).order_by('-rank') 
         if filter and filter.get('is_random_list'):
-            return random.sample(list(recipes.distinct()), len(recipes)) 
-        else:     
-            return recipes.distinct()
+            return random.sample(list(recipes), len(recipes)) 
+        else:
+            return recipes
 
     def resolve_all_recipes_seo(self, info):
         return Recipe.objects.all()
@@ -132,18 +138,19 @@ class Query(graphene.ObjectType):
                 phrase += str(term) + ":* & "
             else:
                 phrase += str(term) + ":*"
-        search_vectors_recipes = SearchVector('name__unaccent')       
+                
+        search_vectors_recipes = SearchVector(Lower('name__unaccent'))      
         search_query_reccipes = SearchQuery(phrase, search_type='raw')
-        recipes = Recipe.objects.annotate(search=search_vectors_recipes).filter(search=search_query_reccipes)[:3]
+        recipes = Recipe.objects.annotate(search=search_vectors_recipes, rank=SearchRank(search_vectors_recipes, search_query_reccipes)).order_by('-rank').filter(search=search_query_reccipes)[:3]
         
-        search_vectors_ingredients = SearchVector('name__unaccent')       
+        search_vectors_ingredients = SearchVector(Lower('name__unaccent'))       
         search_query_ingredients = SearchQuery(phrase, search_type='raw')
-        ingredients = Ingredient.objects.annotate(search=search_vectors_ingredients).filter(search=search_query_ingredients)[:3]
+        ingredients = Ingredient.objects.annotate(search=search_vectors_ingredients, rank=SearchRank(search_vectors_ingredients, search_query_ingredients)).order_by('-rank').filter(search=search_query_ingredients)[:3]
         
-        search_vectors_count = SearchVector('name__unaccent', 'ingredients__name__unaccent')       
+        search_vectors_count = SearchVector(StringAgg(Lower('name__unaccent'), delimiter=' '), StringAgg(Lower('ingredients__name__unaccent'), delimiter=' '))       
         search_query_count = SearchQuery(phrase, search_type='raw')
-        otherSearch = Recipe.objects.annotate(search=search_vectors_count).filter(search=search_query_count).distinct('id', 'name').count()
-        return RecipeTypeAutoComplete(recipes =recipes, ingredients= ingredients, otherSearch=otherSearch)
+        totalRecipes = Recipe.objects.annotate(search=search_vectors_count).filter(search=search_query_count).count()
+        return RecipeTypeAutoComplete(recipes =recipes, ingredients= ingredients, totalRecipes=totalRecipes)
 
 
 class Mutation(graphene.ObjectType):

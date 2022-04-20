@@ -9,6 +9,7 @@ from ingredient.type import IngredientAmountType, IngredientType
 from utensil.type import UtensilAmountType
 
 from .models import Made, Recipe
+from django.core import serializers
 
 # Imports language choices from .models to prevent code duplication
 LanguageFilter = graphene.Enum.from_enum(Recipe.LanguageChoice)
@@ -147,7 +148,6 @@ class RecipeConnection(graphene.relay.Connection):
     class Meta:
         node = RecipeType
 
-
 class RecipeTypeAutoComplete(DjangoObjectType):
     recipes = graphene.List(
         RecipeType, default_value=[]
@@ -155,12 +155,12 @@ class RecipeTypeAutoComplete(DjangoObjectType):
     ingredients = graphene.List(
         IngredientType, default_value=[]
     )
-    otherSearch = graphene.Int()
+    totalRecipes = graphene.Int()
     
     class Meta:
         model = Recipe
         fields = (
             'recipes',
             'ingredients',
-            'otherSearch'
-        )
+            'totalRecipes'
+        )      
