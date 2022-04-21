@@ -1,7 +1,7 @@
 import random
 import unicodedata
 from typing import List
-
+import re
 import graphene
 from django.contrib.postgres.search import (SearchQuery, SearchRank,
                                             SearchVector)
@@ -99,8 +99,7 @@ class Query(graphene.ObjectType):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
         if filter and filter.get('search'):
-            terms = strip_accents(filter.get('search')).lower().split()
-            # 'ingredients__name__unaccentxéxÉ
+            terms = strip_accents(re.sub('(\:|\&|\*)', '', filter.get('search'))).lower().split()
             phrase = ""
             totalLen = len(terms)
             for index, term in enumerate(terms):
@@ -129,8 +128,7 @@ class Query(graphene.ObjectType):
     def resolve_search_auto_complete_recipes(self, info, search=None):
         if not (search):
             return
-        terms = strip_accents(search).lower().split()
-        # 'ingredients__name__unaccentxéxÉ
+        terms = strip_accents(re.sub('(\:|\&|\*)', '', search)).lower().split()
         phrase = ""
         totalLen = len(terms)
         for index, term in enumerate(terms):
@@ -138,7 +136,6 @@ class Query(graphene.ObjectType):
                 phrase += str(term) + ":* & "
             else:
                 phrase += str(term) + ":*"
-                
         search_vectors_recipes = SearchVector(Lower('name__unaccent'))      
         search_query_reccipes = SearchQuery(phrase, search_type='raw')
         recipes = Recipe.objects.annotate(search=search_vectors_recipes, rank=SearchRank(search_vectors_recipes, search_query_reccipes)).order_by('-rank').filter(search=search_query_reccipes)[:3]
