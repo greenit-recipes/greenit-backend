@@ -23,7 +23,7 @@ from recipe.mutations import (AddOrRemoveFavoriteRecipe, AddOrRemoveLikeRecipe,
 
 from .models import Recipe
 from .type import (DifficultyFilter, LanguageFilter, RecipeConnection,
-                   RecipeType, RecipeTypeAutoComplete)
+                   RecipeType, AutoCompleteRecipeType)
 
 def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
@@ -51,10 +51,10 @@ class Query(graphene.ObjectType):
     all_recipes = graphene.relay.ConnectionField(
         RecipeConnection, filter=RecipeFilterInput(required=False)
     )
+    search_auto_complete_recipes = graphene.Field(AutoCompleteRecipeType, search=graphene.String(required=False, default_value=None))
     all_recipes_seo = graphene.List(RecipeType)
     recipe = graphene.Field(RecipeType, id = graphene.String(required=False, default_value=None), urlId = graphene.String(required=True))
     filter = graphene.Field(GenericScalar)
-    search_auto_complete_recipes = graphene.Field(RecipeTypeAutoComplete, search=graphene.String(required=False, default_value=None))
 
     def resolve_all_recipes(self, info, filter=None, **kwargs):
         def get_filter(filter):
@@ -147,7 +147,7 @@ class Query(graphene.ObjectType):
         search_vectors_count = SearchVector(StringAgg(Lower('name__unaccent'), delimiter=' '), StringAgg(Lower('ingredients__name__unaccent'), delimiter=' '))       
         search_query_count = SearchQuery(phrase, search_type='raw')
         totalRecipes = Recipe.objects.annotate(search=search_vectors_count).filter(search=search_query_count).count()
-        return RecipeTypeAutoComplete(recipes =recipes, ingredients= ingredients, totalRecipes=totalRecipes)
+        return AutoCompleteRecipeType(recipes =recipes, ingredients= ingredients, totalRecipes=totalRecipes)
 
 
 class Mutation(graphene.ObjectType):

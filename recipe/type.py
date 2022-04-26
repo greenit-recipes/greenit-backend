@@ -143,12 +143,12 @@ class RecipeType(DjangoObjectType):
             'nbr_view',
             'created_at'
         )
-
+        
 class RecipeConnection(graphene.relay.Connection):
     class Meta:
         node = RecipeType
 
-class RecipeTypeAutoComplete(DjangoObjectType):
+class AutoCompleteRecipeType(graphene.ObjectType):
     recipes = graphene.List(
         RecipeType, default_value=[]
     )
@@ -158,7 +158,6 @@ class RecipeTypeAutoComplete(DjangoObjectType):
     totalRecipes = graphene.Int()
     
     class Meta:
-        model = Recipe
         fields = (
             'recipes',
             'ingredients',
