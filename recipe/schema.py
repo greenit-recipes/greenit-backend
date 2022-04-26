@@ -128,7 +128,7 @@ class Query(graphene.ObjectType):
     def resolve_search_auto_complete_recipes(self, info, search=None):
         if not (search):
             return
-        terms = strip_accents(re.sub('(\:|\&|\*)', '', search)).lower().split()
+        terms = strip_accents(re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', search)).lower().split()
         phrase = ""
         totalLen = len(terms)
         for index, term in enumerate(terms):
