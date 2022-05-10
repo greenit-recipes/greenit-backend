@@ -171,3 +171,31 @@ class EmailProfilPage(graphene.Mutation):
       except Exception as e:
           print(e)
           return EmailProfilPage(success=False)            
+      
+class EmailHeadband(graphene.Mutation):
+    class Arguments:
+        email = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(root, info, email):
+      try:
+          message = EmailMessage(
+          from_email="hello@greenitcommunity.com",
+          to=["hello@greenitcommunity.com"],
+          subject="Pré-commande BOX",  # subject doesn't support on-the-fly merge fields
+            # Use [[var:FIELD]] to for on-the-fly merge into plaintext or html body:
+          body="Email: [[var:email]]"
+
+          )
+
+          message.merge_global_data = {
+                'email': email,
+          }
+          message.send()
+
+          return EmailHeadband(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailHeadband(success=False)         
