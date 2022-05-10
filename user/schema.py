@@ -3,7 +3,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
-from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage, EmailProfilPage
+from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage, EmailProfilPage, EmailHeadband
 
 
 class AuthMutation(graphene.ObjectType):
@@ -34,6 +34,7 @@ class AuthMutation(graphene.ObjectType):
     email_shared_with_friend = EmailSharedWithFriend.Field()
     email_ask_question_starte_page = EmailAskQuestionStarterPage.Field()
     email_profil_page = EmailProfilPage.Field()
+    email_headband = EmailHeadband.Field()
 
     
     #auth
