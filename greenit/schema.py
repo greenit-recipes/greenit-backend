@@ -3,6 +3,7 @@ from django.conf import settings
 from graphene_django.debug import DjangoDebug
 
 import ingredient.schema
+import payment.schema
 import recipe.schema
 import tag.schema
 import translation.schema
@@ -42,6 +43,7 @@ class Mutation(
     newsletter.schema.Mutation,
     comment.schema.Mutation,
     utils.schema.Mutation,
+    payment.schema.Mutation
 ):
     pass
 
