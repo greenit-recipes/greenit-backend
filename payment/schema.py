@@ -1,10 +1,13 @@
+import environ
 import graphene
 import stripe
 
-# This is your test secret API key.
-stripe.api_key = 'sk_test_51KxoqiDUYQtfMdf1lZB4QgF9hcTro5xQ5Sp4ZblTy9aMYY3idkXCtDfh4ryqsOMrxK61TZY9zAPY1AeHv0hx6AbP00BF6qbT0a'
+env = environ.Env()
+environ.Env.read_env()
 
-YOUR_DOMAIN = 'http://localhost:3000'
+stripe.api_key = env('STRIPE_SECRET_KEY')
+
+BASE_URL = f'{env("PROTOCOL")}://{env("DOMAIN_NAME")}'
 
 
 
@@ -12,21 +15,23 @@ class CreateCheckoutSession(graphene.Mutation):
     class Arguments:
         data = graphene.String()
 
+    #Todo (zack): Create custom object type for response with error handling
     redirect_url = graphene.String()
 
     def mutate(root, info, data):
         try:
+            #Todo (zack) store session parameters in a secure place (env or db)
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
                         # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        'price': 'price_1KxpA8DUYQtfMdf16b44BTOR',
-                        'quantity': 1,
+                        'price': 'price_1KxsowDUYQtfMdf1QI7OvksR',
+                        'quantity': 1
                     },
                 ],
                 mode='payment',
-                success_url=YOUR_DOMAIN + '/pages/payment_success',
-                cancel_url=YOUR_DOMAIN + '/pages/payment_cancel',
+                success_url=BASE_URL + '/pages/payment_success',
+                cancel_url=BASE_URL + '/pages/payment_cancel',
             )
             return CreateCheckoutSession(redirect_url=checkout_session.url)
         except Exception as e:

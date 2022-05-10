@@ -20,6 +20,7 @@ django-admin-json-editor==0.2.3
 django-anymail==8.4
 django-cors-headers==3.10.0
 django-debug-toolbar==3.2.2
+django-environ==0.8.1
 django-filter==21.1
 django-graphql-auth==0.3.16
 django-graphql-jwt==0.3.0
