@@ -150,8 +150,6 @@ class EmailProfilPage(graphene.Mutation):
     def mutate(root, info, question):
       try:
           userEmail = info.context.user.email
-          print(userEmail)
-          print(question)
           message = EmailMessage(
           from_email="hello@greenitcommunity.com",
           to=["hello@greenitcommunity.com"],
@@ -199,3 +197,34 @@ class EmailHeadband(graphene.Mutation):
       except Exception as e:
           print(e)
           return EmailHeadband(success=False)         
+class EmailGreenitFullXp(graphene.Mutation):
+    class Arguments:
+        question = graphene.String(required=True)
+        typeEmail = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    
+    @login_required
+    def mutate(root, info, question, typeEmail):
+      try:
+          userEmail = info.context.user.email
+          message = EmailMessage(
+          from_email="hello@greenitcommunity.com",
+          to=["hello@greenitcommunity.com"],
+          subject="BOX greenit full experience",  # subject doesn't support on-the-fly merge fields
+            # Use [[var:FIELD]] to for on-the-fly merge into plaintext or html body:
+          body="Type: [[var:typeEmail]]: \n Email: [[var:email]]: \nQuestion: [[var:question]]"
+          )
+
+          message.merge_global_data = {
+                'email': userEmail,
+                'question': question,
+                'typeEmail': typeEmail,
+          }
+          message.send()
+
+          return EmailGreenitFullXp(success=True)
+
+      except Exception as e:
+          print(e)
+          return EmailGreenitFullXp(success=False)        
