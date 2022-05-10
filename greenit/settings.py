@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'ingredient',
     'recipe',
     'comment',
+    'order',
     'tag',
     'substance',
     'anymail',
