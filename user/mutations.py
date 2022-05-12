@@ -1,5 +1,7 @@
 import graphene
 
+from recipe.models import Made
+
 from .models import User
 from .type import UserType
 from graphql_auth import mutations
@@ -64,6 +66,34 @@ class UpdateImageAccount(graphene.Mutation):
       except Exception as e:
           print(e)
           return UpdateImageAccount(success=False)
+
+
+class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
+
+    class Arguments:
+        isRecipeMadeBeginnerBox = graphene.Boolean(required=True)
+
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(root, info, isRecipeMadeBeginnerBox):
+      try:
+          user = info.context.user
+          userDb = User.objects.get(id=user.id)
+          userDb.is_recipe_made_beginner_box = isRecipeMadeBeginnerBox
+          userDb.save()
+          if (isRecipeMadeBeginnerBox):
+            made = Made.objects.get(user_id=user.id, recipe_id=[])
+            made.save()
+
+          else:
+            made = Made.objects.get(user_id=user.id, recipe_id=[]).delete()
+            made.save()      
+          return UpdateRecipeMadeBeginnerBox(success=True)
+
+      except Exception as e:
+          print(e)
+          return UpdateRecipeMadeBeginnerBox(success=False)
 
 
 class EmailWelcomeNewUser(graphene.Mutation):
@@ -196,7 +226,8 @@ class EmailHeadband(graphene.Mutation):
 
       except Exception as e:
           print(e)
-          return EmailHeadband(success=False)         
+          return EmailHeadband(success=False)
+               
 class EmailGreenitFullXp(graphene.Mutation):
     class Arguments:
         question = graphene.String(required=True)
