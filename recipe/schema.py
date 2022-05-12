@@ -99,7 +99,7 @@ class Query(graphene.ObjectType):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
         if filter and filter.get('search'):
-            terms = strip_accents(re.sub('(\:|\&|\*)', '', filter.get('search'))).lower().split()
+            terms = strip_accents(re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', filter.get('search'))).lower().split()
             phrase = ""
             totalLen = len(terms)
             for index, term in enumerate(terms):

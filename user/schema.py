@@ -3,7 +3,7 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
-from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage, EmailProfilPage, EmailGreenitFullXp, EmailHeadband
+from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage, EmailProfilPage, EmailGreenitFullXp, EmailHeadband, UpdateRecipeMadeBeginnerBox
 
 
 class AuthMutation(graphene.ObjectType):
@@ -37,7 +37,10 @@ class AuthMutation(graphene.ObjectType):
     email_headband = EmailHeadband.Field()
     email_greenit_full_xp = EmailGreenitFullXp.Field()
 
-    
+
+    #greenit-full xp
+    update_recipe_made_beginner_box = UpdateRecipeMadeBeginnerBox.Field()
+
     #auth
     create_user_from_auth = CreateUserFromAuth.Field()
 
