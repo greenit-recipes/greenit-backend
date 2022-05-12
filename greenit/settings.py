@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_admin_json_editor',
     'storages',
+    'payment',
     'ingredient',
     'recipe',
     'comment',
