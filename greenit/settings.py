@@ -11,22 +11,22 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 '''
 
 from datetime import timedelta
+import environ
 import os
 from pathlib import Path
 
 import sentry_sdk
 from decouple import config
 from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if config('DEBUG') == 'False' else True
@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'greenit'
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,7 +83,7 @@ if DEBUG == True:
 
 GRAPHENE = {
     'SCHEMA': 'greenit.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware',         'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware', 'graphql_jwt.middleware.JSONWebTokenMiddleware',
                    ],
 }
 
@@ -125,10 +124,12 @@ GRAPHQL_AUTH = {
         "path": "activate"
     },
     "REGISTER_MUTATION_FIELDS": {"email": "String", "username": "String",
-                                 "is_follow_newsletter": "String", 
-                                },
-    "REGISTER_MUTATION_FIELDS_OPTIONAL": { "urls_social_media": "JSONString", "is_creator_profil": "String", "biographie": "String", "user_category_lvl": "String", "user_category_age": "String", },
-    "UPDATE_MUTATION_FIELDS": { "urls_social_media": "JSONString", "biographie": "String"},
+                                 "is_follow_newsletter": "String",
+                                 },
+    "REGISTER_MUTATION_FIELDS_OPTIONAL": {"urls_social_media": "JSONString", "is_creator_profil": "String",
+                                          "biographie": "String", "user_category_lvl": "String",
+                                          "user_category_age": "String", "is_beginner_box": "Boolean"},
+    "UPDATE_MUTATION_FIELDS": {"urls_social_media": "JSONString", "biographie": "String"},
 }
 
 GRAPHQL_JWT = {
@@ -136,7 +137,6 @@ GRAPHQL_JWT = {
     'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
     'ALLOW_LOGIN_NOT_VERIFIED': False,
 }
-
 
 TEMPLATES = [
     {
@@ -171,7 +171,7 @@ DATABASES = {
         'PASSWORD': config('POSTGRES_DB_PASS', "password"),
         'HOST': config('POSTGRES_DB_HOST', "localhost"),
         "PORT": os.environ.get("POSTGRES_DB_PORT", "5432"),
-        "ATOMIC_MUTATIONS": True, # need to do this only for important transaction --> bad performance
+        "ATOMIC_MUTATIONS": True,  # need to do this only for important transaction --> bad performance
     }
 }
 
@@ -188,7 +188,6 @@ AWS_S3_FILE_OVERRIDE = False
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'greenit.storage_backends.PublicMediaStorage'
-
 
 AUTH_USER_MODEL = 'user.User'
 
@@ -234,3 +233,4 @@ STATIC_URL = '/static_file_django/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 CORS_ORIGIN_ALLOW_ALL = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SEND_ACTIVATION_EMAIL = False if config('SEND_ACTIVATION_EMAIL') == 'False' else True

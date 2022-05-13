@@ -9,7 +9,7 @@ stripe.api_key = env('STRIPE_SECRET_KEY')
 
 BASE_URL = f'{env("PROTOCOL")}://{env("DOMAIN_NAME")}'
 
-
+# Creates a new checkout session and yields a checkout url
 class CreateCheckoutSession(graphene.Mutation):
     class Arguments:
         data = graphene.String()
@@ -17,8 +17,10 @@ class CreateCheckoutSession(graphene.Mutation):
     # Todo (zack): Create custom object type for response with error handling
     redirect_url = graphene.String()
 
+    # Todo (zack): Impose a rate limit on the API
     def mutate(root, info, data):
         try:
+
             # Todo (zack) store session parameters in a secure place (env or db)
             checkout_session = stripe.checkout.Session.create(
                 customer_creation='always',
@@ -30,8 +32,9 @@ class CreateCheckoutSession(graphene.Mutation):
                     },
                 ],
                 mode='payment',
-                success_url=BASE_URL + '/pages/payment_success',
-                cancel_url=BASE_URL + '/pages/payment_cancel',
+                # Todo (zack): Assess whether is it safe to expose client ids directly otherwise we will use temp tokens
+                success_url=BASE_URL + '/commande-box?',
+                cancel_url=BASE_URL + '/commande-box',
                 locale='fr',
                 # Shipping details
                 phone_number_collection={
@@ -49,7 +52,6 @@ class CreateCheckoutSession(graphene.Mutation):
                                 'currency': 'eur',
                             },
                             'display_name': 'Greenit super delivery',
-                            # Delivers in exactly 1 business day
                             'delivery_estimate': {
                                 'minimum': {
                                     'unit': 'business_day',
@@ -64,12 +66,20 @@ class CreateCheckoutSession(graphene.Mutation):
                     }
                 ]
             )
+
+
             return CreateCheckoutSession(redirect_url=checkout_session.url)
         except Exception as e:
             # Todo (zack) investigate whether stripe session errors are safe
             # to be relayed directly to the web app
+            # stripe.Customer.delete(new_customer.id)
             print('There was an error creating the session', e)
             return CreateCheckoutSession(redirect_url=str(e))
+
+# Get Customer Details By id
+class Query(graphene.ObjectType):
+    pass
+
 
 
 class Mutation(graphene.ObjectType):
