@@ -19,12 +19,12 @@ class CreateUserFromAuth(graphene.Mutation):
         password = graphene.String(required=True)
         id_facebook = graphene.String()
         is_follow_newsletter = graphene.String()
-        is_box_beginner = graphene.Boolean(default_value=False)
+        is_beginner_box = graphene.Boolean(default_value=False)
 
     isUserAlreadyCreated = graphene.Boolean()
     errors = graphene.String()
 
-    def mutate(root, info, email, username, password, id_facebook, is_follow_newsletter, is_box_beginner):
+    def mutate(root, info, email, username, password, id_facebook, is_follow_newsletter, is_beginner_box):
         try:
             # SI email existe déjà dans les users --> dire que l'email existe déjà
             if User.objects.filter(id_facebook=id_facebook).exists():
@@ -37,7 +37,7 @@ class CreateUserFromAuth(graphene.Mutation):
 
             else:
                 currentUserCreateByAuth = User(email=email, username=username, password=password,
-                                               id_facebook=id_facebook, is_beginner_box=is_box_beginner,
+                                               id_facebook=id_facebook, is_beginner_box=is_beginner_box,
                                                photo_url="https://graph.facebook.com/{0}/picture".format(id_facebook))
                 currentUserCreateByAuth.set_password(password)
                 currentUserCreateByAuth.save()
