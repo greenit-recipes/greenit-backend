@@ -56,6 +56,8 @@ class User(AbstractUser):
         max_length=140, unique=True)
     urls_social_media = models.JSONField(default=dict, null=True, blank=True)
     is_creator_profil = models.BooleanField(default=False, null=True)
+    is_beginner_box = models.BooleanField(default=False, null=True)
+    is_recipe_made_beginner_box = models.BooleanField(default=False, null=True)
     biographie = models.TextField(default='', null=True, blank=True)
     id_facebook = models.CharField(max_length=255, null=True, blank=True)
     id_google = models.CharField(max_length=255, null=True, blank=True)

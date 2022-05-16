@@ -3,6 +3,7 @@ from django.conf import settings
 from graphene_django.debug import DjangoDebug
 
 import ingredient.schema
+import payment.schema
 import recipe.schema
 import tag.schema
 import translation.schema
@@ -12,8 +13,7 @@ import utils.schema
 import substance.schema
 import newsletter.schema
 import comment.schema
-from graphql_auth.schema import UserQuery, MeQuery
-
+import order.schema
 
 class Query(
     ingredient.schema.Query,
@@ -22,6 +22,7 @@ class Query(
     tag.schema.Query,
     translation.schema.Query,
     user.schema.Query,
+    order.schema.Query,
     utensil.schema.Query,
     comment.schema.Query,
     graphene.ObjectType,
@@ -35,12 +36,14 @@ class Mutation(
     recipe.schema.Mutation,
     tag.schema.Mutation,
     substance.schema.Mutation,
+    order.schema.Mutation,
     translation.schema.Mutation,
     user.schema.Mutation,
     utensil.schema.Mutation,
     newsletter.schema.Mutation,
     comment.schema.Mutation,
     utils.schema.Mutation,
+    payment.schema.Mutation
 ):
     pass
 
