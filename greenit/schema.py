@@ -2,6 +2,7 @@ import graphene
 from django.conf import settings
 from graphene_django.debug import DjangoDebug
 
+import fflags.schema
 import ingredient.schema
 import payment.schema
 import recipe.schema
@@ -25,6 +26,7 @@ class Query(
     order.schema.Query,
     utensil.schema.Query,
     comment.schema.Query,
+    fflags.schema.Query,
     graphene.ObjectType,
 ):
     if settings.DEBUG:

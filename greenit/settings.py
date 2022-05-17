@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'user',
     'utensil',
     'newsletter',
-    'greenit'
+    'greenit',
+    'fflags',
 ]
 
 MIDDLEWARE = [
