@@ -33,7 +33,7 @@ class CreateCheckoutSession(graphene.Mutation):
                 ],
                 mode='payment',
                 # Todo (zack): Assess whether is it safe to expose client ids directly otherwise we will use temp tokens
-                success_url=BASE_URL + '/commande-box?',
+                success_url=BASE_URL + '/commande-box?step=Confirmation',
                 cancel_url=BASE_URL + '/commande-box',
                 locale='fr',
                 # Shipping details
