@@ -13,7 +13,10 @@ class Query(graphene.ObjectType):
     feature_flag = graphene.Field(FeatureFlagType, name=graphene.String(required=True))
 
     def resolve_feature_flag(self, info, name):
-        return FFlags.objects.get(name=name)
+        try:
+            return FFlags.objects.get(name=name)
+        except Exception as e:
+            return None
 
 
 
