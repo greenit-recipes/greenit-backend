@@ -279,18 +279,18 @@ class EmailGreenitFullXp(graphene.Mutation):
 # Todo (zack): Fix nuance between Beginner Box & Box Beginner
 class HasPurchasedBeginnerBox(graphene.Mutation):
     class Arguments:
-        isBeginnerBox = graphene.Boolean(required=True)
+        is_beginner_box = graphene.Boolean(required=True)
 
     success = graphene.Boolean()
 
     @login_required
-    def mutate(root, info, isBeginnerBox):
+    def mutate(root, info, is_beginner_box):
         try:
             user = info.context.user
             userDb = User.objects.get(id=user.id)
 
             if not userDb.is_beginner_box:
-                userDb.is_beginner_box = isBeginnerBox
+                userDb.is_beginner_box = is_beginner_box
                 userDb.save()
 
             return HasPurchasedBeginnerBox(success=True)

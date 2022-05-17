@@ -3,7 +3,8 @@ from graphql_auth.schema import UserQuery, MeQuery
 
 from graphql_auth import mutations
 
-from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, EmailAskQuestionStarterPage, EmailProfilPage, EmailGreenitFullXp, EmailHeadband, HasPurchasedBeginnerBox, UpdateRecipeMadeBeginnerBox
+from user.mutations import EmailWelcomeNewUser, UpdateImageAccount, CreateUserFromAuth, EmailSharedWithFriend, \
+    EmailAskQuestionStarterPage, EmailProfilPage, EmailGreenitFullXp, EmailHeadband, HasPurchasedBeginnerBox, UpdateRecipeMadeBeginnerBox
 
 
 class AuthMutation(graphene.ObjectType):
@@ -25,10 +26,10 @@ class AuthMutation(graphene.ObjectType):
     verify_token = mutations.VerifyToken.Field()
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
-    
+
     # update image account
     update_image_account = UpdateImageAccount.Field()
-    
+
     # email
     email_welcome_new_user = EmailWelcomeNewUser.Field()
     email_shared_with_friend = EmailSharedWithFriend.Field()
@@ -40,13 +41,14 @@ class AuthMutation(graphene.ObjectType):
     # Box Full Xp
     has_purchased_beginner_box = HasPurchasedBeginnerBox.Field()
     update_recipe_made_beginner_box = UpdateRecipeMadeBeginnerBox.Field()
-    
+
     #auth
     create_user_from_auth = CreateUserFromAuth.Field()
+
 
 class Query(UserQuery, MeQuery, graphene.ObjectType):
     pass
 
 
 class Mutation(AuthMutation, graphene.ObjectType):
-   pass
+    pass
