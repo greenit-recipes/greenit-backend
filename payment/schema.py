@@ -8,7 +8,7 @@ environ.Env.read_env()
 stripe.api_key = env('STRIPE_SECRET_KEY')
 
 BASE_URL = f'{env("PROTOCOL")}://{env("DOMAIN_NAME")}'
-
+PRICE_ID = env("PRICE_ID")
 # Creates a new checkout session and yields a checkout url
 class CreateCheckoutSession(graphene.Mutation):
     class Arguments:
@@ -27,7 +27,7 @@ class CreateCheckoutSession(graphene.Mutation):
                 line_items=[
                     {
                         # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        'price': 'price_1KxsowDUYQtfMdf1QI7OvksR',
+                        'price': PRICE_ID,
                         'quantity': 1,
                     },
                 ],

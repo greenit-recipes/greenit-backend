@@ -84,20 +84,19 @@ class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
             userDb = User.objects.get(id=user.id)
             userDb.is_recipe_made_beginner_box = isRecipeMadeBeginnerBox
             userDb.save()
+            
             if (isRecipeMadeBeginnerBox):
                 Made.objects.bulk_create([Made(amount=2,
-                                               recipe_id="0abe3c2c-1883-46db-a2c6-81ee46f7475d",
+                                               recipe_id="d9c8be17-1997-48de-adac-433121693b40",
+                                               user_id=user.id),
+                                          Made(amount=1,
+                                               recipe_id="57d20e4b-72e7-48ce-99e1-839c75cb1566",
                                                user_id=user.id),
                                           Made(amount=2,
-                                               recipe_id="e322ed9a-5568-4261-84a2-f2f837361368",
-                                               user_id=user.id),
-                                          Made(amount=2,
-                                               recipe_id='bf8c72c9-f642-488d-9e41-f1cab802a142',
+                                               recipe_id="3b349672-a3b4-4eb5-a063-41eb79e5b542",
                                                user_id=user.id)])
             else:
-                Made.objects.filter(user_id=user.id, recipe_id__in=["0abe3c2c-1883-46db-a2c6-81ee46f7475d",
-                                                                    "e322ed9a-5568-4261-84a2-f2f837361368",
-                                                                    'bf8c72c9-f642-488d-9e41-f1cab802a142']).delete()
+                Made.objects.filter(user_id=user.id, recipe_id__in=["d9c8be17-1997-48de-adac-433121693b40", "57d20e4b-72e7-48ce-99e1-839c75cb1566", "3b349672-a3b4-4eb5-a063-41eb79e5b542"]).delete()
             return UpdateRecipeMadeBeginnerBox(success=True)
 
         except Exception as e:
