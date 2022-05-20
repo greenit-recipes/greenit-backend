@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
       migrations.RunSQL("INSERT INTO fflags_fflags(id, name, description, is_active) VALUES(uuid_generate_v4(),'is_out_of_stock','Track stock state',FALSE);"),
-      migrations.RunSQL("INSERT INTO fflags_fflags(id, name, description, is_active) VALUES(uuid_generate_v4(), 'is_greenit_full_xp','Track full state',FALSE);"),
+      migrations.RunSQL("INSERT INTO fflags_fflags(id, name, description, is_active) VALUES(uuid_generate_v4(), 'is_greenit_full_xp','Track full state',TRUE);"),
     ] 
 
 
