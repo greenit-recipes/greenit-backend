@@ -36,6 +36,7 @@ class CreateCheckoutSession(graphene.Mutation):
                 success_url=BASE_URL + '/commande-box?step=Confirmation',
                 cancel_url=BASE_URL + '/commande-box',
                 locale='fr',
+                allow_promotion_codes=True,
                 # Shipping details
                 phone_number_collection={
                     'enabled': True,
