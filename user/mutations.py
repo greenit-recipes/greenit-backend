@@ -86,7 +86,7 @@ class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
             userDb.save()
             
             if (isRecipeMadeBeginnerBox):
-                Made.objects.bulk_create([Made(amount=2,
+                Made.objects.bulk_create([Made(amount=1,
                                                recipe_id="d9c8be17-1997-48de-adac-433121693b40",
                                                user_id=user.id),
                                           Made(amount=1,
