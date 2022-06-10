@@ -1,5 +1,5 @@
+from pickle import NONE
 import graphene
-
 from recipe.models import Made
 
 from .models import User
@@ -18,16 +18,18 @@ class CreateUserFromAuth(graphene.Mutation):
         username = graphene.String(required=True)
         password = graphene.String(required=True)
         id_facebook = graphene.String()
+        image_url = graphene.String()
+        id_google = graphene.String()
         is_follow_newsletter = graphene.String()
         is_beginner_box = graphene.Boolean(default_value=False)
 
     isUserAlreadyCreated = graphene.Boolean()
     errors = graphene.String()
 
-    def mutate(root, info, email, username, password, id_facebook, is_follow_newsletter, is_beginner_box):
+    def mutate(root, info, email, username, password, is_follow_newsletter, is_beginner_box, id_facebook = None, id_google = None, image_url = None):
         try:
             # SI email existe déjà dans les users --> dire que l'email existe déjà
-            if User.objects.filter(id_facebook=id_facebook).exists():
+            if User.objects.filter(id_facebook=id_facebook).exists() and id_facebook is not None or User.objects.filter(id_google=id_google).exists() and id_google is not None:
                 return CreateUserFromAuth(isUserAlreadyCreated=True)
             if User.objects.filter(email=email).exists():
                 return CreateUserFromAuth(errors="L’e-mail est déjà attribué à un compte.")
@@ -35,7 +37,18 @@ class CreateUserFromAuth(graphene.Mutation):
             if User.objects.filter(username=username).exists():
                 return CreateUserFromAuth(errors="Le nom d'utilisateur est déjà attribué à un compte.")
 
+            if id_google is not None and id_facebook is None:
+                currentUserCreateByAuth = User(email=email, username=username, password=password,
+                                               id_google=id_google, is_beginner_box=is_beginner_box,
+                                               photo_url=image_url)
+                currentUserCreateByAuth.set_password(password)
+                currentUserCreateByAuth.save()
+                cursor = connection.cursor()
+                cursor.execute("UPDATE graphql_auth_userstatus SET verified = True WHERE user_id = '{0}'".format(
+                    currentUserCreateByAuth.id))
+                return CreateUserFromAuth(isUserAlreadyCreated=False)
             else:
+                print('passe Facebook')
                 currentUserCreateByAuth = User(email=email, username=username, password=password,
                                                id_facebook=id_facebook, is_beginner_box=is_beginner_box,
                                                photo_url="https://graph.facebook.com/{0}/picture".format(id_facebook))
@@ -48,7 +61,6 @@ class CreateUserFromAuth(graphene.Mutation):
 
         except Exception as e:
             raise Exception(e)
-            print(e)
 
 
 class UpdateImageAccount(graphene.Mutation):
