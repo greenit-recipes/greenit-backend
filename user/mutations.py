@@ -32,7 +32,7 @@ class CreateUserFromAuth(graphene.Mutation):
             if User.objects.filter(id_facebook=id_facebook).exists() and id_facebook is not None or User.objects.filter(id_google=id_google).exists() and id_google is not None:
                 return CreateUserFromAuth(isUserAlreadyCreated=True)
             if User.objects.filter(email=email).exists():
-                return CreateUserFromAuth(errors="L’e-mail est déjà attribué à un compte.")
+                return CreateUserFromAuth(errors="L’email est déjà attribué à un compte.")
 
             if User.objects.filter(username=username).exists():
                 return CreateUserFromAuth(errors="Le nom d'utilisateur est déjà attribué à un compte.")
