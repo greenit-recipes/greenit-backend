@@ -48,7 +48,6 @@ class CreateUserFromAuth(graphene.Mutation):
                     currentUserCreateByAuth.id))
                 return CreateUserFromAuth(isUserAlreadyCreated=False)
             else:
-                print('passe Facebook')
                 currentUserCreateByAuth = User(email=email, username=username, password=password,
                                                id_facebook=id_facebook, is_beginner_box=is_beginner_box,
                                                photo_url="https://graph.facebook.com/{0}/picture".format(id_facebook))
