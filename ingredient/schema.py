@@ -1,7 +1,7 @@
 import graphene
 from graphql import GraphQLError
 
-from ingredient.mutations import CreateIngredient
+from ingredient.mutations import CreateIngredient, CreateIngredientAtHomeUser, CreateIngredientShoppingList
 from tag.models import Tag
 
 from .models import Ingredient
@@ -39,3 +39,5 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_ingredient = CreateIngredient.Field()
+    create_ingredient_shopping_list = CreateIngredientShoppingList.Field()
+    create_ingredient_at_home_user = CreateIngredientAtHomeUser.Field()

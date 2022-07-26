@@ -54,3 +54,14 @@ class IngredientAmountType(DjangoObjectType):
     class Meta:
         model = IngredientAmount
         fields = ('id', 'name', 'description', 'image', 'tags', 'amount', 'alternative' ,'is_supermarket' ,'is_online' ,'is_productor')
+
+
+class IngredientShoppingListUser(DjangoObjectType):
+    class Meta:
+        model = Ingredient
+        fields = ('id', 'name', 'description', 'image')
+
+class IngredientAtHomeUser(DjangoObjectType):
+    class Meta:
+        model = Ingredient
+        fields = ('id', 'name', 'description', 'image')

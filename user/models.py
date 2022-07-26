@@ -42,6 +42,19 @@ class User(AbstractUser):
     is_follow_newsletter = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+        
+    ingredientsShoppingListUser = models.ManyToManyField(
+        'ingredient.Ingredient',
+        related_name='ingredient_ingredientshoppinglistuser',
+        blank=True
+    )
+    
+    ingredientsAtHomeUser = models.ManyToManyField(
+        'ingredient.Ingredient',
+        related_name='ingredient_ingredientathomeuser',
+        blank=True
+    )
+    
     user_category_age = models.CharField(
         null=True, 
         blank=True,
@@ -55,6 +68,7 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=140, unique=True)
     urls_social_media = models.JSONField(default=dict, null=True, blank=True)
+    particularity_search = models.JSONField(default=dict, null=True, blank=True)
     is_creator_profil = models.BooleanField(default=False, null=True)
     is_beginner_box = models.BooleanField(default=False, null=True)
     is_recipe_made_beginner_box = models.BooleanField(default=False, null=True)

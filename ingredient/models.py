@@ -47,3 +47,40 @@ class IngredientAmount(models.Model):
 
     def __str__(self):
         return f'{self.amount} {self.ingredient}'
+
+
+class IngredientShoppingListUser(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    ingredient = models.ForeignKey(
+        'ingredient.Ingredient',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    user = models.ForeignKey(
+        'user.User',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+
+    def __str__(self):
+        return self.name
+    
+class IngredientAtHomeUser(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    ingredient = models.ForeignKey(
+        'ingredient.Ingredient',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    
+    user = models.ForeignKey(
+        'user.User',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+
+    def __str__(self):
+        return self.name
+
