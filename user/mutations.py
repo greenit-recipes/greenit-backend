@@ -22,14 +22,18 @@ class CreateUserFromAuth(graphene.Mutation):
         id_google = graphene.String()
         is_follow_newsletter = graphene.String()
         is_beginner_box = graphene.Boolean(default_value=False)
+        # particularity_search = graphene.String(required=False)
 
     isUserAlreadyCreated = graphene.Boolean()
     errors = graphene.String()
 
-    def mutate(root, info, email, username, password, is_follow_newsletter, is_beginner_box, id_facebook = None, id_google = None, image_url = None):
+    def mutate(root, info, email, username, password, is_follow_newsletter, is_beginner_box,
+               id_facebook=None,
+               id_google=None, image_url=None):
         try:
             # SI email existe déjà dans les users --> dire que l'email existe déjà
-            if User.objects.filter(id_facebook=id_facebook).exists() and id_facebook is not None or User.objects.filter(id_google=id_google).exists() and id_google is not None:
+            if User.objects.filter(id_facebook=id_facebook).exists() and id_facebook is not None or User.objects.filter(
+                    id_google=id_google).exists() and id_google is not None:
                 return CreateUserFromAuth(isUserAlreadyCreated=True)
             if User.objects.filter(email=email).exists():
                 return CreateUserFromAuth(errors="L’email est déjà attribué à un compte.")
@@ -39,7 +43,8 @@ class CreateUserFromAuth(graphene.Mutation):
 
             if id_google is not None and id_facebook is None:
                 currentUserCreateByAuth = User(email=email, username=username, password=password,
-                                               id_google=id_google, is_beginner_box=is_beginner_box,
+                                               id_google=id_google,
+                                               is_beginner_box=is_beginner_box,
                                                photo_url=image_url)
                 currentUserCreateByAuth.set_password(password)
                 currentUserCreateByAuth.save()
@@ -49,7 +54,8 @@ class CreateUserFromAuth(graphene.Mutation):
                 return CreateUserFromAuth(isUserAlreadyCreated=False)
             else:
                 currentUserCreateByAuth = User(email=email, username=username, password=password,
-                                               id_facebook=id_facebook, is_beginner_box=is_beginner_box,
+                                               id_facebook=id_facebook,
+                                               is_beginner_box=is_beginner_box,
                                                photo_url="https://graph.facebook.com/{0}/picture".format(id_facebook))
                 currentUserCreateByAuth.set_password(password)
                 currentUserCreateByAuth.save()
@@ -82,6 +88,26 @@ class UpdateImageAccount(graphene.Mutation):
             return UpdateImageAccount(success=False)
 
 
+class UpdateParticularitiesAccount(graphene.Mutation):
+    class Arguments:
+        particularities = graphene.JSONString(required=True)
+
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(root, info, particularities):
+        try:
+            user = info.context.user
+            userParticularities = User.objects.get(id=user.id)
+            userParticularities.particularity_search = particularities
+            userParticularities.save()
+            return UpdateParticularitiesAccount(success=True)
+
+        except Exception as e:
+            print(e)
+            return UpdateParticularitiesAccount(success=False)
+
+
 class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
     class Arguments:
         isRecipeMadeBeginnerBox = graphene.Boolean(required=True)
@@ -95,7 +121,7 @@ class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
             userDb = User.objects.get(id=user.id)
             userDb.is_recipe_made_beginner_box = isRecipeMadeBeginnerBox
             userDb.save()
-            
+
             if (isRecipeMadeBeginnerBox):
                 Made.objects.bulk_create([Made(amount=1,
                                                recipe_id="d9c8be17-1997-48de-adac-433121693b40",
@@ -107,7 +133,9 @@ class UpdateRecipeMadeBeginnerBox(graphene.Mutation):
                                                recipe_id="3b349672-a3b4-4eb5-a063-41eb79e5b542",
                                                user_id=user.id)])
             else:
-                Made.objects.filter(user_id=user.id, recipe_id__in=["d9c8be17-1997-48de-adac-433121693b40", "57d20e4b-72e7-48ce-99e1-839c75cb1566", "3b349672-a3b4-4eb5-a063-41eb79e5b542"]).delete()
+                Made.objects.filter(user_id=user.id, recipe_id__in=["d9c8be17-1997-48de-adac-433121693b40",
+                                                                    "57d20e4b-72e7-48ce-99e1-839c75cb1566",
+                                                                    "3b349672-a3b4-4eb5-a063-41eb79e5b542"]).delete()
             return UpdateRecipeMadeBeginnerBox(success=True)
 
         except Exception as e:
@@ -286,7 +314,6 @@ class EmailGreenitFullXp(graphene.Mutation):
             return EmailGreenitFullXp(success=False)
 
 
-# Todo (zack): Fix nuance between Beginner Box & Box Beginner
 class HasPurchasedBeginnerBox(graphene.Mutation):
     class Arguments:
         is_beginner_box = graphene.Boolean(required=True)

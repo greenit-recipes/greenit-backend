@@ -129,7 +129,8 @@ GRAPHQL_AUTH = {
                                  },
     "REGISTER_MUTATION_FIELDS_OPTIONAL": {"urls_social_media": "JSONString", "is_creator_profil": "String",
                                           "biographie": "String", "user_category_lvl": "String",
-                                          "user_category_age": "String", "is_beginner_box": "Boolean"},
+                                          "user_category_age": "String",
+                                          "is_beginner_box": "Boolean"},
     "UPDATE_MUTATION_FIELDS": {"urls_social_media": "JSONString", "biographie": "String"},
 }
 
