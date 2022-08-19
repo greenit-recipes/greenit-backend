@@ -9,7 +9,8 @@ from .models import Ingredient, IngredientAmount
 class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'description', 'image', 'tags', 'alternative' ,'is_supermarket' ,'is_online' ,'is_productor')
+        fields = (
+        'id', 'name', 'description', 'image', 'tags', 'alternative', 'is_supermarket', 'is_online', 'is_productor')
 
 
 class IngredientAmountType(DjangoObjectType):
@@ -26,22 +27,22 @@ class IngredientAmountType(DjangoObjectType):
 
     def resolve_name(parent, info):
         return parent.ingredient.name
-    
+
     def resolve_alternative(parent, info):
         return parent.ingredient.alternative
 
     def resolve_is_supermarket(parent, info):
         return parent.ingredient.is_supermarket
-    
+
     def resolve_is_online(parent, info):
-        return parent.ingredient.is_online 
-        
+        return parent.ingredient.is_online
+
     def resolve_is_productor(parent, info):
-        return parent.ingredient.is_productor 
+        return parent.ingredient.is_productor
 
     def resolve_description(parent, info):
         return parent.ingredient.description
-    
+
     def resolve_image(parent, info):
         return parent.ingredient.image
 
@@ -53,15 +54,17 @@ class IngredientAmountType(DjangoObjectType):
 
     class Meta:
         model = IngredientAmount
-        fields = ('id', 'name', 'description', 'image', 'tags', 'amount', 'alternative' ,'is_supermarket' ,'is_online' ,'is_productor')
+        fields = ('id', 'name', 'description', 'image', 'tags', 'amount', 'alternative', 'is_supermarket', 'is_online',
+                  'is_productor')
 
 
-class IngredientShoppingListUser(DjangoObjectType):
+class IngredientShoppingListUserType(DjangoObjectType):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'description', 'image')
 
-class IngredientAtHomeUser(DjangoObjectType):
+
+class IngredientAtHomeUserType(DjangoObjectType):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'description', 'image')

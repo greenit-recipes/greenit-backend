@@ -11,7 +11,6 @@ def get_image_path(instance, filename):
 
 
 class Ingredient(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=45)
     description = models.TextField()
@@ -31,7 +30,6 @@ class Ingredient(models.Model):
 
 
 class IngredientAmount(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     amount = models.CharField(max_length=16)
     ingredient = models.ForeignKey(
@@ -50,7 +48,6 @@ class IngredientAmount(models.Model):
 
 
 class IngredientShoppingListUser(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ingredient = models.ForeignKey(
         'ingredient.Ingredient',
@@ -65,16 +62,16 @@ class IngredientShoppingListUser(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class IngredientAtHomeUser(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ingredient = models.ForeignKey(
         'ingredient.Ingredient',
         on_delete=models.CASCADE,
         null=True,
     )
-    
+
     user = models.ForeignKey(
         'user.User',
         on_delete=models.CASCADE,
@@ -83,4 +80,3 @@ class IngredientAtHomeUser(models.Model):
 
     def __str__(self):
         return self.name
-

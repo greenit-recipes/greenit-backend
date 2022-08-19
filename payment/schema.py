@@ -1,14 +1,16 @@
-import environ
+from decouple import config
 import graphene
 import stripe
 
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 
-stripe.api_key = env('STRIPE_SECRET_KEY')
+stripe.api_key = config('STRIPE_SECRET_KEY')
 
-BASE_URL = f'{env("PROTOCOL")}://{env("DOMAIN_NAME")}'
-PRICE_ID = env("PRICE_ID")
+BASE_URL = f'{config("PROTOCOL")}://{config("DOMAIN_NAME")}'
+PRICE_ID = config("PRICE_ID")
+
+
 # Creates a new checkout session and yields a checkout url
 class CreateCheckoutSession(graphene.Mutation):
     class Arguments:
@@ -68,7 +70,6 @@ class CreateCheckoutSession(graphene.Mutation):
                 ]
             )
 
-
             return CreateCheckoutSession(redirect_url=checkout_session.url)
         except Exception as e:
             # Todo (zack) investigate whether stripe session errors are safe
@@ -77,10 +78,10 @@ class CreateCheckoutSession(graphene.Mutation):
             print('There was an error creating the session', e)
             return CreateCheckoutSession(redirect_url=str(e))
 
+
 # Get Customer Details By id
 class Query(graphene.ObjectType):
     pass
-
 
 
 class Mutation(graphene.ObjectType):
