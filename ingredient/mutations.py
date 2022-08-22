@@ -98,11 +98,21 @@ class CreateOrDeleteIngredientAtHomeUser(graphene.Mutation):
                                                         user_id=user.id).delete()
 
                 if len(ingredientAtHome.additions) != 0:
-                    print(ingredientAtHome.additions)
-                    IngredientAtHomeUser.objects.bulk_create(list(
+                    additions = list(
                         IngredientAtHomeUser(ingredient_id=ingredientAtHome.additions[i], user_id=user.id) for i
                         in
-                        range(len(ingredientAtHome.additions))))
+                        range(len(ingredientAtHome.additions)))
+                    duplicates = IngredientAtHomeUser.objects.filter(user_id=user.id,
+                                                                     ingredient_id__in=ingredientAtHome.additions)
+                    if duplicates.exists():
+                        filtered_additions = []
+                        n = len(ingredientAtHome.additions)
+                        for i in range(n):
+                            if additions[i].id != duplicates.id:
+                                filtered_additions.append(additions[i])
+                        IngredientAtHomeUser.objects.bulk_create(filtered_additions)
+                    else:
+                        IngredientAtHomeUser.objects.bulk_create(additions)
 
             return CreateOrDeleteIngredientAtHomeUser(success=True)
         except Exception as e:
