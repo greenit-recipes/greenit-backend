@@ -61,7 +61,7 @@ class IngredientShoppingListUser(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.ingredient}'
 
 
 class IngredientAtHomeUser(models.Model):
@@ -79,4 +79,4 @@ class IngredientAtHomeUser(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.ingredient}'
