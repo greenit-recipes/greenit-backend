@@ -10,7 +10,8 @@ class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
         fields = (
-        'id', 'name', 'description', 'image', 'tags', 'alternative', 'is_supermarket', 'is_online', 'is_productor')
+            'id', 'name', 'description', 'image', 'tags', 'alternative', 'is_supermarket', 'is_online', 'is_productor',
+            'purchase_link')
 
 
 class IngredientAmountType(DjangoObjectType):
@@ -24,6 +25,7 @@ class IngredientAmountType(DjangoObjectType):
     is_supermarket = graphene.Boolean()
     is_online = graphene.Boolean()
     is_productor = graphene.Boolean()
+    purchase_link = graphene.String()
 
     def resolve_name(parent, info):
         return parent.ingredient.name
@@ -40,6 +42,9 @@ class IngredientAmountType(DjangoObjectType):
     def resolve_is_productor(parent, info):
         return parent.ingredient.is_productor
 
+    def resolve_purchase_link(parent, info):
+        return parent.ingredient.purchase_link
+
     def resolve_description(parent, info):
         return parent.ingredient.description
 
@@ -55,16 +60,18 @@ class IngredientAmountType(DjangoObjectType):
     class Meta:
         model = IngredientAmount
         fields = ('id', 'name', 'description', 'image', 'tags', 'amount', 'alternative', 'is_supermarket', 'is_online',
-                  'is_productor')
+                  'is_productor', 'purchase_link')
 
 
 class IngredientShoppingListUserType(DjangoObjectType):
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'description', 'image')
+        fields = ('id', 'name', 'description', 'image', 'alternative', 'is_supermarket', 'is_online', 'is_productor',
+                  'purchase_link')
 
 
 class IngredientAtHomeUserType(DjangoObjectType):
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'description', 'image')
+        fields = ('id', 'name', 'description', 'image', 'alternative', 'is_supermarket', 'is_online', 'is_productor',
+                  'purchase_link')
