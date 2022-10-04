@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from tag.models import Category, Tag
+from tag.models import Category, Tag, Category_Ingredient
 from utils.mixin import ExportCsvMixin
 
 # Register your models here.
@@ -14,3 +14,4 @@ class TagAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Category, TagAdmin)
+admin.site.register(Category_Ingredient, TagAdmin)

@@ -1,7 +1,7 @@
 import graphene
 
-from .models import Category, Tag
-from .type import CategoryType, TagType
+from .models import Category, Tag, Category_Ingredient
+from .type import CategoryType, TagType, Category_IngredientType
 
 
 class TagInput(graphene.InputObjectType):
@@ -34,3 +34,18 @@ class CreateCategory(graphene.Mutation):
         category = Category.objects.create(name=data.name)
 
         return CreateCategory(category=category)
+
+class Category_IngredientInput(graphene.InputObjectType):
+    name = graphene.String()
+
+
+class CreateCategory_Ingredient(graphene.Mutation):
+    class Arguments:
+        data = Category_IngredientInput(required=True)
+
+    category_ingredient = graphene.Field(Category_IngredientType)
+
+    def mutate(root, info, data):
+        category_ingredient = Category_Ingredient.objects.create(name=data.name)
+
+        return CreateCategory_Ingredient(category_ingredient=category_ingredient)

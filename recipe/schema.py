@@ -58,6 +58,7 @@ class RecipeFilterInput(graphene.InputObjectType):
     particularity = graphene.List(graphene.String, required=False)
     ingredientsAtHome = graphene.List(graphene.String, required=False)
     id = graphene.List(graphene.String, required=False)
+    name = graphene.String(required=False)
 
 
 class Query(graphene.ObjectType):
@@ -65,7 +66,8 @@ class Query(graphene.ObjectType):
         RecipeConnection, filter=RecipeFilterInput(required=False)
     )
     search_auto_complete_recipes = graphene.Field(AutoCompleteRecipeType,
-                                                  search=graphene.String(required=False, default_value=None),
+                                                  search=graphene.String(
+                                                      required=False, default_value=None),
                                                   isOnlyIngredients=graphene.Boolean(required=False,
                                                                                      default_value=None))
     all_recipes_seo = graphene.List(RecipeType)
@@ -84,7 +86,8 @@ class Query(graphene.ObjectType):
                 try:
                     filter_params['category__name__unaccent__in'] = filter['category']
                 except Category.DoesNotExist:
-                    raise GraphQLError('Category matching query does not exist.')
+                    raise GraphQLError(
+                        'Category matching query does not exist.')
             if filter.get('duration'):
                 for duration in filter['duration']:
                     filter_params['duration__lte'] = duration
@@ -98,16 +101,20 @@ class Query(graphene.ObjectType):
                 filter_params['id__in'] = filter['id']
             if filter.get('author'):
                 try:
-                    filter_params['author'] = User.objects.get(pk=filter.get('author'))
+                    filter_params['author'] = User.objects.get(
+                        pk=filter.get('author'))
                 except User.DoesNotExist:
                     raise GraphQLError('User matching query does not exist.')
             if filter.get('number_of_ingredients'):
                 filter_params['num_ingredient__in'] = filter['number_of_ingredients']
+            if filter.get('name'):
+                filter_params['name'] = filter['name']
             return filter_params
 
         filter_query = get_filter(filter) if filter else {}
         recipes = Recipe.objects.all().annotate(likesNum=Count('likes', distinct=True))
-        recipes = recipes.annotate(num_ingredient=Count('ingredientamount', distinct=True))
+        recipes = recipes.annotate(num_ingredient=Count(
+            'ingredientamount', distinct=True))
         recipes = recipes.filter(
             **filter_query)  # recipes.filter(**filter_query).order_by('-likesNum' if filter and filter.get('is_order_by_number_like') else '-created_at')
 
@@ -118,7 +125,8 @@ class Query(graphene.ObjectType):
             recipes = recipes.exclude(id=filter.get('exclude_id'))
 
         if filter and filter.get('search'):
-            terms = strip_accents(re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', filter.get('search'))).lower().split()
+            terms = strip_accents(
+                re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', filter.get('search'))).lower().split()
             phrase = ""
             totalLen = len(terms)
             for index, term in enumerate(terms):
@@ -141,7 +149,8 @@ class Query(graphene.ObjectType):
         if filter and filter.get('particularity'):
             particularity = filter.get('particularity')[0]
             toto = json.loads(particularity.replace("\'", "\""))
-            tags = list(toto["tagsSkin"]) + list(toto["tagsHair"]) + list(toto["tagsParticularity"])
+            tags = list(toto["tagsSkin"]) + list(toto["tagsHair"]
+                                                 ) + list(toto["tagsParticularity"])
             if tags:
                 recipes = recipes.filter(tags__in=tags)
 
@@ -165,7 +174,8 @@ class Query(graphene.ObjectType):
     def resolve_search_auto_complete_recipes(self, info, search=None, isOnlyIngredients=None):
         if not (search):
             return
-        terms = strip_accents(re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', search)).lower().split()
+        terms = strip_accents(
+            re.sub('(\:|\&|\*|\(|\)|\'|\<|\>)', '', search)).lower().split()
         phrase = ""
         totalLen = len(terms)
         for index, term in enumerate(terms):
@@ -192,7 +202,8 @@ class Query(graphene.ObjectType):
         search_vectors_count = SearchVector(StringAgg(Lower('name__unaccent'), delimiter=' '),
                                             StringAgg(Lower('ingredients__name__unaccent'), delimiter=' '))
         search_query_count = SearchQuery(phrase, search_type='raw')
-        totalRecipes = Recipe.objects.annotate(search=search_vectors_count).filter(search=search_query_count).count()
+        totalRecipes = Recipe.objects.annotate(
+            search=search_vectors_count).filter(search=search_query_count).count()
         return AutoCompleteRecipeType(recipes=recipes, ingredients=ingredients, totalRecipes=totalRecipes)
 
 

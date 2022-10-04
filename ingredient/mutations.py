@@ -8,7 +8,6 @@ from .type import IngredientType
 class CreateIngredientInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
-    # image =
 
 
 class IngredientIdsInput(graphene.InputObjectType):
