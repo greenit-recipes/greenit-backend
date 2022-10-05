@@ -15,6 +15,7 @@ from regex import D
 from ingredient.models import Ingredient, IngredientAmount
 from tag.models import Category, Tag
 from user.models import User
+from ingredient.models import Ingredient
 from utensil.models import Utensil
 import json
 
@@ -107,6 +108,11 @@ class Query(graphene.ObjectType):
                     raise GraphQLError('User matching query does not exist.')
             if filter.get('number_of_ingredients'):
                 filter_params['num_ingredient__in'] = filter['number_of_ingredients']
+            if filter.get('ingredients'):
+                try:
+                    filter_params['ingredients__name__unaccent__in'] = filter['ingredients']
+                except Ingredient.DoesNotExist:
+                    raise GraphQLError('Ingredient matching query does not exist.')
             if filter.get('name'):
                 filter_params['name'] = filter['name']
             return filter_params

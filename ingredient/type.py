@@ -1,12 +1,14 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+
 from tag.type import TagType
 
 from .models import Ingredient, IngredientAmount
 
 
 class IngredientType(DjangoObjectType):
+
     class Meta:
         model = Ingredient
         fields = (

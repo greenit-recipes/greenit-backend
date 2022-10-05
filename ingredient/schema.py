@@ -4,6 +4,7 @@ from graphql import GraphQLError
 from ingredient.mutations import CreateIngredient, CreateOrDeleteIngredientShoppingList, \
     CreateOrDeleteIngredientAtHomeUser
 from tag.models import Category_Ingredient, Tag
+from graphene.types.generic import GenericScalar
 
 
 from .models import Ingredient
@@ -22,7 +23,8 @@ class Query(graphene.ObjectType):
         IngredientType, filter=IngredientFilterInput(required=False))
     all_ingredients = graphene.List(
         IngredientType, filter=IngredientFilterInput(required=False))
-    ingredient = graphene.Field(lambda:graphene.List(IngredientType), id=graphene.String(required=False))
+    ingredient = graphene.Field(IngredientType, id=graphene.String(required=False))
+  
 
     def resolve_all_ingredients(self, info, filter=None, **kwargs):
         def get_filter(filter):
@@ -54,8 +56,8 @@ class Query(graphene.ObjectType):
         return Ingredient.objects.filter(**filter)
 
     def resolve_ingredient(self, info, id=None):
-        if (id):
-            return Ingredient.objects.get(id=id),
+        if(id):
+            return Ingredient.objects.get(pk=id)
         return
 
 
