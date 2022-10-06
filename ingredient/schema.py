@@ -42,7 +42,7 @@ class Query(graphene.ObjectType):
                     raise GraphQLError(
                         'Category_ingredient matching query does not exist.')
             if filter.get('is_for_market') != None:
-                filter_params['is_for_market'] = filter.get('is_for_market') #check the thing that could come back and catch the error
+                filter_params['is_for_market'] = filter.get('is_for_market') #to do: catch the error possible
             if filter.get('name'):
                 try:
                     filter_params['name'] = filter['name']
