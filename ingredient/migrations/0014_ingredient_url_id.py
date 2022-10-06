@@ -4,9 +4,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ingredient', '0013_remove_ingredient_purchase_link'),
+        ('ingredient', '0012_auto_20220928_1427'),
     ]
 
     operations = [
