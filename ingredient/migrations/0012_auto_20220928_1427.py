@@ -21,9 +21,4 @@ class Migration(migrations.Migration):
             name='category_ingredient',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='category_ingredient', to='tag.category_ingredient'),
         ),
-        migrations.AddField(
-            model_name='ingredient',
-            name='purchase_link',
-            field=models.TextField(blank=True, null=True),
-        ),
     ]
