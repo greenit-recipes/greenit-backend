@@ -189,6 +189,6 @@ class IngredientAtHomeUserType(DjangoObjectType):
             'is_for_market',
             'is_supermarket',
             'is_online',
-            'is_productor'
+            'is_productor',
             'purchase_link'
         )
