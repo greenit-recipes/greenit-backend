@@ -31,7 +31,8 @@ class IngredientType(DjangoObjectType):
             'is_for_market',
             'is_supermarket',
             'is_online',
-            'is_productor'
+            'is_productor',
+            'purchase_link'
         )
 
 
@@ -56,6 +57,7 @@ class IngredientAmountType(DjangoObjectType):
     is_supermarket = graphene.Boolean()
     is_online = graphene.Boolean()
     is_productor = graphene.Boolean()
+    purchase_link = graphene.String()
 
     def resolve_name(parent, info):
         return parent.ingredient.name
@@ -95,6 +97,9 @@ class IngredientAmountType(DjangoObjectType):
 
     def resolve_is_productor(parent, info):
         return parent.ingredient.is_productor
+    
+    def resolve_purchase_link(parent, info):
+        return parent.ingredient.purchase_link
 
     def resolve_description(parent, info):
         return parent.ingredient.description
@@ -138,7 +143,8 @@ class IngredientAmountType(DjangoObjectType):
             'is_for_market',
             'is_supermarket',
             'is_online',
-            'is_productor'
+            'is_productor',
+            'purchase_link'
         )
 
 
@@ -160,7 +166,8 @@ class IngredientShoppingListUserType(DjangoObjectType):
             'is_for_market',
             'is_supermarket',
             'is_online',
-            'is_productor'
+            'is_productor',
+            'purchase_link'
         )
 
 
@@ -183,4 +190,5 @@ class IngredientAtHomeUserType(DjangoObjectType):
             'is_supermarket',
             'is_online',
             'is_productor'
+            'purchase_link'
         )

@@ -29,6 +29,7 @@ class Ingredient(models.Model):
     is_supermarket = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
     is_productor = models.BooleanField(default=False)
+    purchase_link = models.TextField(null=True, blank=True)
     image = models.FileField(
         max_length=255, upload_to=get_image_path, null=True, blank=True
     )
