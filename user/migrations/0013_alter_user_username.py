@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user', '0012_user_graphql_auth_admin'),
+        ('user', '0011_user_is_follow_newsletter'),
     ]
 
     operations = [
